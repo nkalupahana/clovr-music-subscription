@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function GET(request: NextRequest) {
+export const GET = (request: NextRequest) =>  {
   return NextResponse.json(
     {
       body: request.body,
