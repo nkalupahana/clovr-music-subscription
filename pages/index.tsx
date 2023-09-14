@@ -1,6 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 
-export default function Home() {
+export default function Index() {
     const { data: session, status } = useSession();
     const userEmail = session?.user?.email;
 
