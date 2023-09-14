@@ -15,7 +15,6 @@
     "autoprefixer": "10.4.15",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
-    "mini-css-extract-plugin": "^2.7.6",
     "mongodb": "^6.0.0",
     "mongoose": "^7.5.1",
     "next": "13.4.19",
