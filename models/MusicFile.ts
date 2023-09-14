@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 export interface MusicFile extends mongoose.Document {
     name: string
     tempo: number,
-    location: string,
+    key: string,
     uploadTime: Date,
 }
 
@@ -16,9 +16,9 @@ const MusicFileSchema = new mongoose.Schema<MusicFile>({
         type: Number,
         required: [true, "Please provide an tempo for this song."],
     },
-    location: {
+    key: {
         type: String,
-        required: [true, "Please provide an R2 location for this song."],
+        required: [true, "Please provide an R2 key for this song."],
     },
     uploadTime: {
         type: Date,

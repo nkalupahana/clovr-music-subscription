@@ -12,7 +12,7 @@ export default async function handler(
         const file = await MusicFile.findById(req.query.id);
         if (!file) return res.status(404).send("Music file not found");
 
-        const url = await r2.getSignedUrlPromise("getObject", { Bucket: "clovr-test-music", Key: file.location });
+        const url = await r2.getSignedUrlPromise("getObject", { Bucket: "clovr-test-music", Key: file.key });
         return res.redirect(url);
     }
 
