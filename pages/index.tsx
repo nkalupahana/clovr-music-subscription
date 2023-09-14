@@ -26,6 +26,7 @@ export default function Index() {
                         <td>Song Name</td>
                         <td>Tempo</td>
                         <td>Play</td>
+                        <td>Download</td>
                     </tr>
                 </thead>
                 { musicList && musicList.map((music: MusicFile) => <tr key={music._id}>
@@ -35,6 +36,9 @@ export default function Index() {
                         audio.current!.src = `/api/music/play?id=${music._id}`; 
                         audio.current!.play();
                     }}>Play</td>
+                    <td onClick={() => {
+                        window.open(`/api/music/download?id=${music._id}`)
+                    }}>Download</td>
                 </tr>) }
             </table>
             <audio ref={audio}></audio>

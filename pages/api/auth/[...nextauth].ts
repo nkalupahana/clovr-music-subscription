@@ -13,6 +13,7 @@ export const authOptions = {
     callbacks: {
         async signIn({ user }: any) {
             await dbConnect();
+            
             if (user) {
                 const foundUser = await User.findOne({ email: user.email });
                 if (!foundUser) {
