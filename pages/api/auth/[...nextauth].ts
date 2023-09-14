@@ -1,6 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
-import User, { User as UserType } from "@/models/User";
-import NextAuth from "next-auth"
+import User from "@/models/User";
+import NextAuth, { SessionStrategy } from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 
 export const authOptions = {
@@ -11,7 +11,7 @@ export const authOptions = {
         }),
     ],
     callbacks: {
-        async jwt({ token, user }: any) {
+        async signIn({ user }: any) {
             await dbConnect();
             if (user) {
                 const foundUser = await User.findOne({ email: user.email });
@@ -24,9 +24,9 @@ export const authOptions = {
                 }
             }
 
-            return token;
+            return true;
         }
-    }
+    },
 }
 
 export default NextAuth(authOptions);

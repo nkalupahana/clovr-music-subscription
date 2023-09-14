@@ -28,7 +28,7 @@ export default function Index() {
                         <td>Play</td>
                     </tr>
                 </thead>
-                { musicList && musicList.map((music: MusicFile) => <tr>
+                { musicList && musicList.map((music: MusicFile) => <tr key={music._id}>
                     <td>{ music.name }</td>
                     <td>{ music.tempo }</td>
                     <td onClick={() => {
