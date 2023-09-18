@@ -14,7 +14,8 @@ export default function Index() {
             { status === "loading" && <p>Hang on there...</p> }
             { status === "unauthenticated" && <>
                 <p>Not signed in.</p> 
-                <button onClick={() => signIn("github")}>Sign in</button>
+                <button onClick={() => signIn("github")}>Sign in with GitHub</button>
+                <button onClick={() => signIn("google")}>Sign in with Google</button>
             </> }
             { status === "authenticated" && <>
                 <p>Signed in as { session?.user?.email }</p>
