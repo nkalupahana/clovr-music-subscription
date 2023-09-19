@@ -38,8 +38,6 @@ export const authOptions = {
                 token.subscribed = !!user.subscription;
             }
 
-            console.log(token);
-
             return token;
         },
         async session({ session, token }: any) {
