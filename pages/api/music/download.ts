@@ -27,8 +27,8 @@ export default async function handler(
             fileid: file._id,
         });
 
-        const url = await r2.getSignedUrlPromise("getObject", { Bucket: "clovr-test-music", Key: file.key });
-        return res.send(url);
+        const url = await r2.getSignedUrlPromise("getObject", { Bucket: process.env.R2_BUCKET, Key: file.key });
+        return res.redirect(url);
     }
 
     return res.status(405).send(405);

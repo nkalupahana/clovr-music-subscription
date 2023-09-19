@@ -14,7 +14,6 @@ export default function Index() {
             { status === "loading" && <p>Hang on there...</p> }
             { status === "unauthenticated" && <>
                 <p>Not signed in.</p> 
-                <button onClick={() => signIn("github")}>Sign in with GitHub</button>
                 <button onClick={() => signIn("google")}>Sign in with Google</button>
             </> }
             { status === "authenticated" && <>
@@ -30,7 +29,7 @@ export default function Index() {
                         <td>Download</td>
                     </tr>
                 </thead>
-                { musicList && musicList.map((music: MusicFile) => <tr key={music._id}>
+                { musicList?.map((music: MusicFile) => <tr key={music._id}>
                     <td>{ music.name }</td>
                     <td>{ music.tempo }</td>
                     <td onClick={() => {
@@ -43,6 +42,14 @@ export default function Index() {
                 </tr>) }
             </table>
             <audio ref={audio}></audio>
+            <br /><br />
+            <p>Upload Music</p>
+            <form method="POST" action="/api/music/upload" encType="multipart/form-data">
+                <input type="text" name="songname" placeholder="Song Name" required /><br />
+                <input type="number" name="tempo" placeholder="Tempo" required /><br />
+                <input type="file" name="file" accept="audio/mpeg" required /><br />
+                <input type="submit" value="Upload" />
+            </form>
         </>
     );
 }
