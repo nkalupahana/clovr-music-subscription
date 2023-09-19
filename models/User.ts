@@ -3,6 +3,8 @@ import mongoose from "mongoose"
 export interface User extends mongoose.Document {
     name: string
     email: string
+    isAdmin: boolean
+    subscription: string
 }
 
 const UserSchema = new mongoose.Schema<User>({
@@ -13,6 +15,13 @@ const UserSchema = new mongoose.Schema<User>({
     email: {
         type: String,
         required: [true, "Please provide an email for this user."],
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+    },
+    subscription: {
+        type: String
     }
 })
 

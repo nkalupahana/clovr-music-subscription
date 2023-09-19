@@ -18,6 +18,8 @@ export default function Index() {
             </> }
             { status === "authenticated" && <>
                 <p>Signed in as { session?.user?.email }</p>
+                <p>Is Admin: { String(session?.user?.isAdmin) }</p>
+                <p>Subscribed: { String(session?.user?.subscribed) }</p>
                 <button onClick={() => signOut()}>Sign out</button>
             </> }
             <table>
