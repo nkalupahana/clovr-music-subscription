@@ -3,6 +3,7 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/swr";
 import { MusicFile } from "@/models/MusicFile";
 import { useRef, useState } from "react";
+import './globals.css'
 
 export default function Index() {
     const { data: session, status } = useSession();
@@ -14,13 +15,13 @@ export default function Index() {
             { status === "loading" && <p>Hang on there...</p> }
             { status === "unauthenticated" && <>
                 <p>Not signed in.</p> 
-                <button onClick={() => signIn("google")}>Sign in with Google</button>
+                <button className="btn btn-primary" onClick={() => signIn("google")}>Sign in with Google</button>
             </> }
             { status === "authenticated" && <>
                 <p>Signed in as { session?.user?.email }</p>
                 <p>Is Admin: { String(session?.user?.isAdmin) }</p>
                 <p>Subscribed: { String(session?.user?.subscribed) }</p>
-                <button onClick={() => signOut()}>Sign out</button>
+                <button className="btn btn-primary" onClick={() => signOut()}>Sign out</button>
             </> }
             <table>
                 <thead>
