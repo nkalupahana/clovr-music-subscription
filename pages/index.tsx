@@ -3,7 +3,6 @@ import useSWR from "swr";
 import { fetcher } from "@/lib/swr";
 import { MusicFile } from "@/models/MusicFile";
 import { useRef, useState } from "react";
-import './globals.css'
 
 export default function Index() {
     const { data: session, status } = useSession();
