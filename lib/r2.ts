@@ -5,4 +5,5 @@ export const r2 = new S3({
     accessKeyId: process.env.R2_KEY_ID,
     secretAccessKey: process.env.R2_KEY_SECRET,
     signatureVersion: "v4",
+    region: "auto"
 });
