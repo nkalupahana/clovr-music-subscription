@@ -2,6 +2,7 @@ import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
+import Layout from "./layout";
 
 export default function App({
   Component,
@@ -10,7 +11,11 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <NextUIProvider>
-        <Component {...pageProps} />
+        <main className="light text-foreground bg-background">
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </main>
       </NextUIProvider>
     </SessionProvider>
   );
