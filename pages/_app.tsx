@@ -11,11 +11,9 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <NextUIProvider>
-        <main className="light text-foreground bg-background">
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </main>
       </NextUIProvider>
     </SessionProvider>
   );
