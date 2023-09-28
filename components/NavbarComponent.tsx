@@ -30,7 +30,7 @@ const Navigation_Buttons = [
   },
   {
     name: "About",
-    href: "#",
+    href: "/about",
   },
 ];
 
