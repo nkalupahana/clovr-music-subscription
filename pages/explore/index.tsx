@@ -55,7 +55,7 @@ const Explore = () => {
                 onClick={() => {
                   toggleAudio(music);
                 }}
-                className="w-1/6"
+                className="w-1/6 cursor-pointer" 
               >
                 {playing === music._id ? "Pause" : "Play"}
               </TableCell>
@@ -63,6 +63,7 @@ const Explore = () => {
                 onClick={() => {
                   window.open(`/api/music/download?id=${music._id}`);
                 }}
+                className="w-1/6 cursor-pointer"
               >
                 Download
               </TableCell>
