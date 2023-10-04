@@ -14,7 +14,7 @@ export default function Subscriptions() {
         if (upd?.trim() === "true") {
             update();
         }
-    }, []);
+    }, [update]);
 
     const subscribe = useCallback(() => {
         window.location.href = "/api/stripe/subscribe";
