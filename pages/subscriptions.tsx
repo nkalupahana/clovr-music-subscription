@@ -13,6 +13,7 @@ export default function Subscriptions() {
         const upd = url.searchParams.get("update");
         if (upd?.trim() === "true") {
             update();
+            window.location.search = "";
         }
     }, [update]);
 
