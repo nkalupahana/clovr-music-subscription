@@ -1,10 +1,23 @@
 import { fetcher } from "@/lib/swr";
 import { useSession } from "next-auth/react";
+import { useCallback, useEffect } from "react";
 import useSWR from "swr";
 
 export default function Subscriptions() {
     const { data: session, status, update } = useSession();
     const { data: stripeStatus } = useSWR("/api/stripe/status", fetcher);
+
+    useEffect(() => {
+        const url = new URL(window.location.href);
+        const upd = url.searchParams.get("update");
+        if (upd?.trim() === "true") {
+            update();
+        }
+    }, []);
+
+    const subscribe = useCallback(() => {
+        window.location.href = "/api/stripe/subscribe";
+    }, []);
 
     return <>
         <h1>Subscriptions</h1>
