@@ -29,7 +29,7 @@ export default function Subscriptions() {
         { status === "authenticated" && <p>Subscribed: { String(session?.user?.subscribed) }</p> }
         { session?.user.subscribed && stripeStatus && <>
             <p>Subscription Status: { stripeStatus.status }</p>
-            <p>Channels: { stripeStatus.quantity }</p>
+            <p>Max Channels: { stripeStatus.quantity }</p>
         </> }
         { !session?.user.subscribed && <button className="btn btn-primary" onClick={subscribe}>
             Subscribe
