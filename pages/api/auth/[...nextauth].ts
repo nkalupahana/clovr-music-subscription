@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
-import User from "@/models/User";
+import User, { User as UserType } from "@/models/User";
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 
@@ -27,13 +27,11 @@ export const authOptions = {
                 }
             }
 
-            // TODO: verify subscription with Stripe on sign in
-
             return true;
         },
-        async jwt({ token, account }: any) {
-            if (account) {
-                const user = await User.findOne({ email: token.email });
+        async jwt({ token, account, trigger }: any) {
+            if (account || trigger === "update") {
+                const user = await User.findOne({ email: token.email }) as UserType;
                 token.isAdmin = user.isAdmin ?? false;
                 token.subscribed = !!user.subscription;
             }
