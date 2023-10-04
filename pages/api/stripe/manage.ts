@@ -24,6 +24,13 @@ export default async function handler(
         const { op } = req.query;
         if (typeof op !== "string" || !op) return res.status(400).send("Invalid operation");
 
+        if (op === "uncancel") {
+            await stripe.subscriptions.update(user.subscription, {
+                cancel_at_period_end: false
+            });
+            return res.redirect("/subscriptions?update=true");
+        }
+
         if (["payment_method_update", "subscription_cancel", "subscription_update"].includes(op)) {
             let data: any = {
                 customer: subscription.customer as string,
