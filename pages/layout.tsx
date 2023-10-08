@@ -17,7 +17,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <main className="light">
       <NavBar />
-
       <div className="flex h-screen">
         <div className="flex-1">{children}</div>
       </div>
