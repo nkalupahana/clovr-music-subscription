@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { useSession, signIn, signOut } from "next-auth/react";
 import {
+  Chip,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
   Button,
-  Link,
   Avatar,
   Dropdown,
   DropdownTrigger,
@@ -18,6 +18,8 @@ import {
   NavbarMenu,
 } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const NAV_BUTTONS = [
   { name: "Home", href: "/" },
@@ -28,17 +30,18 @@ const NAV_BUTTONS = [
 const NavBar = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
 
   const renderNavigation = () => (
     <NavbarContent className="hidden sm:flex gap-4" justify="center">
       {NAV_BUTTONS.map((button) => (
         <Link href={button.href} key={button.name}>
-          <Button
-            key={button.name}
-            color={router.pathname === button.href ? "primary" : "default"}
+          <Chip
+            color={pathname === button.href ? "primary" : "default"}
+            variant="shadow"
           >
             {button.name}
-          </Button>
+          </Chip>
         </Link>
       ))}
     </NavbarContent>
@@ -71,9 +74,7 @@ const NavBar = () => {
 
   const renderUnauthenticated = () => (
     <>
-      <Link href="/pricing" underline="always">
-        Pricing
-      </Link>
+      <Link href="/pricing">Pricing</Link>
       <Button
         color="primary"
         onClick={() => signIn("google")}
@@ -85,17 +86,19 @@ const NavBar = () => {
     </>
   );
 
+  const [smallMenuOpen, setSmallMenuOpen] = useState(false);
+
   const renderSmallNavigation = () => (
     <NavbarMenu className="bg-gray-100">
       {NAV_BUTTONS.map((item, index) => (
         <NavbarMenuItem key={index}>
-          <Link
-            className="w-full"
-            href={item.href}
-            size="lg"
-            color={router.pathname === item.href ? "danger" : "foreground"}
-          >
-            {item.name}
+          <Link href={item.href} onClick={() => setSmallMenuOpen(false)}>
+            <Chip
+              color={pathname === item.href ? "primary" : "default"}
+              variant="shadow"
+            >
+              {item.name}
+            </Chip>
           </Link>
         </NavbarMenuItem>
       ))}
@@ -103,9 +106,17 @@ const NavBar = () => {
   );
 
   return (
-    <Navbar position="static" maxWidth="full" className="bg-gray-100">
+    <Navbar
+      position="static"
+      maxWidth="full"
+      className="bg-gray-100"
+      isMenuOpen={smallMenuOpen}
+    >
       <NavbarContent className="sm:hidden" justify="start">
-        <NavbarMenuToggle />
+        <NavbarMenuToggle
+          onClick={() => setSmallMenuOpen(!smallMenuOpen)}
+          className="text-2xl"
+        />
       </NavbarContent>
       {renderSmallNavigation()}
 
