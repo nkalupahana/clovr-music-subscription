@@ -1,25 +1,66 @@
-import type { Config } from "tailwindcss"
-import {nextui} from "@nextui-org/react";
+import type { Config } from "tailwindcss";
+import { nextui } from "@nextui-org/react";
+
+/**
+ * Configuration object for Tailwind CSS.
+ * @typedef {Object} Config
+ * @property {string[]} content - An array of file paths to scan for classes.
+ * @property {string} darkMode - The default dark mode setting for the application.
+ * @property {Object[]} plugins - An array of plugins to use with Tailwind CSS.
+ */
 
 const config: Config = {
     content: [
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
-        "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
+        "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
     ],
-    theme: {
-        extend: {
-            backgroundImage: {
-                "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-                "gradient-conic":
-                    "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-            },
-        },
-    },
+
+    /**
+     * The coloring system for the application.
+     * @typedef {Object} Colors
+     * @property {Object} background - The background color for the application.
+     * @property {string} background.DEFAULT - The default background color.
+     * @property {Object} foreground - The foreground color for the application.
+     * @property {string} foreground.DEFAULT - The default foreground color.
+     * @property {Object} primary - The primary color for the application.
+     * @property {string} primary.DEFAULT - The default primary color.
+     */
+
     darkMode: "class",
     plugins: [
-        nextui(),
+        nextui({
+            themes: {
+                dark: {
+                    colors: {
+                        background: {
+                            DEFAULT: "#000",
+                        },
+                        foreground: {
+                            DEFAULT: "#ADD8E6",
+                        },
+                        primary: {
+                            DEFAULT: "#f00",
+                        },
+                    },
+                },
+                light: {
+                    colors: {
+                        background: {
+                            DEFAULT: "#fff",
+                        },
+                        foreground: {
+                            DEFAULT: "#000",
+                        },
+
+                        primary: {
+                            DEFAULT: "#0f0",
+                        },
+                    },
+                },
+            },
+        }),
     ],
-}
-export default config
+};
+export default config;

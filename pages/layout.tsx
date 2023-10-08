@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../components/NavbarComponent";
 import {
   Navbar,
@@ -14,9 +14,14 @@ type LayoutProps = {
 };
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const [darkMode, setDarkMode] = useState(true);
   return (
-    <main className="light">
-      <NavBar />
+    <main
+      className={`
+    ${darkMode ? "dark" : ""} text-foreground bg-background
+    `}
+    >
+      <NavBar setDarkMode={setDarkMode} darkMode={darkMode}/>
       <div className="flex h-screen">
         <div className="flex-1">{children}</div>
       </div>
