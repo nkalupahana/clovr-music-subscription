@@ -16,8 +16,11 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
   NavbarMenu,
+  Switch,
 } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
+import { FaMoon } from "react-icons/fa";
+import { HiOutlineSun } from "react-icons/hi";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -27,7 +30,13 @@ const NAV_BUTTONS = [
   { name: "About", href: "/about" },
 ];
 
-const NavBar = () => {
+const NavBar = ({
+  setDarkMode,
+  darkMode,
+}: {
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+  darkMode: boolean;
+}) => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
@@ -109,8 +118,8 @@ const NavBar = () => {
     <Navbar
       position="static"
       maxWidth="full"
-      className="bg-gray-100"
       isMenuOpen={smallMenuOpen}
+      isBordered
     >
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle
@@ -122,6 +131,14 @@ const NavBar = () => {
 
       <NavbarBrand>
         <p className="font-bold text-inherit">CLOVR</p>
+        <Switch
+          onChange={() => setDarkMode(!darkMode)}
+          size="sm"
+          color="success"
+          className="ml-2"
+          startContent={<HiOutlineSun />}
+          endContent={<FaMoon />}
+        />
       </NavbarBrand>
       {status === "authenticated" && renderNavigation()}
       <NavbarContent justify="end">
