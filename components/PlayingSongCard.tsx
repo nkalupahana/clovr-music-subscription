@@ -11,8 +11,10 @@ import { MusicFile } from "@/models/MusicFile";
 
 export const PlayingSongCard = ({
   playingSong,
+  handleToggle,
 }: {
-  playingSong?: MusicFile;
+  playingSong?: string;
+  handleToggle: (id: string) => void;
 }): JSX.Element => {
   const [liked, setLiked] = useState(false);
   const [albumArt, setAlbumArt] = useState("/drake.png");
@@ -148,6 +150,7 @@ export const PlayingSongCard = ({
                 className="w-auto h-auto data-[hover]:bg-foreground/10"
                 radius="full"
                 variant="light"
+                onPress={handlePlayPause}
               >
                 {isPlaying ? (
                   <PauseCircleIcon

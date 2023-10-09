@@ -4,6 +4,7 @@ import { fetcher } from "@/lib/swr";
 import { MusicFile } from "@/models/MusicFile";
 import { PlayingSongCard } from "@/components/PlayingSongCard";
 import {
+  Skeleton,
   Table,
   TableHeader,
   TableBody,
@@ -19,19 +20,33 @@ const Explore = () => {
   const audio = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState("");
 
-  useEffect(() => {
-    console.log(playing);
-  }, [playing]);
+  const handleToggle = (id: string) => {
+    if (playing !== id) {
+      audio.current?.pause();
+      audio.current!.src = `/api/music/play?id=${id}`;
+      audio.current?.play();
+    } else if (audio.current?.paused) {
+      audio.current?.play();
+    } else {
+      audio.current?.pause();
+    }
+  };
+
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen py-2">
       <div className="flex flex-col items-center justify-center py-2 gap-2">
-        <h1>
-          <span className="text-5xl font-bold">Explore</span>
+        <h1
+          className="text-center text-6xl font-bold px-12 py-2 rounded-lg w-full bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 animate-gradientAnimation"
+          style={{
+            backgroundSize: "200% 200%",
+          }}
+        >
+          Explore
         </h1>
-        <PlayingSongCard />
       </div>
-      <div className="flex w-full">
+      <PlayingSongCard playingSong={playing} handleToggle={handleToggle} />
+      <div className="flex min-w-[80%] mt-4 items-center justify-center">
         <Table>
           <TableHeader>
             <TableColumn>Song Name</TableColumn>
@@ -41,11 +56,12 @@ const Explore = () => {
           </TableHeader>
           <TableBody>
             {musicList?.map((music: MusicFile) => (
-              <TableRow key={music._id} onClick={() => {}}>
+              <TableRow key={music._id}>
                 <TableCell>{music.name}</TableCell>
                 <TableCell
                   onClick={() => {
                     setPlaying(music._id);
+                    handleToggle(music._id);
                   }}
                 >
                   Play
