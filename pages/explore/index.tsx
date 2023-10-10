@@ -32,9 +32,8 @@ const Explore = () => {
     }
   };
 
-
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen py-2">
+    <div className="flex flex-col items-center justify-start min-h-screen py-2 bg-red-500">
       <div className="flex flex-col items-center justify-center py-2 gap-2">
         <h1
           className="text-center text-6xl font-bold px-12 py-2 rounded-lg w-full bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 animate-gradientAnimation"
