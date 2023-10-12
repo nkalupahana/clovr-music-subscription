@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Card, CardBody, Image, Button, Progress } from "@nextui-org/react";
 import { HeartIcon } from "./icons/HeartIcon";
 import { PreviousIcon } from "./icons/PreviousIcon";
@@ -7,6 +7,7 @@ import { ShuffleIcon } from "./icons/ShuffleIcon";
 import { RepeatOneIcon } from "./icons/RepeatOneIcon";
 import { PlayCircleIcon } from "./icons/PlayCircleIcon";
 import { PauseCircleIcon } from "./icons/PauseCircleIcon";
+import { MusicContext } from "@/context/MusicContext";
 import { MusicFile } from "@/models/MusicFile";
 
 export const PlayingSongCard = ({
@@ -25,6 +26,7 @@ export const PlayingSongCard = ({
   const [songProgress, setSongProgress] = useState(66);
   const [isPlaying, setIsPlaying] = useState(false);
   const progressRef = useRef<HTMLDivElement>(null);
+  const context = useContext(MusicContext);
 
   useEffect(() => {
     if (playingSong) {
@@ -46,12 +48,17 @@ export const PlayingSongCard = ({
   };
 
   const handleShuffle = () => {
-    console.log("Shuffle");
+    if (context) {
+      context.randomSong();
+      console.log(context.getCurrentSong());
+    }
   };
 
   const handlePlayPause = () => {
     setIsPlaying((v) => !v);
-    console.log("Play/Pause");
+    if (context) {
+      context.toggleSong();
+    }
   };
 
   const handleProgress = () => {
