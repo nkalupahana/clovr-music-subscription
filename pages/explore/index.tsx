@@ -53,17 +53,7 @@ const Explore = () => {
               {" "}
             </TableColumn>
           </TableHeader>
-          <TableBody
-            isLoading={true}
-            loadingContent={
-              <TableRow>
-                <TableCell colSpan={5}>
-                  <Skeleton />
-                </TableCell>
-              </TableRow>
-            }
-            items={musicList}
-          >
+          <TableBody>
             {musicList?.map((music: MusicFile) => (
               <TableRow
                 key={music._id}
