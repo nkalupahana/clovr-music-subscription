@@ -11,9 +11,13 @@ import {
   TableColumn,
   TableRow,
   TableCell,
+  User,
 } from "@nextui-org/react";
+import { HeartIcon } from "@/components/icons/HeartIcon";
+import { FaDownload } from "react-icons/fa";
 
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
+import PageHeader from "@/components/PageHeader";
 
 const Explore = () => {
   const { data: musicList } = useSWR("/api/music/list", fetcher);
@@ -34,29 +38,53 @@ const Explore = () => {
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen py-2 bg-red-500">
-      <div className="flex flex-col items-center justify-center py-2 gap-2">
-        <h1
-          className="text-center text-6xl font-bold px-12 py-2 rounded-lg w-full bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 animate-gradientAnimation"
-          style={{
-            backgroundSize: "200% 200%",
-          }}
-        >
-          Explore
-        </h1>
-      </div>
+      <PageHeader>Explore</PageHeader>
       <PlayingSongCard playingSong={playing} handleToggle={handleToggle} />
       <div className="flex min-w-[80%] mt-4 items-center justify-center">
         <Table>
           <TableHeader>
-            <TableColumn>Song Name</TableColumn>
+            <TableColumn className="w-1/3">Song</TableColumn>
             <TableColumn>Play</TableColumn>
             <TableColumn>Tempo</TableColumn>
-            <TableColumn>Download</TableColumn>
+            <TableColumn className="w-1/12" align="center">
+              {" "}
+            </TableColumn>
+            <TableColumn className="w-1/12" align="center">
+              {" "}
+            </TableColumn>
           </TableHeader>
-          <TableBody>
+          <TableBody
+            isLoading={true}
+            loadingContent={
+              <TableRow>
+                <TableCell colSpan={5}>
+                  <Skeleton />
+                </TableCell>
+              </TableRow>
+            }
+            items={musicList}
+          >
             {musicList?.map((music: MusicFile) => (
-              <TableRow key={music._id}>
-                <TableCell>{music.name}</TableCell>
+              <TableRow
+                key={music._id}
+                className="
+              hover:bg-primary hover:bg-opacity-10  
+              transition-all duration-200 ease-in-out 
+              "
+              >
+                <TableCell>
+                  <User
+                    avatarProps={{
+                      radius: "sm",
+                      src: "/drake.png",
+                    }}
+                    name={music.name}
+                    description={music.name}
+                  >
+                    {music.name}
+                  </User>
+                </TableCell>
+
                 <TableCell
                   onClick={() => {
                     setPlaying(music._id);
@@ -66,13 +94,21 @@ const Explore = () => {
                   Play
                 </TableCell>
                 <TableCell>{music.tempo}</TableCell>
+                <TableCell className="hover:scale-105 transition-all cursor-pointer ">
+                  <HeartIcon
+                    className={true ? "[&>path]:stroke-transparent" : ""}
+                    fill={true ? "red" : "none"}
+                    width={undefined}
+                    height={undefined}
+                  />
+                </TableCell>
                 <TableCell
                   onClick={() => {
                     window.open(`/api/music/download?id=${music._id}`);
                   }}
-                  className="w-1/6 cursor-pointer"
+                  className="hover:scale-105 transition-all cursor-pointer "
                 >
-                  Download
+                  <FaDownload />
                 </TableCell>
               </TableRow>
             ))}
