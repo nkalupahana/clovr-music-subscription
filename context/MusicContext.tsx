@@ -6,6 +6,7 @@ import React, {
   createContext,
   useEffect,
   useCallback,
+  use,
 } from "react";
 import { MusicFile } from "@/models/MusicFile";
 
@@ -16,11 +17,13 @@ interface MusicContextProps {
   toggleSong: () => void;
   randomSong: () => void;
   getCurrentSong: () => MusicFile | null;
+  isSongLiked: (id: string) => boolean;
+  toggleSongLike: (id: string) => void;
+  isPaused: boolean;
   audio: React.RefObject<HTMLAudioElement>;
 }
 
 export const MusicContext = createContext<MusicContextProps | null>(null);
-
 
 interface AudioProviderProps {
   children: ReactNode;
@@ -30,11 +33,20 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   const [musicList, setMusicList] = useState<any[]>([]); // Replace any with the actual type of your music list
   const [currentSong, setCurrentSong] = useState<MusicFile | null>(null); // Add null to the type of currentSong
   const audio = useRef<HTMLAudioElement>(null);
+  const [isPaused, setIsPaused] = useState<boolean>(true);
 
   const loadMusicList = async () => {
     const response = await fetch("/api/music/list");
     const data = await response.json();
     setMusicList(data);
+  };
+
+  const isSongLiked = (id: string) => {
+    return true;
+  };
+
+  const toggleSongLike = (id: string) => {
+    console.log("like");
   };
 
   const playSong = (id?: string) => {
@@ -69,6 +81,16 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
+    audio.current?.addEventListener("pause", () => {
+      setIsPaused(true);
+    });
+
+    audio.current?.addEventListener("play", () => {
+      setIsPaused(false);
+    });
+  }, []);
+
+  useEffect(() => {
     loadMusicList();
   }, []);
 
@@ -86,6 +108,9 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
         toggleSong,
         randomSong,
         getCurrentSong,
+        isPaused,
+        isSongLiked,
+        toggleSongLike,
       }}
     >
       <audio ref={audio}></audio>

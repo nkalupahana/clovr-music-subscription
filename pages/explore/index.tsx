@@ -15,7 +15,7 @@ import {
 } from "@nextui-org/react";
 import { HeartIcon } from "@/components/icons/HeartIcon";
 import { FaDownload } from "react-icons/fa";
-
+import SongTable from "@/components/SongTable";
 import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 import PageHeader from "@/components/PageHeader";
 
@@ -37,73 +37,11 @@ const Explore = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen py-2 bg-red-500">
+    <div className="flex flex-col items-center justify-start min-h-screen py-2 ">
       <PageHeader>Explore</PageHeader>
       <PlayingSongCard playingSong={playing} handleToggle={handleToggle} />
       <div className="flex min-w-[80%] mt-4 items-center justify-center">
-        <Table>
-          <TableHeader>
-            <TableColumn className="w-1/3">Song</TableColumn>
-            <TableColumn>Play</TableColumn>
-            <TableColumn>Tempo</TableColumn>
-            <TableColumn className="w-1/12" align="center">
-              {" "}
-            </TableColumn>
-            <TableColumn className="w-1/12" align="center">
-              {" "}
-            </TableColumn>
-          </TableHeader>
-          <TableBody>
-            {musicList?.map((music: MusicFile) => (
-              <TableRow
-                key={music._id}
-                className="
-              hover:bg-primary hover:bg-opacity-10  
-              transition-all duration-200 ease-in-out 
-              "
-              >
-                <TableCell>
-                  <User
-                    avatarProps={{
-                      radius: "sm",
-                      src: "/drake.png",
-                    }}
-                    name={music.name}
-                    description={music.name}
-                  >
-                    {music.name}
-                  </User>
-                </TableCell>
-
-                <TableCell
-                  onClick={() => {
-                    setPlaying(music._id);
-                    handleToggle(music._id);
-                  }}
-                >
-                  Play
-                </TableCell>
-                <TableCell>{music.tempo}</TableCell>
-                <TableCell className="hover:scale-105 transition-all cursor-pointer ">
-                  <HeartIcon
-                    className={true ? "[&>path]:stroke-transparent" : ""}
-                    fill={true ? "red" : "none"}
-                    width={undefined}
-                    height={undefined}
-                  />
-                </TableCell>
-                <TableCell
-                  onClick={() => {
-                    window.open(`/api/music/download?id=${music._id}`);
-                  }}
-                  className="hover:scale-105 transition-all cursor-pointer "
-                >
-                  <FaDownload />
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <SongTable />
       </div>
       <audio ref={audio}></audio>
     </div>

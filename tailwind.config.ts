@@ -43,7 +43,6 @@ const config: Config = {
           colors: {
             background: {},
             foreground: {},
-
             primary: {},
           },
         },
