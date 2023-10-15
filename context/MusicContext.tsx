@@ -19,6 +19,10 @@ interface MusicContextProps {
   getCurrentSong: () => MusicFile | null;
   isSongLiked: (id: string) => boolean;
   toggleSongLike: (id: string) => void;
+  setCurrentTime: (time: number) => void;
+  getSongDuration: () => number;
+  nextSong: () => void;
+  replaySong: () => void;
   isPaused: boolean;
   audio: React.RefObject<HTMLAudioElement>;
 }
@@ -49,6 +53,35 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
     console.log("like");
   };
 
+  const setCurrentTime = (time: number) => {
+    if (audio.current) {
+      audio.current.currentTime = time;
+    }
+  };
+
+  const nextSong = () => {
+    musicList.forEach((music, index) => {
+      if (music._id === currentSong?._id) {
+        const nextMusic = musicList[index + 1];
+        if (nextMusic) {
+          playSong(nextMusic._id);
+        } else {
+          playSong(musicList[0]._id);
+        }
+      }
+    });
+  };
+
+  const replaySong = () => {
+    if (currentSong) {
+      playSong(currentSong._id);
+    }
+  };
+
+  const getSongDuration = () => {
+    return audio.current?.duration || 0;
+  };
+
   const playSong = (id?: string) => {
     if (!id) {
       return;
@@ -59,6 +92,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
       setCurrentSong(song);
       audio.current!.src = `/api/music/play?id=${song._id}`;
       audio.current!.play();
+      console.log(audio.current);
     }
   };
 
@@ -111,9 +145,14 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
         isPaused,
         isSongLiked,
         toggleSongLike,
+        setCurrentTime,
+        getSongDuration,
+        nextSong,
+        replaySong,
       }}
     >
       <audio ref={audio}></audio>
+
       {children}
     </MusicContext.Provider>
   );
