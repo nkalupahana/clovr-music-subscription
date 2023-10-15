@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext, use } from "react";
 import { useSession } from "next-auth/react";
 import { MusicFile } from "@/models/MusicFile";
 import {
@@ -18,7 +18,13 @@ import { MusicContext } from "@/context/MusicContext";
 import ToggleAudioButton from "./ToggleAudioButton";
 import TableSongCell from "./TableSongCell";
 
-const SongTable = ({ filteredSongs }: { filteredSongs: any[] }) => {
+const SongTable = ({
+  filteredSongs,
+  searched,
+}: {
+  filteredSongs: any[];
+  searched: string;
+}) => {
   const context = useContext(MusicContext);
   const [musicList, setMusicList] = useState<any[]>(filteredSongs);
   const { data: session, status } = useSession();
@@ -85,7 +91,7 @@ const SongTable = ({ filteredSongs }: { filteredSongs: any[] }) => {
               )}
             </TableCell>
             <TableCell align="left">
-              <TableSongCell song={music} />
+              <TableSongCell song={music} searched={searched} />
             </TableCell>
             <TableCell align="left">{music.tempo}</TableCell>
             <TableCell align="left">
