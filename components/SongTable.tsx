@@ -50,7 +50,8 @@ const SongTable = ({
   }, [filteredSongs]);
 
   return (
-    <Table>
+    <Table
+    >
       <TableHeader>
         <TableColumn width={60}>No.</TableColumn>
         <TableColumn className="text-start">Song</TableColumn>
@@ -58,7 +59,7 @@ const SongTable = ({
         <TableColumn className="text-start"> </TableColumn>
         <TableColumn className="text-start"> </TableColumn>
       </TableHeader>
-      <TableBody>
+      <TableBody items={musicList}>
         {musicList?.map((music: MusicFile, index: number) => (
           <TableRow
             key={music._id}

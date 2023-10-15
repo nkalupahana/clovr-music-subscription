@@ -26,7 +26,7 @@ const Explore = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen py-2">
+    <div className="flex flex-col items-center justify-start min-h-[200vh]  py-2">
       <PageHeader>Explore</PageHeader>
       <PlayingSongCard />
       <div className="flex flex-row items-start min-w-[80%] mt-4 gap-2">
@@ -45,7 +45,7 @@ const Explore = () => {
           isClearable
         />
       </div>
-      <div className="flex min-w-[80%] mt-4 items-center justify-center">
+      <div className="flex min-w-[80%] mt-4 items-center justify-center overflow-y-auto">
         <SongTable filteredSongs={filteredSongs} searched={search} />
       </div>
       <audio ref={audio}></audio>
