@@ -74,6 +74,9 @@ const NavBar = ({
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{session?.user?.email}</p>
         </DropdownItem>
+        <DropdownItem key="subcriptions">
+          <Link href="/subscriptions">Subscriptions</Link>
+        </DropdownItem>
         <DropdownItem key="logout" color="danger" onPress={() => signOut()}>
           Log Out
         </DropdownItem>
