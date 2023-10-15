@@ -59,6 +59,8 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
     }
   };
 
+
+
   const nextSong = () => {
     musicList.forEach((music, index) => {
       if (music._id === currentSong?._id) {

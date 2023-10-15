@@ -1,47 +1,54 @@
-import React, { useState, useEffect, useRef } from "react";
-import useSWR from "swr";
-import { fetcher } from "@/lib/swr";
-import { MusicFile } from "@/models/MusicFile";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { MusicContext } from "@/context/MusicContext";
 import { PlayingSongCard } from "@/components/PlayingSongCard";
-import {
-  Skeleton,
-  Table,
-  TableHeader,
-  TableBody,
-  TableColumn,
-  TableRow,
-  TableCell,
-  User,
-} from "@nextui-org/react";
-import { HeartIcon } from "@/components/icons/HeartIcon";
-import { FaDownload } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
+import { Input } from "@nextui-org/react";
 import SongTable from "@/components/SongTable";
-import { Card, CardHeader, CardBody, Image } from "@nextui-org/react";
 import PageHeader from "@/components/PageHeader";
 
 const Explore = () => {
-  const { data: musicList } = useSWR("/api/music/list", fetcher);
   const audio = useRef<HTMLAudioElement>(null);
-  const [playing, setPlaying] = useState("");
-
-  const handleToggle = (id: string) => {
-    if (playing !== id) {
-      audio.current?.pause();
-      audio.current!.src = `/api/music/play?id=${id}`;
-      audio.current?.play();
-    } else if (audio.current?.paused) {
-      audio.current?.play();
-    } else {
-      audio.current?.pause();
-    }
-  };
+  const context = useContext(MusicContext);
+  const [filteredSongs, setFilteredSongs] = useState<any[]>(
+    context?.musicList || []
+  );
+  useEffect(() => {
+    console.log(filteredSongs);
+  }, [filteredSongs]);
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen py-2 ">
+    <div className="flex flex-col items-center justify-start min-h-screen py-2">
       <PageHeader>Explore</PageHeader>
-      <PlayingSongCard playingSong={playing} handleToggle={handleToggle} />
+      <PlayingSongCard />
+      <div className="flex flex-row items-start min-w-[80%] mt-4 gap-2 ">
+        <Input
+          size="md"
+          placeholder="Search for songs..."
+          startContent={<FaSearch className="text-gray-400" />}
+          onChange={(e) => {
+            const filtered = context?.musicList.filter((song) =>
+              song.name.toLowerCase().startsWith(e.target.value.toLowerCase())
+            );
+            setFilteredSongs(filtered || []);
+          }}
+          isClearable
+        />
+        <Input
+          size="md"
+          placeholder="Search for artist..."
+          startContent={<FaSearch className="text-gray-400" />}
+          onChange={(e) => {
+            const filtered = context?.musicList.filter((song) =>
+              song.name.toLowerCase().startsWith(e.target.value.toLowerCase())
+            );
+            setFilteredSongs(filtered || []);
+          }}
+          isClearable
+        />
+      </div>
+
       <div className="flex min-w-[80%] mt-4 items-center justify-center">
-        <SongTable />
+        <SongTable filteredSongs={filteredSongs} />
       </div>
       <audio ref={audio}></audio>
     </div>

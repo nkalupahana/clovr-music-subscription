@@ -18,9 +18,9 @@ import { MusicContext } from "@/context/MusicContext";
 import ToggleAudioButton from "./ToggleAudioButton";
 import TableSongCell from "./TableSongCell";
 
-const SongTable = () => {
+const SongTable = ({ filteredSongs }: { filteredSongs: any[] }) => {
   const context = useContext(MusicContext);
-  const [musicList, setMusicList] = useState<any[]>(context?.musicList || []); // Replace any with the actual type of your music list
+  const [musicList, setMusicList] = useState<any[]>(filteredSongs);
   const { data: session, status } = useSession();
 
   const handleStartSong = (id: string) => {
@@ -35,17 +35,13 @@ const SongTable = () => {
     }
   };
 
-  const handleLike = (id: string) => {
-    console.log("like");
-  };
-
   const handleDownload = (id: string) => {
     window.open(`/api/music/download?id=${id}`);
   };
 
   useEffect(() => {
-    setMusicList(context?.musicList || []);
-  }, [context?.musicList]);
+    setMusicList(filteredSongs);
+  }, [filteredSongs]);
 
   return (
     <Table>
