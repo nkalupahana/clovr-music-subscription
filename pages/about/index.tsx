@@ -1,5 +1,7 @@
+// About.tsx
 import React from "react";
-const About = () => {
+
+const About: React.FC = () => {
   return (
     <div>
       <h1>About</h1>

@@ -18,11 +18,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <main
       className={`
-    ${darkMode ? "dark" : ""} text-foreground bg-background
+    ${darkMode ? "dark" : ""} text-foreground bg-background 
     `}
     >
       <NavBar setDarkMode={setDarkMode} darkMode={darkMode}/>
-      <div className="flex h-screen">
+      <div className="flex min-h-screen">
         <div className="flex-1">{children}</div>
       </div>
     </main>
