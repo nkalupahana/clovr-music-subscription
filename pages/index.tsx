@@ -73,9 +73,19 @@ export default function Index() {
       >
         <input type="text" name="songname" placeholder="Song Name" required />
         <br />
-        <input type="number" name="tempo" placeholder="Tempo" required />
+        <input type="text" name="artist" placeholder="Artist" required />
         <br />
-        <input type="file" name="file" accept="audio/mpeg" required />
+        <input type="text" name="releaseDate" placeholder="Release Date" required />
+        <br />
+        <input type="number" name="duration" placeholder="Duration (secs)" required />
+        <br />
+        <label htmlFor="musicFile">Music File</label>
+        <br />
+        <input type="file" name="musicFile" accept="audio/*" required />
+        <br />
+        <label htmlFor="albumArtFile">Album Art File</label>
+        <br />
+        <input type="file" name="albumArtFile" accept="image/*" required />
         <br />
         <input type="submit" value="Upload" />
       </form>

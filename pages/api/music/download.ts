@@ -27,7 +27,7 @@ export default async function handler(
             fileid: file._id,
         });
 
-        const url = await r2.getSignedUrlPromise("getObject", { Bucket: process.env.R2_BUCKET, Key: file.key });
+        const url = await r2.getSignedUrlPromise("getObject", { Bucket: process.env.R2_BUCKET, Key: file.songKey });
         return res.redirect(url);
     }
 
