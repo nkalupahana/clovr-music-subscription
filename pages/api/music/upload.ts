@@ -64,9 +64,10 @@ export default async function handler(
             // Standardize and upload album art
             const albumArt = await Sharp(files.albumArtFile[0].filepath).rotate().webp().toBuffer();
             await r2.putObject({
-                Bucket: process.env.R2_BUCKET ?? "", 
+                Bucket: process.env.R2_PUBLIC_BUCKET ?? "", 
                 Key: files.albumArtFile[0].newFilename + ".webp",
-                Body: albumArt
+                Body: albumArt,
+                ContentType: "image/webp"
             }).promise();
 
             // Create file record
