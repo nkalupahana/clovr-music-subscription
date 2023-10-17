@@ -4,6 +4,7 @@ import { fetcher } from "@/lib/swr";
 import { MusicFile } from "@/models/MusicFile";
 import { useRef, useState } from "react";
 import { Button } from "@nextui-org/button";
+import UnauthenticatedLanding from "@/components/Unauthenticatedlanding";
 
 export default function Index() {
   const { data: session, status } = useSession();
@@ -15,10 +16,7 @@ export default function Index() {
       {status === "loading" && <p>Hang on there...</p>}
       {status === "unauthenticated" && (
         <>
-          <p>Not signed in.</p>
-          <button className="btn btn-primary" onClick={() => signIn("google")}>
-            Sign in with Google
-          </button>
+          <UnauthenticatedLanding />
         </>
       )}
       {status === "authenticated" && (
@@ -75,9 +73,19 @@ export default function Index() {
         <br />
         <input type="text" name="artist" placeholder="Artist" required />
         <br />
-        <input type="text" name="releaseDate" placeholder="Release Date" required />
+        <input
+          type="text"
+          name="releaseDate"
+          placeholder="Release Date"
+          required
+        />
         <br />
-        <input type="number" name="duration" placeholder="Duration (secs)" required />
+        <input
+          type="number"
+          name="duration"
+          placeholder="Duration (secs)"
+          required
+        />
         <br />
         <label htmlFor="musicFile">Music File</label>
         <br />
