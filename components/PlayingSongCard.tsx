@@ -79,11 +79,11 @@ export const PlayingSongCard = () => {
             <div className="flex flex-col col-span-6 md:col-span-8">
               <div className="flex justify-between items-center">
                 <div className="flex flex-col gap-0">
-                  <h1 className="text-large font-medium mt-2">
+                  <h1 className="text-2xl font-medium mt-2">
                     {playingSong?.name}
                   </h1>
                   <h2 className="text-default-900/60 text-small">
-                    {playingSong?.name} {/* change to playingSong.artist */}
+                    {playingSong?.artist} 
                   </h2>
                 </div>
                 <SongHeart song={playingSong} iconSize={32} />

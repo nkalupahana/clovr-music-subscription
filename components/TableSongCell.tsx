@@ -37,7 +37,7 @@ const TableSongCell = ({
         />
       }
       description={
-        <span className="text-sm text-secondary-500">{song.name}</span> // switch to artist name when available
+        <span className="text-sm text-secondary-500">{song.artist}</span> // switch to artist name when available
       }
     />
   );
