@@ -9,7 +9,10 @@ export default async function handler(
 ) {
     if (req.method === "GET") {
         await dbConnect();
-        const file = await MusicFile.findById(req.query.id);
+        let file = undefined;
+        try {
+            file = await MusicFile.findById(req.query.id);
+        } catch {}
         if (!file) return res.status(404).send("Music file not found");
 
         const url = await r2.getSignedUrlPromise("getObject", { Bucket: process.env.R2_BUCKET, Key: file.songKey });
