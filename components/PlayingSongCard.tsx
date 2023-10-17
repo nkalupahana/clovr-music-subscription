@@ -8,8 +8,7 @@ import SongProgressBar from "./SongProgressBar";
 import ToggleAudioButton from "./ToggleAudioButton";
 
 export const PlayingSongCard = () => {
-  const [songProgress, setSongProgress] = useState(66);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [songProgress, setSongProgress] = useState(0);
   const context = useContext(MusicContext);
   const playingSong = context?.getCurrentSong();
 
@@ -71,19 +70,19 @@ export const PlayingSongCard = () => {
                 className="object-cover"
                 height={200}
                 shadow="md"
-                src="/drake.png" // change to playingSong.albumArt
-                width="100%"
+                src={`${process.env.NEXT_PUBLIC_CDN_URL}${playingSong?.albumArtKey}`}
+                width={200}
               />
             </div>
 
             <div className="flex flex-col col-span-6 md:col-span-8">
               <div className="flex justify-between items-center">
                 <div className="flex flex-col gap-0">
-                  <h1 className="text-large font-medium mt-2">
+                  <h1 className="text-2xl font-medium mt-2">
                     {playingSong?.name}
                   </h1>
                   <h2 className="text-default-900/60 text-small">
-                    {playingSong?.name} {/* change to playingSong.artist */}
+                    {playingSong?.artist}
                   </h2>
                 </div>
                 <SongHeart song={playingSong} iconSize={32} />

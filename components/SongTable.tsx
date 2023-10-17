@@ -56,6 +56,7 @@ const SongTable = ({
         <TableColumn width={60}>No.</TableColumn>
         <TableColumn className="text-start">Song</TableColumn>
         <TableColumn className="text-start">Tempo</TableColumn>
+        <TableColumn className="text-start">Release Date</TableColumn>
         <TableColumn className="text-start"> </TableColumn>
         <TableColumn className="text-start"> </TableColumn>
       </TableHeader>
@@ -95,6 +96,7 @@ const SongTable = ({
               <TableSongCell song={music} searched={searched} />
             </TableCell>
             <TableCell align="left">{music.tempo}</TableCell>
+            <TableCell align="left">{music.releaseDate}</TableCell>
             <TableCell align="left">
               <SongHeart song={music} iconSize={24} />
             </TableCell>
