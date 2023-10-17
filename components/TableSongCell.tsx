@@ -26,7 +26,7 @@ const TableSongCell = ({
   return (
     <User
       avatarProps={{
-        src: "/drake.png", // switch to album cover when available
+        src: `${process.env.NEXT_PUBLIC_CDN_URL}${song.albumArtKey}`, // switch to album cover when available
         radius: "sm",
         size: "lg",
       }}
