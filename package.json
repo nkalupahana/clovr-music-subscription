@@ -19,6 +19,7 @@
     "eslint-config-next": "13.4.19",
     "formidable": "^3.5.1",
     "framer-motion": "^10.16.4",
+    "luxon": "^3.4.3",
     "micro": "^10.0.1",
     "mongodb": "^6.0.0",
     "mongoose": "^7.5.1",
@@ -27,14 +28,16 @@
     "postcss": "8.4.31",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "stripe": "^13.8.0",
     "react-icons": "^4.11.0",
+    "sharp": "^0.32.6",
+    "stripe": "^13.8.0",
     "swr": "^2.2.2",
     "tailwindcss": "3.3.3",
     "typescript": "5.2.2"
   },
   "devDependencies": {
     "@types/formidable": "^3.4.3",
+    "@types/luxon": "^3.3.2",
     "daisyui": "^3.7.6"
   }
 }
