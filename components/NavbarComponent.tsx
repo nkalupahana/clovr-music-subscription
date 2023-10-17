@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession, signIn, signOut } from "next-auth/react";
 import {
@@ -41,6 +41,10 @@ const NavBar = ({
   const router = useRouter();
   const pathname = usePathname();
 
+  useEffect(() => {
+    console.log(session?.user?.image);
+  }, [session?.user?.image]);
+
   const renderNavigation = () => (
     <NavbarContent className="hidden sm:flex gap-4" justify="center">
       {NAV_BUTTONS.map((button) => (
@@ -74,8 +78,13 @@ const NavBar = ({
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{session?.user?.email}</p>
         </DropdownItem>
-        <DropdownItem key="subcriptions">
-          <Link href="/subscriptions">Subscriptions</Link>
+        <DropdownItem
+          key="subcriptions"
+          onPress={() => {
+            router.push("/subscriptions");
+          }}
+        >
+          Subscriptions
         </DropdownItem>
         <DropdownItem key="logout" color="danger" onPress={() => signOut()}>
           Log Out
@@ -133,7 +142,11 @@ const NavBar = ({
       {renderSmallNavigation()}
 
       <NavbarBrand>
-        <p className="font-bold text-inherit">CLOVR</p>
+        <div className="p-2 cursor-pointer" onClick={() => {
+          router.push("/");
+        }}>
+          <p className="font-bold text-inherit">CLOVR</p>
+        </div>
         <Switch
           onChange={() => setDarkMode(!darkMode)}
           size="sm"
