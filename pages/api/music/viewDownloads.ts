@@ -19,16 +19,8 @@ export default async function handler(
         const user = await User.findOne({ email: session.user.email });
         if (!user) return res.status(401).send(401);
 
-        const file = await MusicFile.findById(req.query.id);
-        if (!file) return res.status(404).send("Music file not found");
-
-        await Download.create({
-            user: user._id,
-            file: file._id,
-        });
-
-        const url = await r2.getSignedUrlPromise("getObject", { Bucket: process.env.R2_BUCKET, Key: file.songKey });
-        return res.redirect(url);
+        const downloads = await Download.find({ user: user._id }).populate("file", { name: true, artist: true, albumArtKey: true });
+        return res.status(200).json(downloads);
     }
 
     return res.status(405).send(405);
