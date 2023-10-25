@@ -19,7 +19,12 @@ export default async function handler(
         const user = await User.findOne({ email: session.user.email });
         if (!user) return res.status(401).send(401);
 
-        const file = await MusicFile.findById(req.query.id);
+        if (!req.query.id || typeof req.query.id !== "string") return res.status(400).send("Invalid ID");
+
+        let file = undefined;
+        try {
+            file = await MusicFile.findById(req.query.id);
+        } catch {}
         if (!file) return res.status(404).send("Music file not found");
 
         await Download.create({

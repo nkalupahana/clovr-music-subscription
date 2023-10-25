@@ -9,6 +9,8 @@ export default async function handler(
 ) {
     if (req.method === "GET") {
         await dbConnect();
+        if (!req.query.id || typeof req.query.id !== "string") return res.status(400).send("Invalid ID");
+
         let file = undefined;
         try {
             file = await MusicFile.findById(req.query.id);

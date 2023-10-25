@@ -18,6 +18,8 @@ export default async function handler(
         const user = await User.findOne({ email: session.user.email });
         if (!user) return res.status(401).send(401);
 
+        if (!req.query.id || typeof req.query.id !== "string") return res.status(400).send("Invalid ID");
+
         try {
             const file = await MusicFile.findById(req.query.id);
             if (!file) return res.status(404).send("Music file not found");
@@ -36,7 +38,7 @@ export default async function handler(
                 return res.status(400).send("Invalid set value");
             }
         } catch (e) {
-            return res.status(400).send("Invalid value, rejected.");
+            return res.status(400).send("Invalid, rejected.");
         }
 
         return res.status(200).send(200);
