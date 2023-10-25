@@ -1,11 +1,9 @@
 import dbConnect from "@/lib/dbConnect";
-import { r2 } from "@/lib/r2";
-import MusicFile from "@/models/MusicFile";
 import type { NextApiRequest, NextApiResponse } from "next"
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import { getServerSession } from "next-auth/next"
 import User from "@/models/User";
-import Download from "@/models/Download";
+import Favorite from "@/models/Favorite";
 
 export default async function handler(
     req: NextApiRequest,
@@ -19,16 +17,8 @@ export default async function handler(
         const user = await User.findOne({ email: session.user.email });
         if (!user) return res.status(401).send(401);
 
-        const file = await MusicFile.findById(req.query.id);
-        if (!file) return res.status(404).send("Music file not found");
-
-        await Download.create({
-            user: user._id,
-            file: file._id,
-        });
-
-        const url = await r2.getSignedUrlPromise("getObject", { Bucket: process.env.R2_BUCKET, Key: file.songKey });
-        return res.redirect(url);
+        const favorites = await Favorite.find({ user: user._id });
+        return res.status(200).json(favorites);
     }
 
     return res.status(405).send(405);

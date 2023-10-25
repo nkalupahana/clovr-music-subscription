@@ -1,9 +1,8 @@
 import {
     createMocks,
 } from 'node-mocks-http'
-import { MongoMemoryServer } from 'mongodb-memory-server'
 
-import upload from '../../music/upload'
+import upload from '@/pages/api/music/upload'
 
 describe("/api/music/upload", () => {
     it("Should fail on other request types", async () => {

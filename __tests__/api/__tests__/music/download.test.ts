@@ -4,9 +4,10 @@ import {
 import mongoose from "mongoose"
 import { MongoMemoryServer } from 'mongodb-memory-server'
 
-import play from '../../music/play'
+import download from '@/pages/api/music/download'
 import dbConnect from '@/lib/dbConnect';
 import MusicFile from '@/models/MusicFile';
+import User from '@/models/User';
 
 let mongod: MongoMemoryServer | undefined = undefined;
 
@@ -22,7 +23,7 @@ jest.mock('aws-sdk', () => {
     }
 })
 
-describe("/api/music/play", () => {
+describe("/api/music/download", () => { 
     beforeAll(async () => {
         mongod = await MongoMemoryServer.create();
         const uri = mongod.getUri();
@@ -45,39 +46,30 @@ describe("/api/music/play", () => {
             const { req, res } = createMocks({
                 method: type as any
             })
-            await play(req, res)
+            await download(req, res)
             expect(res._getStatusCode()).toBe(405)
         }
     })
 
-    it("Should 404 on a non-existent song", async () => {
+    it("Should fail if mocked user does not exist", async () => {
         const { req, res } = createMocks({
-            method: "GET",
-            query: {
-                id: "mock"
-            }
+            method: "GET"
         })
-        await play(req, res)
-        expect(res._getStatusCode()).toBe(404)
+        await download(req, res)
+        expect(res._getStatusCode()).toBe(401)
     })
 
-    it("Should redirect to song", async () => {
-        const file = await MusicFile.create({
-            releaseDate: "2020-01-01",
-            albumArtKey: "mock",
-            songKey: "mock",
-            name: "mock",
-            artist: "mock",
-            tempo: 120,
-        });
+    // todo: fixup
+    it("Should fail if song id does not exist", async () => {
+        await User.create({
+            name: "Mocked User",
+            email: "mocked@user.com"
+        })
 
         const { req, res } = createMocks({
-            method: "GET",
-            query: {
-                id: file._id
-            }
+            method: "GET"
         })
-        await play(req, res)
-        expect(res._getStatusCode()).toBe(302)
+        await download(req, res)
+        expect(res._getStatusCode()).toBe(401)
     })
 })

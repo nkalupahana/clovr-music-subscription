@@ -4,7 +4,7 @@ import {
 import mongoose from "mongoose"
 import { MongoMemoryServer } from 'mongodb-memory-server'
 
-import list from '../../music/list'
+import list from '@/pages/api/music/list'
 import dbConnect from '@/lib/dbConnect';
 import MusicFile from '@/models/MusicFile';
 
