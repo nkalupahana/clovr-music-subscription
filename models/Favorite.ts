@@ -26,4 +26,6 @@ const FavoriteSchema = new mongoose.Schema<Favorite>({
     },
 })
 
+FavoriteSchema.index({ user: 1, file: 1 }, { unique: true });
+
 export default mongoose.models.Favorite || mongoose.model<Favorite>("Favorite", FavoriteSchema)

@@ -18,13 +18,26 @@ export default async function handler(
         const user = await User.findOne({ email: session.user.email });
         if (!user) return res.status(401).send(401);
 
-        const file = await MusicFile.findById(req.query.id);
-        if (!file) return res.status(404).send("Music file not found");
+        try {
+            const file = await MusicFile.findById(req.query.id);
+            if (!file) return res.status(404).send("Music file not found");
 
-        await Favorite.create({
-            user: user._id,
-            file: file._id,
-        });
+            if (req.query.set === "true") {
+                await Favorite.create({
+                    user: user._id,
+                    file: file._id,
+                });
+            } else if (req.query.set === "false") {
+                await Favorite.deleteOne({
+                    user: user._id,
+                    file: file._id,
+                });
+            } else {
+                return res.status(400).send("Invalid set value");
+            }
+        } catch (e) {
+            return res.status(400).send("Invalid value, rejected.");
+        }
 
         return res.status(200).send(200);
     }
