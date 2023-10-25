@@ -1,6 +1,4 @@
 import dbConnect from "@/lib/dbConnect";
-import { r2 } from "@/lib/r2";
-import MusicFile, { MusicFile as MusicFileType } from "@/models/MusicFile";
 import type { NextApiRequest, NextApiResponse } from "next"
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import { getServerSession } from "next-auth/next"
