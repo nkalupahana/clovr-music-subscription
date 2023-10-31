@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --verbose"
+    "test": "jest"
   },
   "dependencies": {
     "@nextui-org/react": "^2.1.13",

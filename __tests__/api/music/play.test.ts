@@ -74,7 +74,7 @@ describe("/api/music/play", () => {
         const { req, res } = createMocks({
             method: "GET",
             query: {
-                id: file._id
+                id: String(file._id)
             }
         })
         await play(req, res)
