@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { MusicFile } from "@/models/MusicFile";
-import { MusicContext } from "@/context/MusicContext";
+import { isSongLiked, toggleLikeSong } from "@/lib/handleFavorites";
 
 const SongHeart = ({
   song,
@@ -10,19 +10,20 @@ const SongHeart = ({
   song: MusicFile;
   iconSize: number;
 }) => {
-  const context = useContext(MusicContext);
   const [isLiked, setIsLiked] = useState<any>(false);
 
   useEffect(() => {
-    if (context) {
-      setIsLiked(context.isSongLiked(song._id));
+    const checkIsLiked = async () => {
+      console.log(song);
+      const isLiked = await isSongLiked(song._id);
+      setIsLiked(isLiked);
     }
-  }, [context, song]);
+    checkIsLiked();
+  }, [song]);
 
-  const toggleLike = (id: string) => {
-    if (context) {
-      context.toggleSongLike(song._id);
-    }
+  const toggleLike = async (id: string) => {
+    await toggleLikeSong(id);
+    setIsLiked(!isLiked);
   };
 
   return (

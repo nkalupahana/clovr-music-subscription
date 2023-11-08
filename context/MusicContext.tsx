@@ -17,8 +17,7 @@ interface MusicContextProps {
   toggleSong: () => void;
   randomSong: () => void;
   getCurrentSong: () => MusicFile | null;
-  isSongLiked: (id: string) => boolean;
-  toggleSongLike: (id: string) => void;
+
   setCurrentTime: (time: number) => void;
   getSongDuration: () => number;
   nextSong: () => void;
@@ -46,23 +45,12 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
     setMusicList(data);
   };
 
-  const isSongLiked = (id: string) => {
-    console.log("isSongLiked");
-    return true;
-  };
-
-  const toggleSongLike = (id: string) => {
-    console.log("toggleSongLike");
-  };
-
   const setCurrentTime = (time: number) => {
     console.log("setCurrentTime");
     if (audio.current) {
       audio.current.currentTime = time;
     }
   };
-
-
 
   const nextSong = () => {
     console.log("nextSong");
@@ -154,8 +142,6 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
         randomSong,
         getCurrentSong,
         isPaused,
-        isSongLiked,
-        toggleSongLike,
         setCurrentTime,
         getSongDuration,
         nextSong,
