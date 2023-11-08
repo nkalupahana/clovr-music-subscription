@@ -46,7 +46,7 @@ const Explore = () => {
         />
       </div>
       <div className="flex min-w-[80%] mt-4 items-center justify-center overflow-y-auto">
-        <SongTable filteredSongs={filteredSongs} searched={search} />
+        <SongTable filteredSongs={filteredSongs} setFilteredSongs={setFilteredSongs} searched={search} />
       </div>
       <audio ref={audio}></audio>
     </div>

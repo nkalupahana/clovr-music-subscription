@@ -17,51 +17,93 @@ import SongHeart from "@/components/icons/SongHeart";
 import { MusicContext } from "@/context/MusicContext";
 import ToggleAudioButton from "./ToggleAudioButton";
 import TableSongCell from "./TableSongCell";
+import { handleDownload } from "@/lib/DownloadHandler";
+import { PlaySongTableIcon } from "./icons/PlaySongTableIcon";
+import { ColumnHeaderCell } from "./ColumnHeaderCell";
 
 const SongTable = ({
   filteredSongs,
+  setFilteredSongs,
   searched,
 }: {
   filteredSongs: any[];
+  setFilteredSongs: any;
   searched: string;
 }) => {
   const context = useContext(MusicContext);
   const [musicList, setMusicList] = useState<any[]>(filteredSongs);
   const { data: session, status } = useSession();
-
-  const handleStartSong = (id: string) => {
-    if (context) {
-      context.playSong(id);
-    }
-  };
-
-  const handleToggle = () => {
-    if (context) {
-      context.toggleSong();
-    }
-  };
-
-  const handleDownload = (id: string) => {
-    window.open(`/api/music/download?id=${id}`);
-  };
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: "ascending",
+  });
 
   useEffect(() => {
     setMusicList(filteredSongs);
-  }, [filteredSongs]);
+    let sortedSongs = [...filteredSongs];
+    if (sortConfig.key) {
+      sortedSongs.sort((a, b) => {
+        if (sortConfig.key && a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        if (sortConfig.key && a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+
+        return 0;
+      });
+    }
+    setMusicList(sortedSongs);
+  }, [filteredSongs, sortConfig]);
+
+  const requestSort = (key: any) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const [currentSong, setCurrentSong] = useState<MusicFile | null>(null);
+  useEffect(() => {
+    if (context) {
+      setCurrentSong(context?.getCurrentSong());
+    }
+  }, [currentSong, context]);
 
   return (
     <Table>
       <TableHeader>
         <TableColumn width={60}>No.</TableColumn>
-        <TableColumn className="text-start">Song</TableColumn>
-        <TableColumn className="text-start">Tempo</TableColumn>
-        <TableColumn className="text-start">Release Date</TableColumn>
+        <TableColumn className="text-start">
+          <ColumnHeaderCell
+            keyName="name"
+            columnName="Title"
+            sortConfig={sortConfig}
+            requestSort={requestSort}
+          />
+        </TableColumn>
+        <TableColumn className="text-start">
+          <ColumnHeaderCell
+            keyName="tempo"
+            columnName="Tempo"
+            sortConfig={sortConfig}
+            requestSort={requestSort}
+          />
+        </TableColumn>
+        <TableColumn className="text-start">
+          <ColumnHeaderCell
+            keyName="releaseDate"
+            columnName="Release Date"
+            sortConfig={sortConfig}
+            requestSort={requestSort}
+          />
+        </TableColumn>
         <TableColumn className="text-start"> </TableColumn>
         <TableColumn className="text-start"> </TableColumn>
       </TableHeader>
       <TableBody items={musicList}>
         {musicList?.map((music: MusicFile, index: number) => {
-          const currentSong = context?.getCurrentSong();
           return (
             <TableRow
               key={music._id}
@@ -78,17 +120,7 @@ const SongTable = ({
                     <ToggleAudioButton />
                   </span>
                 ) : (
-                  <div className="relative group cursor-pointer">
-                    <span className="absolute inset-0 flex items-center justify-center group-hover:hidden">
-                      {index + 1}
-                    </span>
-                    <span className="absolute inset-0  items-center justify-center hidden group-hover:flex">
-                      <FaPlay
-                        size={20}
-                        onClick={() => handleStartSong(music._id)}
-                      />
-                    </span>
-                  </div>
+                  <PlaySongTableIcon index={index} song={music} />
                 )}
               </TableCell>
               <TableCell align="left">
