@@ -50,8 +50,7 @@ const SongTable = ({
   }, [filteredSongs]);
 
   return (
-    <Table
-    >
+    <Table>
       <TableHeader>
         <TableColumn width={60}>No.</TableColumn>
         <TableColumn className="text-start">Song</TableColumn>
@@ -61,56 +60,57 @@ const SongTable = ({
         <TableColumn className="text-start"> </TableColumn>
       </TableHeader>
       <TableBody items={musicList}>
-        {musicList?.map((music: MusicFile, index: number) => (
-          <TableRow
-            key={music._id}
-            className={`
+        {musicList?.map((music: MusicFile, index: number) => {
+          const currentSong = context?.getCurrentSong();
+          return (
+            <TableRow
+              key={music._id}
+              className={`
         hover:bg-primary hover:bg-opacity-10  
         transition-all duration-200 ease-in-out ${
-          context?.getCurrentSong()?._id === music._id
-            ? "bg-primary bg-opacity-40"
-            : ""
+          currentSong?._id === music._id ? "bg-primary bg-opacity-40" : ""
         }
         `}
-          >
-            <TableCell>
-              {context?.getCurrentSong()?._id === music._id ? (
-                <span className="absolute inset-0 flex items-center justify-center cursor-pointer ">
-                  <ToggleAudioButton />
-                </span>
-              ) : (
-                <div className="relative group cursor-pointer">
-                  <span className="absolute inset-0 flex items-center justify-center group-hover:hidden">
-                    {index + 1}
+            >
+              <TableCell>
+                {currentSong?._id === music._id ? (
+                  <span className="absolute inset-0 flex items-center justify-center cursor-pointer ">
+                    <ToggleAudioButton />
                   </span>
-                  <span className="absolute inset-0  items-center justify-center hidden group-hover:flex">
-                    <FaPlay
-                      size={20}
-                      onClick={() => handleStartSong(music._id)}
-                    />
-                  </span>
-                </div>
-              )}
-            </TableCell>
-            <TableCell align="left">
-              <TableSongCell song={music} searched={searched} />
-            </TableCell>
-            <TableCell align="left">{music.tempo}</TableCell>
-            <TableCell align="left">{music.releaseDate}</TableCell>
-            <TableCell align="left">
-              <SongHeart song={music} iconSize={24} />
-            </TableCell>
-            <TableCell align="left">
-              {session?.user?.subscribed && (
-                <FaDownload
-                  className="cursor-pointer"
-                  size={20}
-                  onClick={() => handleDownload(music._id)}
-                />
-              )}
-            </TableCell>
-          </TableRow>
-        ))}
+                ) : (
+                  <div className="relative group cursor-pointer">
+                    <span className="absolute inset-0 flex items-center justify-center group-hover:hidden">
+                      {index + 1}
+                    </span>
+                    <span className="absolute inset-0  items-center justify-center hidden group-hover:flex">
+                      <FaPlay
+                        size={20}
+                        onClick={() => handleStartSong(music._id)}
+                      />
+                    </span>
+                  </div>
+                )}
+              </TableCell>
+              <TableCell align="left">
+                <TableSongCell song={music} searched={searched} />
+              </TableCell>
+              <TableCell align="left">{music.tempo}</TableCell>
+              <TableCell align="left">{music.releaseDate}</TableCell>
+              <TableCell align="left">
+                <SongHeart song={music} iconSize={24} />
+              </TableCell>
+              <TableCell align="left">
+                {session?.user?.subscribed && (
+                  <FaDownload
+                    className="cursor-pointer"
+                    size={20}
+                    onClick={() => handleDownload(music._id)}
+                  />
+                )}
+              </TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );

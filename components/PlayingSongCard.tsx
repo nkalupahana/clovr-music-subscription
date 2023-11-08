@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useRef, useEffect, useContext, use } from "react";
 import { Card, CardBody, Image, Button } from "@nextui-org/react";
 import { BiSkipPrevious, BiSkipNext } from "react-icons/bi";
 import { BsShuffle } from "react-icons/bs";
@@ -9,8 +9,15 @@ import ToggleAudioButton from "./ToggleAudioButton";
 
 export const PlayingSongCard = () => {
   const [songProgress, setSongProgress] = useState(0);
+  const [playingSong, setPlayingSong] = useState<any>(null);
+
   const context = useContext(MusicContext);
-  const playingSong = context?.getCurrentSong();
+
+  useEffect(() => {
+    if (context) {
+      setPlayingSong(context.getCurrentSong());
+    }
+  }, [context]);
 
   useEffect(() => {
     const audioElement = context?.audio.current;
@@ -30,12 +37,6 @@ export const PlayingSongCard = () => {
     };
   }, [context, setSongProgress]);
 
-  useEffect(() => {
-    if (playingSong) {
-      console.log(playingSong);
-    }
-  }, [playingSong]);
-
   const handleReplay = () => {
     if (context) {
       context.replaySong();
@@ -51,7 +52,6 @@ export const PlayingSongCard = () => {
   const handleShuffle = () => {
     if (context) {
       context.randomSong();
-      console.log(context.getCurrentSong());
     }
   };
 

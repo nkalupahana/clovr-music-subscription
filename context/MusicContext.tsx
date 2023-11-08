@@ -40,20 +40,23 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   const [isPaused, setIsPaused] = useState<boolean>(true);
 
   const loadMusicList = async () => {
+    console.log("load music list");
     const response = await fetch("/api/music/list");
     const data = await response.json();
     setMusicList(data);
   };
 
   const isSongLiked = (id: string) => {
+    console.log("isSongLiked");
     return true;
   };
 
   const toggleSongLike = (id: string) => {
-    console.log("like");
+    console.log("toggleSongLike");
   };
 
   const setCurrentTime = (time: number) => {
+    console.log("setCurrentTime");
     if (audio.current) {
       audio.current.currentTime = time;
     }
@@ -62,6 +65,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
 
 
   const nextSong = () => {
+    console.log("nextSong");
     musicList.forEach((music, index) => {
       if (music._id === currentSong?._id) {
         const nextMusic = musicList[index + 1];
@@ -75,6 +79,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   };
 
   const replaySong = () => {
+    console.log("replaySong");
     if (currentSong) {
       playSong(currentSong._id);
     }
@@ -85,6 +90,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   };
 
   const playSong = (id?: string) => {
+    console.log("playSong");
     if (!id) {
       return;
     }
@@ -99,6 +105,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   };
 
   const randomSong = () => {
+    console.log("randomSong");
     const randomMusic = musicList[Math.floor(Math.random() * musicList.length)];
 
     if (randomMusic) {
@@ -109,6 +116,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   };
 
   const toggleSong = () => {
+    console.log("toggleSong");
     if (audio.current?.paused) {
       audio.current?.play();
     } else {
@@ -131,6 +139,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   }, []);
 
   const getCurrentSong = useCallback(() => {
+    console.log("getCurrentSong");
     return currentSong;
   }, [currentSong]);
 
