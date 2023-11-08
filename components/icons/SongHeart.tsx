@@ -15,7 +15,7 @@ const SongHeart = ({
 
   useEffect(() => {
     if (context) {
-      const favSongs = context.favoriteSongs;
+      const favSongs = context?.favoriteSongs;
       const isFavorite = favSongs.some((favSong) => {
         return favSong.file === song._id;
       });
