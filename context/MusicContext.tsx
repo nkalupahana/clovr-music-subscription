@@ -9,16 +9,19 @@ import React, {
   use,
 } from "react";
 import { MusicFile } from "@/models/MusicFile";
+import { getFavoriteSongs, toggleFavoriteSong } from "@/lib/Favoritehandler";
 
 interface MusicContextProps {
   musicList: any[]; // Replace any with the actual type of your music list
   loadMusicList: () => Promise<void>;
+  favoriteSongs: any[];
+  loadFavoriteSongs: () => Promise<void>;
+  toggleFavorite: (id: string, set: boolean) => Promise<void>;
   playSong: (id?: string) => void;
   toggleSong: () => void;
   randomSong: () => void;
   getCurrentSong: () => MusicFile | null;
-  isSongLiked: (id: string) => boolean;
-  toggleSongLike: (id: string) => void;
+
   setCurrentTime: (time: number) => void;
   getSongDuration: () => number;
   nextSong: () => void;
@@ -35,33 +38,38 @@ interface AudioProviderProps {
 
 const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   const [musicList, setMusicList] = useState<any[]>([]); // Replace any with the actual type of your music list
+  const [favoriteSongs, setFavoriteSongs] = useState<any[]>([]);
   const [currentSong, setCurrentSong] = useState<MusicFile | null>(null); // Add null to the type of currentSong
   const audio = useRef<HTMLAudioElement>(null);
   const [isPaused, setIsPaused] = useState<boolean>(true);
 
   const loadMusicList = async () => {
+    console.log("load music list");
     const response = await fetch("/api/music/list");
     const data = await response.json();
     setMusicList(data);
   };
 
-  const isSongLiked = (id: string) => {
-    return true;
+  const loadFavoriteSongs = async () => {
+    const favSongs = await getFavoriteSongs();
+    setFavoriteSongs(favSongs);
   };
 
-  const toggleSongLike = (id: string) => {
-    console.log("like");
+  const toggleFavorite = async (id: string, set: boolean) => {
+    console.log("toggleLike");
+    await toggleFavoriteSong(id, set);
+    loadFavoriteSongs();
   };
 
   const setCurrentTime = (time: number) => {
+    console.log("setCurrentTime");
     if (audio.current) {
       audio.current.currentTime = time;
     }
   };
 
-
-
   const nextSong = () => {
+    console.log("nextSong");
     musicList.forEach((music, index) => {
       if (music._id === currentSong?._id) {
         const nextMusic = musicList[index + 1];
@@ -75,6 +83,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   };
 
   const replaySong = () => {
+    console.log("replaySong");
     if (currentSong) {
       playSong(currentSong._id);
     }
@@ -85,6 +94,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   };
 
   const playSong = (id?: string) => {
+    console.log("playSong");
     if (!id) {
       return;
     }
@@ -99,6 +109,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   };
 
   const randomSong = () => {
+    console.log("randomSong");
     const randomMusic = musicList[Math.floor(Math.random() * musicList.length)];
 
     if (randomMusic) {
@@ -109,6 +120,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   };
 
   const toggleSong = () => {
+    console.log("toggleSong");
     if (audio.current?.paused) {
       audio.current?.play();
     } else {
@@ -128,9 +140,11 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
 
   useEffect(() => {
     loadMusicList();
+    loadFavoriteSongs();
   }, []);
 
   const getCurrentSong = useCallback(() => {
+    console.log("getCurrentSong");
     return currentSong;
   }, [currentSong]);
 
@@ -139,14 +153,15 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
       value={{
         musicList,
         loadMusicList,
+        favoriteSongs,
+        loadFavoriteSongs,
+        toggleFavorite,
         playSong,
         audio,
         toggleSong,
         randomSong,
         getCurrentSong,
         isPaused,
-        isSongLiked,
-        toggleSongLike,
         setCurrentTime,
         getSongDuration,
         nextSong,

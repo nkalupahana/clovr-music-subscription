@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { MusicFile } from "@/models/MusicFile";
 import { MusicContext } from "@/context/MusicContext";
@@ -10,12 +10,26 @@ const SongHeart = ({
   song: MusicFile;
   iconSize: number;
 }) => {
+  const [isFavorite, setIsFavorite] = useState<any>(false);
   const context = useContext(MusicContext);
 
-  const toggleLike = (id: string) => {
+  useEffect(() => {
     if (context) {
-      context.toggleSongLike(song._id);
+      const favSongs = context?.favoriteSongs;
+      const isFavorite = favSongs.some((favSong) => {
+        return favSong.file === song._id;
+      });
+      setIsFavorite(isFavorite);
     }
+  }, [context, song]);
+
+  const toggleLike = async (id: string) => {
+    if (isFavorite) {
+      context?.toggleFavorite(id, false);
+    } else {
+      context?.toggleFavorite(id, true);
+    }
+    setIsFavorite(!isFavorite);
   };
 
   return (
@@ -25,7 +39,7 @@ const SongHeart = ({
         toggleLike(song._id);
       }}
     >
-      {context?.isSongLiked(song._id) ? (
+      {isFavorite ? (
         <AiFillHeart size={iconSize} className="text-red-500" />
       ) : (
         <AiOutlineHeart size={iconSize} />
