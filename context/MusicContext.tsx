@@ -9,10 +9,14 @@ import React, {
   use,
 } from "react";
 import { MusicFile } from "@/models/MusicFile";
+import { getFavoriteSongs, toggleFavoriteSong } from "@/lib/Favoritehandler";
 
 interface MusicContextProps {
   musicList: any[]; // Replace any with the actual type of your music list
   loadMusicList: () => Promise<void>;
+  favoriteSongs: any[];
+  loadFavoriteSongs: () => Promise<void>;
+  toggleFavorite: (id: string, set: boolean) => Promise<void>;
   playSong: (id?: string) => void;
   toggleSong: () => void;
   randomSong: () => void;
@@ -34,6 +38,7 @@ interface AudioProviderProps {
 
 const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
   const [musicList, setMusicList] = useState<any[]>([]); // Replace any with the actual type of your music list
+  const [favoriteSongs, setFavoriteSongs] = useState<any[]>([]);
   const [currentSong, setCurrentSong] = useState<MusicFile | null>(null); // Add null to the type of currentSong
   const audio = useRef<HTMLAudioElement>(null);
   const [isPaused, setIsPaused] = useState<boolean>(true);
@@ -43,6 +48,17 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
     const response = await fetch("/api/music/list");
     const data = await response.json();
     setMusicList(data);
+  };
+
+  const loadFavoriteSongs = async () => {
+    const favSongs = await getFavoriteSongs();
+    setFavoriteSongs(favSongs);
+  };
+
+  const toggleFavorite = async (id: string, set: boolean) => {
+    console.log("toggleLike");
+    await toggleFavoriteSong(id, set);
+    loadFavoriteSongs();
   };
 
   const setCurrentTime = (time: number) => {
@@ -124,6 +140,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
 
   useEffect(() => {
     loadMusicList();
+    loadFavoriteSongs();
   }, []);
 
   const getCurrentSong = useCallback(() => {
@@ -136,6 +153,9 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
       value={{
         musicList,
         loadMusicList,
+        favoriteSongs,
+        loadFavoriteSongs,
+        toggleFavorite,
         playSong,
         audio,
         toggleSong,
