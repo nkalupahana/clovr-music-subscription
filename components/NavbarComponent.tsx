@@ -42,10 +42,6 @@ const NavBar = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    console.log(session?.user?.image);
-  }, [session?.user?.image]);
-
   const renderNavigation = () => (
     <NavbarContent className="hidden sm:flex gap-4" justify="center">
       {NAV_BUTTONS.map((button) => (
@@ -80,6 +76,22 @@ const NavBar = ({
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{session?.user?.email}</p>
         </DropdownItem>
+        {session?.user?.isAdmin && (
+          <DropdownItem
+            key="user-dashboard"
+            onPress={() => router.push("/user-dashboard")}
+          >
+            User Dashboard
+          </DropdownItem>
+        )}
+        {session?.user?.isAdmin && (
+          <DropdownItem
+            key="song-dashboard"
+            onPress={() => router.push("/song-dashboard")}
+          >
+            Song Dashboard
+          </DropdownItem>
+        )}
 
         <DropdownItem
           key="logout"
@@ -97,8 +109,12 @@ const NavBar = ({
 
   const renderUnauthenticated = () => (
     <>
-      <Link href="/pricing" className="text-lg">Pricing</Link>
-      <Link href="/about" className="text-lg">About</Link>
+      <Link href="/pricing" className="text-lg">
+        Pricing
+      </Link>
+      <Link href="/about" className="text-lg">
+        About
+      </Link>
       <Button
         color="primary"
         onClick={() => signIn("google")}
