@@ -93,7 +93,7 @@ const SongProgressBar: React.FC = () => {
       <div
         ref={progressRef}
         onClick={handleProgressClick}
-        className="relative w-full h-2 bg-default-100/50  group"
+        className="relative w-full h-2 bg-default-200/50  group"
       >
         <div
           className={`absolute top-0 left-0 h-full bg-gray-400 ${
@@ -132,7 +132,7 @@ const SongProgressBar: React.FC = () => {
               )
             : formatSeconds(context?.audio.current?.currentTime || 0)}
         </p>
-        <p className="text-small text-foreground/50">
+        <p className="text-small ">
           {formatSeconds(context?.getSongDuration() || 0)}
         </p>
       </div>

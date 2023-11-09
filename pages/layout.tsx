@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import NavBar from "../components/NavbarComponent";
+import { StickyBottomMusicPlayer } from "@/components/StickyBottomMusicPlayer";
 import {
   Navbar,
   NavbarBrand,
@@ -25,6 +26,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="flex min-h-screen">
         <div className="flex-1">{children}</div>
       </div>
+      <StickyBottomMusicPlayer />
     </main>
   );
 };

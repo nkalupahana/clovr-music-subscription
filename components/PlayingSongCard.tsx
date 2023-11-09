@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext, use } from "react";
+import React, { useState, useEffect, useContext,  } from "react";
 import { Card, CardBody, Image, Button } from "@nextui-org/react";
 import { BiSkipPrevious, BiSkipNext } from "react-icons/bi";
 import { BsShuffle } from "react-icons/bs";
