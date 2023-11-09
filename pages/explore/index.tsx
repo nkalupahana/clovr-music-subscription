@@ -5,6 +5,7 @@ import { FaSearch } from "react-icons/fa";
 import { Input } from "@nextui-org/react";
 import SongTable from "@/components/SongTable";
 import PageHeader from "@/components/PageHeader";
+import VerifyAuthenticationStatus from "@/components/HigherOrderComponents/VerifyAuthenticationStatus";
 
 const Explore = () => {
   const audio = useRef<HTMLAudioElement>(null);
@@ -26,30 +27,37 @@ const Explore = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-[200vh]  py-2">
-      <PageHeader>Explore</PageHeader>
-      <PlayingSongCard />
-      <div className="flex flex-row items-start min-w-[80%] mt-4 gap-2">
-        <Input
-          size="md"
-          placeholder="Search for songs..."
-          startContent={<FaSearch className="text-gray-400" />}
-          onChange={(e) => handleSearch(e.target.value, "name")}
-          isClearable
-        />
-        <Input
-          size="md"
-          placeholder="Search for artist..."
-          startContent={<FaSearch className="text-gray-400" />}
-          onChange={(e) => handleSearch(e.target.value, "name")} //switch to aritst name when available
-          isClearable
-        />
+    <VerifyAuthenticationStatus>
+      <div className="flex flex-col items-center justify-start min-h-[200vh]  py-2">
+        <PageHeader>Explore</PageHeader>
+
+        <PlayingSongCard />
+        <div className="flex flex-row items-start min-w-[80%] mt-4 gap-2">
+          <Input
+            size="md"
+            placeholder="Search for songs..."
+            startContent={<FaSearch className="text-gray-400" />}
+            onChange={(e) => handleSearch(e.target.value, "name")}
+            isClearable
+          />
+          <Input
+            size="md"
+            placeholder="Search for artist..."
+            startContent={<FaSearch className="text-gray-400" />}
+            onChange={(e) => handleSearch(e.target.value, "name")} //switch to aritst name when available
+            isClearable
+          />
+        </div>
+        <div className="flex min-w-[80%] mt-4 items-center justify-center overflow-y-auto">
+          <SongTable
+            filteredSongs={filteredSongs}
+            setFilteredSongs={setFilteredSongs}
+            searched={search}
+          />
+        </div>
+        <audio ref={audio}></audio>
       </div>
-      <div className="flex min-w-[80%] mt-4 items-center justify-center overflow-y-auto">
-        <SongTable filteredSongs={filteredSongs} setFilteredSongs={setFilteredSongs} searched={search} />
-      </div>
-      <audio ref={audio}></audio>
-    </div>
+    </VerifyAuthenticationStatus>
   );
 };
 

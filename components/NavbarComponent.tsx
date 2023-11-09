@@ -28,6 +28,7 @@ const NAV_BUTTONS = [
   { name: "Home", href: "/" },
   { name: "Explore", href: "/explore" },
   { name: "About", href: "/about" },
+  { name: "Subscriptions", href: "/subscriptions" },
 ];
 
 const NavBar = ({
@@ -52,6 +53,7 @@ const NavBar = ({
           <Chip
             color={pathname === button.href ? "primary" : "default"}
             variant="shadow"
+            className="text-lg p-2 hover:scale-105 transition-transform"
           >
             {button.name}
           </Chip>
@@ -78,15 +80,15 @@ const NavBar = ({
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{session?.user?.email}</p>
         </DropdownItem>
+
         <DropdownItem
-          key="subcriptions"
+          key="logout"
+          color="danger"
           onPress={() => {
-            router.push("/subscriptions");
+            signOut();
+            router.push("/");
           }}
         >
-          Subscriptions
-        </DropdownItem>
-        <DropdownItem key="logout" color="danger" onPress={() => signOut()}>
           Log Out
         </DropdownItem>
       </DropdownMenu>
@@ -95,11 +97,12 @@ const NavBar = ({
 
   const renderUnauthenticated = () => (
     <>
-      <Link href="/pricing">Pricing</Link>
+      <Link href="/pricing" className="text-lg">Pricing</Link>
+      <Link href="/about" className="text-lg">About</Link>
       <Button
         color="primary"
         onClick={() => signIn("google")}
-        className="pointer-cursor hover:bg-blue-200"
+        className="pointer-cursor hover:bg-blue-200 text-lg"
       >
         Sign in with{" "}
         <FcGoogle className="inline-block ml-2 bg-white" size={24} />
@@ -142,10 +145,13 @@ const NavBar = ({
       {renderSmallNavigation()}
 
       <NavbarBrand>
-        <div className="p-2 cursor-pointer" onClick={() => {
-          router.push("/");
-        }}>
-          <p className="font-bold text-inherit">CLOVR</p>
+        <div
+          className="p-2 cursor-pointer"
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          <p className="font-bold text-inherit text-lg">CLOVR</p>
         </div>
         <Switch
           onChange={() => setDarkMode(!darkMode)}
