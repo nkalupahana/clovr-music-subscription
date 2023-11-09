@@ -78,18 +78,10 @@ const NavBar = ({
         </DropdownItem>
         {session?.user?.isAdmin && (
           <DropdownItem
-            key="user-dashboard"
-            onPress={() => router.push("/user-dashboard")}
+            key="admin-dashboard"
+            onPress={() => router.push("/admin-dashboard")}
           >
-            User Dashboard
-          </DropdownItem>
-        )}
-        {session?.user?.isAdmin && (
-          <DropdownItem
-            key="song-dashboard"
-            onPress={() => router.push("/song-dashboard")}
-          >
-            Song Dashboard
+            Admin Dashboard
           </DropdownItem>
         )}
 
