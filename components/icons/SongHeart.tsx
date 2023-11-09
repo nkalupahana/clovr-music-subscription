@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { MusicFile } from "@/models/MusicFile";
 import { MusicContext } from "@/context/MusicContext";
+import { useSession } from "next-auth/react";
 
 const SongHeart = ({
   song,
@@ -12,14 +13,16 @@ const SongHeart = ({
 }) => {
   const [isFavorite, setIsFavorite] = useState<any>(false);
   const context = useContext(MusicContext);
+  const { data: session, status, update } = useSession();
 
   useEffect(() => {
     if (context) {
       const favSongs = context?.favoriteSongs;
-      const isFavorite = favSongs.some((favSong) => {
-        return favSong.file === song._id;
-      });
-      setIsFavorite(isFavorite);
+      // Check if favSongs is an array
+      if (Array.isArray(favSongs)) {
+        const isFavorite = favSongs.some((favSong) => favSong.file === song._id);
+        setIsFavorite(isFavorite);
+      }
     }
   }, [context, song]);
 
@@ -34,7 +37,7 @@ const SongHeart = ({
 
   return (
     <div
-      className="song-heart cursor-pointer hover:scale-105 transition-all duration-200 ease-in-out"
+      className={`song-heart cursor-pointer hover:scale-105 transition-all duration-200 ease-in-out ${status !== "authenticated" ? "hidden" : ""}`}
       onClick={() => {
         toggleLike(song._id);
       }}

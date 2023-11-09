@@ -81,7 +81,14 @@ const NavBar = ({
           <p className="font-semibold">{session?.user?.email}</p>
         </DropdownItem>
 
-        <DropdownItem key="logout" color="danger" onPress={() => signOut()}>
+        <DropdownItem
+          key="logout"
+          color="danger"
+          onPress={() => {
+            signOut();
+            router.push("/");
+          }}
+        >
           Log Out
         </DropdownItem>
       </DropdownMenu>
@@ -90,11 +97,12 @@ const NavBar = ({
 
   const renderUnauthenticated = () => (
     <>
-      <Link href="/pricing">Pricing</Link>
+      <Link href="/pricing" className="text-lg">Pricing</Link>
+      <Link href="/about" className="text-lg">About</Link>
       <Button
         color="primary"
         onClick={() => signIn("google")}
-        className="pointer-cursor hover:bg-blue-200"
+        className="pointer-cursor hover:bg-blue-200 text-lg"
       >
         Sign in with{" "}
         <FcGoogle className="inline-block ml-2 bg-white" size={24} />
