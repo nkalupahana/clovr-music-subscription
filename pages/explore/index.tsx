@@ -28,6 +28,7 @@ const Explore = () => {
   return (
     <div className="flex flex-col items-center justify-start min-h-[200vh]  py-2">
       <PageHeader>Explore</PageHeader>
+
       <PlayingSongCard />
       <div className="flex flex-row items-start min-w-[80%] mt-4 gap-2">
         <Input
@@ -46,7 +47,11 @@ const Explore = () => {
         />
       </div>
       <div className="flex min-w-[80%] mt-4 items-center justify-center overflow-y-auto">
-        <SongTable filteredSongs={filteredSongs} setFilteredSongs={setFilteredSongs} searched={search} />
+        <SongTable
+          filteredSongs={filteredSongs}
+          setFilteredSongs={setFilteredSongs}
+          searched={search}
+        />
       </div>
       <audio ref={audio}></audio>
     </div>

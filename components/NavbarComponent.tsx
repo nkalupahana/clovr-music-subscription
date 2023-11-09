@@ -28,6 +28,7 @@ const NAV_BUTTONS = [
   { name: "Home", href: "/" },
   { name: "Explore", href: "/explore" },
   { name: "About", href: "/about" },
+  { name: "Subscriptions", href: "/subscriptions" },
 ];
 
 const NavBar = ({
@@ -52,6 +53,7 @@ const NavBar = ({
           <Chip
             color={pathname === button.href ? "primary" : "default"}
             variant="shadow"
+            className="text-lg p-2 hover:scale-105 transition-transform"
           >
             {button.name}
           </Chip>
@@ -78,14 +80,7 @@ const NavBar = ({
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{session?.user?.email}</p>
         </DropdownItem>
-        <DropdownItem
-          key="subcriptions"
-          onPress={() => {
-            router.push("/subscriptions");
-          }}
-        >
-          Subscriptions
-        </DropdownItem>
+
         <DropdownItem key="logout" color="danger" onPress={() => signOut()}>
           Log Out
         </DropdownItem>
@@ -142,10 +137,13 @@ const NavBar = ({
       {renderSmallNavigation()}
 
       <NavbarBrand>
-        <div className="p-2 cursor-pointer" onClick={() => {
-          router.push("/");
-        }}>
-          <p className="font-bold text-inherit">CLOVR</p>
+        <div
+          className="p-2 cursor-pointer"
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          <p className="font-bold text-inherit text-lg">CLOVR</p>
         </div>
         <Switch
           onChange={() => setDarkMode(!darkMode)}
