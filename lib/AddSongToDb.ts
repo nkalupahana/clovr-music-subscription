@@ -19,16 +19,14 @@ export async function addSongToDb(songData: any) {
       body: formData,
     });
 
-    console.log(response);
-
     // Check if the request was successful
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     // Handling the response
-    const result = await response.json();
-    console.log(result);
+
+    return response;
   } catch (error) {
     console.error("Error uploading song:", error);
   }

@@ -8,31 +8,36 @@ import {
   Button,
   Input,
   useDisclosure,
+  Chip,
 } from "@nextui-org/react";
 import { z } from "zod";
 import { addSongToDb } from "@/lib/AddSongToDb";
+import { set } from "mongoose";
 
 const AddSongSchema = z.object({
-  title: z.string().max(100),
-  artist: z.string().max(100),
+  title: z.string().max(100).min(1),
+  artist: z.string().max(100).min(1),
   releaseDate: z.date().max(new Date()),
-  durationSeconds: z.number().max(1000),
+  durationSeconds: z.number().max(1000).min(1),
   musicFile: z.instanceof(File),
-  albumArt: z.instanceof(File),
+  albumArt: z.instanceof(File).optional(),
 });
+
+const songInitialState = {
+  title: "",
+  artist: "",
+  releaseDate: "",
+  durationSeconds: "",
+  musicFile: null,
+  albumArt: null,
+};
 
 export const AdminMusicDashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [songData, setSongData] = useState({
-    title: "",
-    artist: "",
-    releaseDate: "",
-    durationSeconds: "",
-    musicFile: null,
-    albumArt: null,
-  });
+  const [songData, setSongData] = useState(songInitialState);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [loadingToDb, setLoadingToDb] = useState(false); // TODO: Implement loading spinner [loadingToDb
 
   const handleChange = (e: any) => {
     const { name, value, files, type } = e.target;
@@ -55,6 +60,11 @@ export const AdminMusicDashboard = () => {
   };
 
   const handleSubmit = async () => {
+    if (!songData.musicFile) {
+      setError("Please upload a music file.");
+      return;
+    }
+    setLoadingToDb(true);
     try {
       // Convert durationSeconds to a number and releaseDate to a Date object
       const validatedData = {
@@ -65,12 +75,13 @@ export const AdminMusicDashboard = () => {
 
       AddSongSchema.parse(validatedData);
       // Proceed with validated data
-      console.log("Validated Song Data:", validatedData);
+
       const res = await addSongToDb(validatedData);
+      console.log("res:", res);
       if (res === undefined) {
         throw new Error("Error adding song to database");
       }
-
+      setSongData(songInitialState);
       setSuccess("Successfully added song!");
       onClose(); // Close the modal on successful submission
     } catch (e) {
@@ -78,6 +89,8 @@ export const AdminMusicDashboard = () => {
       if (e instanceof z.ZodError) {
         setError(e.errors.map((err) => err.message).join(", "));
       }
+    } finally {
+      setLoadingToDb(false);
     }
   };
 
@@ -91,7 +104,15 @@ export const AdminMusicDashboard = () => {
         >
           + Add Song
         </Button>
-        {success && <p style={{ color: "green" }}>{success}</p>}
+        {success && (
+          <Chip
+            className="ml-8"
+            color="success"
+            onClose={() => setSuccess("")}
+          >
+            {success}
+          </Chip>
+        )}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalContent>
             <ModalHeader>Add Song</ModalHeader>
@@ -115,6 +136,7 @@ export const AdminMusicDashboard = () => {
               <Input
                 isClearable
                 onClear={() => clearInput("releaseDate")}
+                label="Release Date"
                 placeholder="Release Date"
                 name="releaseDate"
                 value={songData.releaseDate}
@@ -154,8 +176,13 @@ export const AdminMusicDashboard = () => {
               <Button color="danger" variant="light" onPress={onClose}>
                 Close
               </Button>
-              <Button color="primary" onPress={handleSubmit}>
-                Submit
+              <Button
+                color="primary"
+                onPress={handleSubmit}
+                disabled={loadingToDb}
+                isLoading={loadingToDb}
+              >
+                {loadingToDb ? "Adding..." : "Add Song"}
               </Button>
             </ModalFooter>
           </ModalContent>
