@@ -54,6 +54,7 @@ const NavBar = ({
             color={pathname === button.href ? "primary" : "default"}
             variant="shadow"
             className="text-lg p-2 hover:scale-105 transition-transform"
+            id={button.name}
           >
             {button.name}
           </Chip>
@@ -63,7 +64,7 @@ const NavBar = ({
   );
 
   const renderAuthenticated = () => (
-    <Dropdown placement="bottom-end">
+    <Dropdown placement="bottom-end" id="dropdown">
       <DropdownTrigger>
         <Avatar
           isBordered
@@ -73,6 +74,7 @@ const NavBar = ({
           name="Jason Hughes"
           size="sm"
           src={session?.user?.image}
+          id="dropdown-trigger"
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
@@ -88,6 +90,7 @@ const NavBar = ({
             signOut();
             router.push("/");
           }}
+          id="logout"
         >
           Log Out
         </DropdownItem>
@@ -97,12 +100,21 @@ const NavBar = ({
 
   const renderUnauthenticated = () => (
     <>
-      <Link href="/pricing" className="text-lg">Pricing</Link>
-      <Link href="/about" className="text-lg">About</Link>
+      <Link href="/pricing" className="text-lg">
+        Pricing
+      </Link>
+      <Link href="/about" className="text-lg">
+        About
+      </Link>
       <Button
         color="primary"
-        onClick={() => signIn("google")}
+        onClick={() =>
+          signIn(
+            process.env.NODE_ENV === "development" ? "email" : "google"
+          )
+        }
         className="pointer-cursor hover:bg-blue-200 text-lg"
+        id="google-sign-in"
       >
         Sign in with{" "}
         <FcGoogle className="inline-block ml-2 bg-white" size={24} />

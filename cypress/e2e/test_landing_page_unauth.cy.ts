@@ -1,5 +1,5 @@
 describe("Test Unauth landing", () => {
-  it("Visits all screens", () => {
+  it("Visits all screens on Unauthenticated landing", () => {
     cy.visit("localhost:3000");
 
     cy.contains("Welcome to ");

@@ -11,7 +11,7 @@
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
+// ('login', (email, password) => { ... })
 //
 //
 // -- This is a child command --
@@ -35,3 +35,20 @@
 //     }
 //   }
 // }
+
+declare namespace Cypress {
+  interface Chainable {
+    login(email: string, password: string): Chainable<void>;
+  }
+}
+
+Cypress.Commands.add("login", (email, password) => {
+  cy.visit("http://localhost:3000/");
+
+  cy.get("#google-sign-in").click();
+
+  cy.get('input[name="email"]').type("CloverTest@test.com");
+  cy.get('input[name="password"]').type("Password1!");
+
+  cy.contains("button", "Sign in with Credentials").click();
+});

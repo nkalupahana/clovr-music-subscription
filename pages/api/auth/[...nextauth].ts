@@ -18,7 +18,7 @@ export const authOptions = {
             id: "credentials",
             name: "Credentials",
             credentials: {
-              email: { label: "Email", type: "text", placeholder: "jsmith" },
+              email: { label: "Email", type: "text", placeholder: process.env.TEST_EMAIL },
               password: { label: "Password", type: "password" },
             },
             async authorize(credentials, req) {

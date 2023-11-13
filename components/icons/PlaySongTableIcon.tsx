@@ -22,7 +22,7 @@ export const PlaySongTableIcon = ({
         {index + 1}
       </span>
       <span className="absolute inset-0  items-center justify-center hidden group-hover:flex">
-        <FaPlay size={20} onClick={() => handleStartSong(song._id)} />
+        <FaPlay id={`play-song`}  size={20} onClick={() => handleStartSong(song._id)} />
       </span>
     </div>
   );
