@@ -8,6 +8,7 @@ import download from '@/pages/api/music/download'
 import dbConnect from '@/lib/dbConnect';
 import MusicFile from '@/models/MusicFile';
 import User from '@/models/User';
+import { defaultJWEContent, defaultMockedUser, encryptJWE } from '@/testutils/auth';
 
 let mongod: MongoMemoryServer | undefined = undefined;
 
@@ -59,17 +60,31 @@ describe("/api/music/download", () => {
         expect(res._getStatusCode()).toBe(401)
     })
 
-    // todo: fixup
     it("Should fail if song id does not exist", async () => {
-        await User.create({
-            name: "Mocked User",
-            email: "mocked@user.com"
-        })
+        await User.create(defaultMockedUser)
 
         const { req, res } = createMocks({
-            method: "GET"
+            method: "GET",
+            cookies: {
+                "next-auth.session-token": await encryptJWE(defaultJWEContent)
+            }
         })
+
         await download(req, res)
-        expect(res._getStatusCode()).toBe(401)
+        expect(res._getStatusCode()).toBe(400)
+    })
+
+    it("Should fail if song id does not exist", async () => {
+        await User.create(defaultMockedUser)
+
+        const { req, res } = createMocks({
+            method: "GET",
+            cookies: {
+                "next-auth.session-token": await encryptJWE(defaultJWEContent)
+            }
+        })
+
+        await download(req, res)
+        expect(res._getStatusCode()).toBe(400)
     })
 })
