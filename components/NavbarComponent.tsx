@@ -150,6 +150,7 @@ const NavBar = ({
           onClick={() => {
             router.push("/");
           }}
+          id="logo"
         >
           <p className="font-bold text-inherit text-lg">CLOVR</p>
         </div>
