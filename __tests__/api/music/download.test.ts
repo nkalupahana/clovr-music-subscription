@@ -29,6 +29,7 @@ describe("/api/music/download", () => {
         mongod = await MongoMemoryServer.create();
         const uri = mongod.getUri();
         await dbConnect(uri);
+        await User.create(defaultMockedUser)
     })
 
     afterAll(async () => {
@@ -75,8 +76,6 @@ describe("/api/music/download", () => {
     })
 
     it("Should fail if song id does not exist", async () => {
-        await User.create(defaultMockedUser)
-
         const { req, res } = createMocks({
             method: "GET",
             cookies: {
