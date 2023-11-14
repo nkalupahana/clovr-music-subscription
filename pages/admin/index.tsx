@@ -3,7 +3,7 @@ import { Tabs, Tab } from "@nextui-org/react";
 import { AdminMusicDashboard } from "@/components/AdminMusicDashboard";
 import { AdminUserDashboard } from "@/components/AdminUserDashboard";
 
-const AdminDashboard = () => {
+const Admin = () => {
   return (
     <div className="flex flex-col items-center justify-center  w-full py-2">
       <PageHeader>Admin Dashboard</PageHeader>
@@ -23,4 +23,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default Admin;
