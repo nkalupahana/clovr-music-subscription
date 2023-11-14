@@ -41,6 +41,7 @@ const SongHeart = ({
       onClick={() => {
         toggleLike(song._id);
       }}
+      id="song-heart"
     >
       {isFavorite ? (
         <AiFillHeart size={iconSize} className="text-red-500" />

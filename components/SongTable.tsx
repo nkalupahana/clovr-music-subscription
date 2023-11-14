@@ -114,13 +114,15 @@ const SongTable = ({
         }
         `}
             >
-              <TableCell>
+              <TableCell >
                 {currentSong?._id === music._id ? (
-                  <span className="absolute inset-0 flex items-center justify-center cursor-pointer ">
+                  <span className={`absolute inset-0 flex items-center justify-center cursor-pointer song-${index}`} >
                     <ToggleAudioButton />
                   </span>
                 ) : (
-                  <PlaySongTableIcon index={index} song={music} />
+                  <span className={`cursor-pointer song-${index}`}>
+                    <PlaySongTableIcon index={index} song={music} />
+                  </span>
                 )}
               </TableCell>
               <TableCell align="left">

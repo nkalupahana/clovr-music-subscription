@@ -5,7 +5,7 @@ import { MusicFile } from "@/models/MusicFile";
 import { useRef, useState } from "react";
 import { Button } from "@nextui-org/button";
 import UnauthenticatedLanding from "@/components/Unauthenticatedlanding";
-
+import PageHeader from "@/components/PageHeader";
 export default function Index() {
   const { data: session, status } = useSession();
   const { data: musicList } = useSWR("/api/music/list", fetcher);
@@ -13,6 +13,7 @@ export default function Index() {
 
   return (
     <>
+      <PageHeader>Home</PageHeader>
       {status === "loading" && <p>Hang on there...</p>}
       {status === "unauthenticated" && (
         <>

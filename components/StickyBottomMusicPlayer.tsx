@@ -58,7 +58,7 @@ export const StickyBottomMusicPlayer = () => {
   return (
     <>
       {playingSong && (
-        <div className="sticky bottom-0 w-full h-28 bg-black z-50 flex flex-row rounded-none">
+        <div className="sticky bottom-0 w-full h-28 bg-black z-50 flex flex-row rounded-none" id="bottom-music-player">
           <div className="flex flex-grow justify-start px-2 gap-4 items-center w-1/3">
             <TableSongCell song={playingSong} searched={""} />
             <SongHeart song={playingSong} iconSize={32} />

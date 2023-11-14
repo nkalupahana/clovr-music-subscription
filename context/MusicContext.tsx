@@ -168,7 +168,7 @@ const MusicProvider: React.FC<AudioProviderProps> = ({ children }) => {
         replaySong,
       }}
     >
-      <audio ref={audio}></audio>
+      <audio id="page-audio" ref={audio}></audio>
 
       {children}
     </MusicContext.Provider>

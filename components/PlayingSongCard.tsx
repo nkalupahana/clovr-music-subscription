@@ -62,6 +62,7 @@ export const PlayingSongCard = () => {
           isBlurred
           className="border-none bg-background/60 dark:bg-primary drop-in"
           shadow="sm"
+          id="playing-song-card"
         >
           <CardBody>
             <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center ">
