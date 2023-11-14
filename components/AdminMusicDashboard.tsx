@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -12,7 +12,6 @@ import {
 } from "@nextui-org/react";
 import { z } from "zod";
 import { addSongToDb } from "@/lib/AddSongToDb";
-import { set } from "mongoose";
 
 const AddSongSchema = z.object({
   title: z.string().max(100).min(1),

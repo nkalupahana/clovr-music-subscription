@@ -1,5 +1,6 @@
 import PageHeader from "@/components/PageHeader";
 import { Tabs, Tab } from "@nextui-org/react";
+import { AdminMusicDashboard } from "@/components/AdminMusicDashboard";
 import { AdminUserDashboard } from "@/components/AdminUserDashboard";
 
 const AdminDashboard = () => {
@@ -12,6 +13,7 @@ const AdminDashboard = () => {
         className="w-full items-center  justify-center mt-4"
       >
         <Tab key="music" title="Music" className="w-full text-xl">
+          <AdminMusicDashboard />
         </Tab>
         <Tab key="users" title="Users" className="w-full text-xl">
           <AdminUserDashboard />
