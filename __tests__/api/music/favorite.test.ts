@@ -4,11 +4,12 @@ import {
 import mongoose from "mongoose"
 import { MongoMemoryServer } from 'mongodb-memory-server'
 
-import download from '@/pages/api/music/download'
 import dbConnect from '@/lib/dbConnect';
 import MusicFile from '@/models/MusicFile';
 import User from '@/models/User';
 import { defaultJWEContent, defaultMockedUser, encryptJWE } from '@/testutils/auth';
+import favorite from '@/pages/api/music/favorite';
+import Favorite from '@/models/Favorite';
 
 let mongod: MongoMemoryServer | undefined = undefined;
 
@@ -24,7 +25,7 @@ jest.mock('aws-sdk', () => {
     }
 })
 
-describe("/api/music/download", () => { 
+describe("/api/music/favorite", () => { 
     beforeAll(async () => {
         mongod = await MongoMemoryServer.create();
         const uri = mongod.getUri();
@@ -38,7 +39,6 @@ describe("/api/music/download", () => {
     })
 
     afterEach(async () => {
-        await MusicFile.deleteMany({})
         jest.resetAllMocks()
     })
 
@@ -48,7 +48,7 @@ describe("/api/music/download", () => {
             const { req, res } = createMocks({
                 method: type as any
             })
-            await download(req, res)
+            await favorite(req, res)
             expect(res._getStatusCode()).toBe(405)
         }
     })
@@ -57,7 +57,7 @@ describe("/api/music/download", () => {
         const { req, res } = createMocks({
             method: "GET"
         })
-        await download(req, res)
+        await favorite(req, res)
         expect(res._getStatusCode()).toBe(401)
     })
 
@@ -74,7 +74,7 @@ describe("/api/music/download", () => {
             }
         })
 
-        await download(req, res)
+        await favorite(req, res)
         expect(res._getStatusCode()).toBe(401)
     })
 
@@ -86,11 +86,11 @@ describe("/api/music/download", () => {
             }
         })
 
-        await download(req, res)
+        await favorite(req, res)
         expect(res._getStatusCode()).toBe(400)
     })
 
-    it("Should fail if song id does not exist", async () => {
+    it("Should fail if song id is poorly formatted", async () => {
         const { req, res } = createMocks({
             method: "GET",
             cookies: {
@@ -101,11 +101,26 @@ describe("/api/music/download", () => {
             }
         })
 
-        await download(req, res)
+        await favorite(req, res)
+        expect(res._getStatusCode()).toBe(400)
+    })
+
+    it("Should fail if song id does not exist", async () => {
+        const { req, res } = createMocks({
+            method: "GET",
+            cookies: {
+                "next-auth.session-token": await encryptJWE(defaultJWEContent)
+            },
+            query: {
+                id: "0000cedfa1397c896bbbb82f"
+            }
+        })
+
+        await favorite(req, res)
         expect(res._getStatusCode()).toBe(404)
     })
 
-    it("Should succeed if song exists", async () => {
+    it("Should fail if set is not set correctly", async () => {
         const file = await MusicFile.create({
             releaseDate: "2020-01-01",
             albumArtKey: "mock",
@@ -121,11 +136,65 @@ describe("/api/music/download", () => {
                 "next-auth.session-token": await encryptJWE(defaultJWEContent)
             },
             query: {
-                id: String(file._id)
+                id: String(file._id),
+                set: "nothing"
             }
         })
 
-        await download(req, res)
-        expect(res._getStatusCode()).toBe(302)
+        await favorite(req, res)
+        expect(res._getStatusCode()).toBe(400)
+    })
+
+    it("Should set favorite ", async () => {
+        const file = await MusicFile.create({
+            releaseDate: "2020-01-01",
+            albumArtKey: "mock",
+            songKey: "mock",
+            name: "mock",
+            artist: "mock",
+            tempo: 120,
+        });
+        
+        const { req, res } = createMocks({
+            method: "GET",
+            cookies: {
+                "next-auth.session-token": await encryptJWE(defaultJWEContent)
+            },
+            query: {
+                id: String(file._id),
+                set: "true"
+            }
+        })
+
+        await favorite(req, res)
+        expect(res._getStatusCode()).toBe(200)
+        
+        const favorites = await Favorite.find({});
+        expect(favorites).toHaveLength(1);
+        const fav = favorites[0];
+        expect(String(fav.file)).toBe(String(file._id));
+    })
+
+    it("Should delete favorite", async () => {
+        const bFavorites = await Favorite.find({});
+        expect(bFavorites).toHaveLength(1);
+        const fav = bFavorites[0];
+
+        const { req, res } = createMocks({
+            method: "GET",
+            cookies: {
+                "next-auth.session-token": await encryptJWE(defaultJWEContent)
+            },
+            query: {
+                id: String(fav.file),
+                set: "false"
+            }
+        })
+
+        await favorite(req, res)
+        expect(res._getStatusCode()).toBe(200)
+        
+        const aFavorites = await Favorite.find({});
+        expect(aFavorites).toHaveLength(0);
     })
 })

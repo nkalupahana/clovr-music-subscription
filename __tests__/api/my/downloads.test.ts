@@ -4,11 +4,12 @@ import {
 import mongoose from "mongoose"
 import { MongoMemoryServer } from 'mongodb-memory-server'
 
-import download from '@/pages/api/music/download'
+import downloads from '@/pages/api/my/downloads'
 import dbConnect from '@/lib/dbConnect';
 import MusicFile from '@/models/MusicFile';
 import User from '@/models/User';
 import { defaultJWEContent, defaultMockedUser, encryptJWE } from '@/testutils/auth';
+import download from '@/pages/api/music/download';
 
 let mongod: MongoMemoryServer | undefined = undefined;
 
@@ -24,7 +25,7 @@ jest.mock('aws-sdk', () => {
     }
 })
 
-describe("/api/music/download", () => { 
+describe("/api/my/downloads", () => { 
     beforeAll(async () => {
         mongod = await MongoMemoryServer.create();
         const uri = mongod.getUri();
@@ -38,7 +39,6 @@ describe("/api/music/download", () => {
     })
 
     afterEach(async () => {
-        await MusicFile.deleteMany({})
         jest.resetAllMocks()
     })
 
@@ -48,7 +48,7 @@ describe("/api/music/download", () => {
             const { req, res } = createMocks({
                 method: type as any
             })
-            await download(req, res)
+            await downloads(req, res)
             expect(res._getStatusCode()).toBe(405)
         }
     })
@@ -57,7 +57,7 @@ describe("/api/music/download", () => {
         const { req, res } = createMocks({
             method: "GET"
         })
-        await download(req, res)
+        await downloads(req, res)
         expect(res._getStatusCode()).toBe(401)
     })
 
@@ -74,11 +74,11 @@ describe("/api/music/download", () => {
             }
         })
 
-        await download(req, res)
+        await downloads(req, res)
         expect(res._getStatusCode()).toBe(401)
     })
 
-    it("Should fail if song id is not given", async () => {
+    it("Should show no downloads", async () => {
         const { req, res } = createMocks({
             method: "GET",
             cookies: {
@@ -86,46 +86,46 @@ describe("/api/music/download", () => {
             }
         })
 
-        await download(req, res)
-        expect(res._getStatusCode()).toBe(400)
+        await downloads(req, res)
+        expect(res._getStatusCode()).toBe(200)
+        expect(JSON.parse(res._getData())).toEqual([])
     })
 
-    it("Should fail if song id does not exist", async () => {
+    it("Should show one download", async () => {
+        {
+            // Create download
+            const file = await MusicFile.create({
+                releaseDate: "2020-01-01",
+                albumArtKey: "mock",
+                songKey: "mock",
+                name: "mock",
+                artist: "mock",
+                tempo: 120,
+            });
+
+            const { req, res } = createMocks({
+                method: "GET",
+                cookies: {
+                    "next-auth.session-token": await encryptJWE(defaultJWEContent)
+                },
+                query: {
+                    id: String(file._id)
+                }
+            })
+
+            await download(req, res)
+            expect(res._getStatusCode()).toBe(302)
+        }
+
         const { req, res } = createMocks({
             method: "GET",
             cookies: {
                 "next-auth.session-token": await encryptJWE(defaultJWEContent)
-            },
-            query: {
-                id: "fake"
             }
         })
 
-        await download(req, res)
-        expect(res._getStatusCode()).toBe(404)
-    })
-
-    it("Should succeed if song exists", async () => {
-        const file = await MusicFile.create({
-            releaseDate: "2020-01-01",
-            albumArtKey: "mock",
-            songKey: "mock",
-            name: "mock",
-            artist: "mock",
-            tempo: 120,
-        });
-
-        const { req, res } = createMocks({
-            method: "GET",
-            cookies: {
-                "next-auth.session-token": await encryptJWE(defaultJWEContent)
-            },
-            query: {
-                id: String(file._id)
-            }
-        })
-
-        await download(req, res)
-        expect(res._getStatusCode()).toBe(302)
+        await downloads(req, res)
+        expect(res._getStatusCode()).toBe(200)
+        expect(JSON.parse(res._getData())).toHaveLength(1)
     })
 })

@@ -13,7 +13,7 @@ export default async function handler(
     if (req.method === "GET") {
         await dbConnect();
         const session = await getServerSession(req, res, authOptions)
-        if (!session || !session.user) return res.status(401).send(401);
+        if (!session?.user) return res.status(401).send(401);
         const user = await User.findOne({ email: session.user.email });
         if (!user) return res.status(401).send(401);
 

@@ -4,32 +4,51 @@ import {
 import mongoose from "mongoose"
 import { MongoMemoryServer } from 'mongodb-memory-server'
 
-import download from '@/pages/api/music/download'
 import dbConnect from '@/lib/dbConnect';
-import MusicFile from '@/models/MusicFile';
 import User from '@/models/User';
 import { defaultJWEContent, defaultMockedUser, encryptJWE } from '@/testutils/auth';
+import manage from '@/pages/api/stripe/manage';
 
 let mongod: MongoMemoryServer | undefined = undefined;
 
-jest.mock('aws-sdk', () => {
-    return {
-        S3: jest.fn(() => {
-            return {
-                getSignedUrlPromise: jest.fn().mockResolvedValue("https://r2.dev/mock"),
-                promise: jest.fn().mockReturnThis(),
-                catch: jest.fn(),
+jest.mock('stripe', () => {
+    return jest.fn(() => {
+        return {
+            subscriptions: {
+                retrieve: () => {
+                    return {
+                        status: "active",
+                        customer: "cus_mock",
+                    }
+                },
+                update: jest.fn(),
+            },
+            billingPortal: {
+                sessions: {
+                    create: () => {
+                        return {
+                            url: "https://example.com"
+                        }
+                    }
+                }
             }
-        })
-    }
+        }
+    })
 })
 
-describe("/api/music/download", () => { 
+describe("/api/stripe/manage", () => { 
     beforeAll(async () => {
         mongod = await MongoMemoryServer.create();
         const uri = mongod.getUri();
         await dbConnect(uri);
-        await User.create(defaultMockedUser)
+        await User.create({
+            ...defaultMockedUser,
+            email: "nosub@user.com",
+        })
+        await User.create({
+            ...defaultMockedUser,
+            subscription: "mock"
+        })
     })
 
     afterAll(async () => {
@@ -38,7 +57,6 @@ describe("/api/music/download", () => {
     })
 
     afterEach(async () => {
-        await MusicFile.deleteMany({})
         jest.resetAllMocks()
     })
 
@@ -48,7 +66,7 @@ describe("/api/music/download", () => {
             const { req, res } = createMocks({
                 method: type as any
             })
-            await download(req, res)
+            await manage(req, res)
             expect(res._getStatusCode()).toBe(405)
         }
     })
@@ -57,9 +75,10 @@ describe("/api/music/download", () => {
         const { req, res } = createMocks({
             method: "GET"
         })
-        await download(req, res)
+        await manage(req, res)
         expect(res._getStatusCode()).toBe(401)
     })
+
 
     it("Should fail if user id does not exist", async () => {
         let jweContent = {
@@ -74,11 +93,28 @@ describe("/api/music/download", () => {
             }
         })
 
-        await download(req, res)
+        await manage(req, res)
         expect(res._getStatusCode()).toBe(401)
     })
 
-    it("Should fail if song id is not given", async () => {
+    it("Should show no subscription", async () => {
+        let jweContent = {
+            ...defaultJWEContent,
+            email: "nosub@user.com"
+        };
+
+        const { req, res } = createMocks({
+            method: "GET",
+            cookies: {
+                "next-auth.session-token": await encryptJWE(jweContent)
+            }
+        })
+
+        await manage(req, res)
+        expect(res._getStatusCode()).toBe(200)
+    })
+
+    it("Should fail if no operation given", async () => {
         const { req, res } = createMocks({
             method: "GET",
             cookies: {
@@ -86,46 +122,40 @@ describe("/api/music/download", () => {
             }
         })
 
-        await download(req, res)
+        await manage(req, res)
         expect(res._getStatusCode()).toBe(400)
     })
 
-    it("Should fail if song id does not exist", async () => {
+    it("Should fail if bad operation given", async () => {
         const { req, res } = createMocks({
             method: "GET",
             cookies: {
                 "next-auth.session-token": await encryptJWE(defaultJWEContent)
             },
             query: {
-                id: "fake"
+                op: "mock"
             }
         })
 
-        await download(req, res)
-        expect(res._getStatusCode()).toBe(404)
+        await manage(req, res)
+        expect(res._getStatusCode()).toBe(400)
     })
+    
 
-    it("Should succeed if song exists", async () => {
-        const file = await MusicFile.create({
-            releaseDate: "2020-01-01",
-            albumArtKey: "mock",
-            songKey: "mock",
-            name: "mock",
-            artist: "mock",
-            tempo: 120,
-        });
+    it("Should redirect for standard operations", async () => {
+        for (let op of ["uncancel", "payment_method_update", "subscription_cancel", "subscription_update"]) {
+            const { req, res } = createMocks({
+                method: "GET",
+                cookies: {
+                    "next-auth.session-token": await encryptJWE(defaultJWEContent)
+                },
+                query: {
+                    op
+                }
+            })
 
-        const { req, res } = createMocks({
-            method: "GET",
-            cookies: {
-                "next-auth.session-token": await encryptJWE(defaultJWEContent)
-            },
-            query: {
-                id: String(file._id)
-            }
-        })
-
-        await download(req, res)
-        expect(res._getStatusCode()).toBe(302)
+            await manage(req, res)
+            expect(res._getStatusCode()).toBe(302)
+        }
     })
 })

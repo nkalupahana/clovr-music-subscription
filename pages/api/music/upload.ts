@@ -7,6 +7,9 @@ import Sharp from "sharp";
 import { DateTime } from "luxon";
 
 import type { NextApiRequest, NextApiResponse } from "next"
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
+import User from "@/models/User";
 
 export const config = {
     api: {
@@ -20,6 +23,13 @@ export default async function handler(
 ) {
     if (req.method === "POST") {
         await dbConnect();
+        
+        const session = await getServerSession(req, res, authOptions)
+        if (!session?.user) return res.status(401).send(401);
+        if (!session.user.isAdmin) return res.status(403).send(403);
+        const user = await User.findOne({ email: session.user.email });
+        if (!user) return res.status(401).send(401);
+
         const form = formidable({ multiples: false });
         try {
             const [fields, files] = await form.parse(req);
