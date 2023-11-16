@@ -4,7 +4,6 @@ import { Tabs, Tab } from "@nextui-org/react";
 import { AdminMusicDashboard } from "@/components/AdminMusicDashboard";
 import { AdminUserDashboard } from "@/components/AdminUserDashboard";
 
-'use client';
 
 const AdminDashboard = () => {
   return (

@@ -13,7 +13,7 @@ import {
 import { z } from "zod";
 import { addSongToDb } from "@/lib/AddSongToDb";
 
-'use client';
+
 
 const AddSongSchema = z.object({
   title: z.string().max(100).min(1),
