@@ -42,10 +42,6 @@ const NavBar = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    console.log(session?.user?.image);
-  }, [session?.user?.image]);
-
   const renderNavigation = () => (
     <NavbarContent className="hidden sm:flex gap-4" justify="center">
       {NAV_BUTTONS.map((button) => (
@@ -82,6 +78,14 @@ const NavBar = ({
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{session?.user?.email}</p>
         </DropdownItem>
+        {session?.user?.isAdmin && (
+          <DropdownItem
+            key="admin-dashboard"
+            onPress={() => router.push("/admin-dashboard")}
+          >
+            Admin Dashboard
+          </DropdownItem>
+        )}
 
         <DropdownItem
           key="logout"
