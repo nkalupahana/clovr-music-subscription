@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -12,17 +12,6 @@ import {
 } from "@nextui-org/react";
 import { z } from "zod";
 import { addSongToDb } from "@/lib/AddSongToDb";
-
-
-
-const AddSongSchema = z.object({
-  title: z.string().max(100).min(1),
-  artist: z.string().max(100).min(1),
-  releaseDate: z.date().max(new Date()),
-  durationSeconds: z.number().max(1000).min(1),
-  musicFile: z.instanceof(File),
-  albumArt: z.instanceof(File).optional(),
-});
 
 const songInitialState = {
   title: "",
@@ -39,6 +28,20 @@ export const AdminMusicDashboard = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loadingToDb, setLoadingToDb] = useState(false); // TODO: Implement loading spinner [loadingToDb
+  const [AddSongSchema, setAddSongSchema] = useState(z.object({}));
+
+  useEffect(() => {
+    const AddSongSchema = z.object({
+      title: z.string().max(100).min(1),
+      artist: z.string().max(100).min(1),
+      releaseDate: z.date().max(new Date()),
+      durationSeconds: z.number().max(1000).min(1),
+      musicFile: z.instanceof(File),
+      albumArt: z.instanceof(File).optional(),
+    });
+
+    setAddSongSchema(AddSongSchema);
+  }, []);
 
   const handleChange = (e: any) => {
     const { name, value, files, type } = e.target;
@@ -106,11 +109,7 @@ export const AdminMusicDashboard = () => {
           + Add Song
         </Button>
         {success && (
-          <Chip
-            className="ml-8"
-            color="success"
-            onClose={() => setSuccess("")}
-          >
+          <Chip className="ml-8" color="success" onClose={() => setSuccess("")}>
             {success}
           </Chip>
         )}
