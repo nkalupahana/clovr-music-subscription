@@ -1,7 +1,10 @@
+import React from "react";
 import PageHeader from "@/components/PageHeader";
 import { Tabs, Tab } from "@nextui-org/react";
 import { AdminMusicDashboard } from "@/components/AdminMusicDashboard";
 import { AdminUserDashboard } from "@/components/AdminUserDashboard";
+
+'use client';
 
 const AdminDashboard = () => {
   return (
