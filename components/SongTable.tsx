@@ -41,20 +41,40 @@ const SongTable = ({
   useEffect(() => {
     setMusicList(filteredSongs);
     let sortedSongs = [...filteredSongs];
-    if (sortConfig.key) {
-      sortedSongs.sort((a, b) => {
-        if (sortConfig.key && a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
-        }
-        if (sortConfig.key && a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
-        }
+    let favoriteSongs = context?.favoriteSongs;
 
-        return 0;
-      });
+    if (sortConfig.key) {
+      if (sortConfig.key === "likes") {
+        sortedSongs.sort((a, b) => {
+          // Check if both or either of the songs are in favoriteSongs
+          const aIsFavorite = favoriteSongs?.some((fav) => fav.file === a._id);
+          const bIsFavorite = favoriteSongs?.some((fav) => fav.file === b._id);
+
+          if (aIsFavorite && !bIsFavorite) {
+            return -1; // a is a favorite, b is not
+          }
+          if (!aIsFavorite && bIsFavorite) {
+            return 1; // b is a favorite, a is not
+          }
+
+          // If neither or both are favorites, sort by likes
+          return b.likes - a.likes; // Assuming 'likes' is a numeric value
+        });
+      } else {
+        sortedSongs.sort((a, b) => {
+          if (sortConfig.key && a[sortConfig.key] > b[sortConfig.key]) {
+            return sortConfig.direction === "ascending" ? 1 : -1;
+          }
+          if (sortConfig.key && a[sortConfig.key] < b[sortConfig.key]) {
+            return sortConfig.direction === "ascending" ? -1 : 1;
+          }
+
+          return 0;
+        });
+      }
     }
     setMusicList(sortedSongs);
-  }, [filteredSongs, sortConfig]);
+  }, [filteredSongs, sortConfig, context?.favoriteSongs]);
 
   const requestSort = (key: any) => {
     let direction = "ascending";
@@ -99,7 +119,14 @@ const SongTable = ({
             requestSort={requestSort}
           />
         </TableColumn>
-        <TableColumn className="text-start"> </TableColumn>
+        <TableColumn className="text-start">
+          <ColumnHeaderCell
+            keyName="likes"
+            columnName="Likes"
+            sortConfig={sortConfig}
+            requestSort={requestSort}
+          />
+        </TableColumn>
         <TableColumn className="text-start"> </TableColumn>
       </TableHeader>
       <TableBody items={musicList}>
@@ -114,9 +141,11 @@ const SongTable = ({
         }
         `}
             >
-              <TableCell >
+              <TableCell>
                 {currentSong?._id === music._id ? (
-                  <span className={`absolute inset-0 flex items-center justify-center cursor-pointer song-${index}`} >
+                  <span
+                    className={`absolute inset-0 flex items-center justify-center cursor-pointer song-${index}`}
+                  >
                     <ToggleAudioButton />
                   </span>
                 ) : (
