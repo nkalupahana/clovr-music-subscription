@@ -7,12 +7,20 @@ import SongTable from "@/components/SongTable";
 import PageHeader from "@/components/PageHeader";
 import VerifyAuthenticationStatus from "@/components/HigherOrderComponents/VerifyAuthenticationStatus";
 
+export interface SearchState {
+  searchString: string;
+  searchField: string;
+}
+
 const Explore = () => {
   const audio = useRef<HTMLAudioElement>(null);
   const context = useContext(MusicContext);
   const { musicList } = context || {};
   const [filteredSongs, setFilteredSongs] = useState<any[]>(musicList || []);
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<SearchState>({
+    searchString: "",
+    searchField: "",
+  });
   const [showLiked, setShowLiked] = useState<boolean>(false);
 
   useEffect(() => {
@@ -21,7 +29,6 @@ const Explore = () => {
         context?.favoriteSongs?.some((fav) => fav.file === song._id)
       );
       setFilteredSongs(filtered || []);
-      setSearch("true");
     }
   }, [context?.favoriteSongs, showLiked, musicList]);
 
@@ -39,20 +46,29 @@ const Explore = () => {
       } else {
         setFilteredSongs(musicList || []);
       }
-      setSearch("");
+      setSearch({
+        searchString: "",
+        searchField: "",
+      });
       return;
     }
     const filtered = filteredSongs?.filter((song) =>
       song[field].toLowerCase().includes(query.toLowerCase())
     );
     setFilteredSongs(filtered || []);
-    setSearch(query);
+    setSearch({
+      searchString: query,
+      searchField: field,
+    });
   };
 
   const handleShowLikedSongs = () => {
     if (showLiked) {
       setFilteredSongs(musicList || []);
-      setSearch("");
+      setSearch({
+        searchString: "",
+        searchField: "",
+      });
       setShowLiked(false);
       return;
     } else {
@@ -60,7 +76,10 @@ const Explore = () => {
         context?.favoriteSongs?.some((fav) => fav.file === song._id)
       );
       setFilteredSongs(filtered || []);
-      setSearch("true");
+      setSearch({
+        searchString: "",
+        searchField: "",
+      });
       setShowLiked(true);
     }
   };

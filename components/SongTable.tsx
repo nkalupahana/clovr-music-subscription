@@ -20,6 +20,7 @@ import TableSongCell from "./TableSongCell";
 import { handleDownload } from "@/lib/DownloadHandler";
 import { PlaySongTableIcon } from "./icons/PlaySongTableIcon";
 import { ColumnHeaderCell } from "./ColumnHeaderCell";
+import { SearchState } from "@/pages/explore";
 
 const SongTable = ({
   filteredSongs,
@@ -28,7 +29,7 @@ const SongTable = ({
 }: {
   filteredSongs: any[];
   setFilteredSongs: any;
-  searched: string;
+  searched: SearchState;
 }) => {
   const context = useContext(MusicContext);
   const [musicList, setMusicList] = useState<any[]>(filteredSongs);
