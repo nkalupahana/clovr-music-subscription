@@ -1,16 +1,18 @@
 import React from "react";
 import { User } from "@nextui-org/react";
 import { MusicFile } from "@/models/MusicFile";
+import { SearchState } from "@/pages/explore";
 
 const TableSongCell = ({
   song,
   searched,
 }: {
   song: MusicFile;
-  searched: string;
+  searched: SearchState;
 }) => {
   // Initialize the search string
-  const searchString = searched || "";
+
+  const searchString = searched.searchString || "";
 
   // Create a regular expression for matching the search string, case-insensitive
   const searchRegex = new RegExp(`(${searchString})`, "gi");
@@ -21,7 +23,9 @@ const TableSongCell = ({
   };
 
   // Create the highlighted name
+
   const highlightedName = createHighlightedText(song.name);
+  const highlightedArtist = createHighlightedText(song.artist);
 
   return (
     <User
@@ -37,7 +41,10 @@ const TableSongCell = ({
         />
       }
       description={
-        <span className="text-sm text-secondary-500">{song.artist}</span> // switch to artist name when available
+        <span
+          className="text-sm text-secondary-500"
+          dangerouslySetInnerHTML={{ __html: highlightedArtist }}
+        />
       }
     />
   );

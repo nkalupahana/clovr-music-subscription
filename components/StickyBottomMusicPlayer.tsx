@@ -58,9 +58,18 @@ export const StickyBottomMusicPlayer = () => {
   return (
     <>
       {playingSong && (
-        <div className="sticky bottom-0 w-full h-28 bg-black z-50 flex flex-row rounded-none" id="bottom-music-player">
+        <div
+          className="sticky bottom-0 w-full h-28 bg-black z-50 flex flex-row rounded-none"
+          id="bottom-music-player"
+        >
           <div className="flex flex-grow justify-start px-2 gap-4 items-center w-1/3">
-            <TableSongCell song={playingSong} searched={""} />
+            <TableSongCell
+              song={playingSong}
+              searched={{
+                searchString: "",
+                searchField: "",
+              }}
+            />
             <SongHeart song={playingSong} iconSize={32} />
           </div>
           <div className="flex flex-grow justify-center items-center flex-col w-1/3">
