@@ -119,14 +119,7 @@ export const AdminSongTable = ({
             requestSort={requestSort}
           />
         </TableColumn>
-        <TableColumn className="text-start">
-          <ColumnHeaderCell
-            keyName="numberOfLikes"
-            columnName="# Likes"
-            sortConfig={sortConfig}
-            requestSort={requestSort}
-          />
-        </TableColumn>
+       
       </TableHeader>
       <TableBody items={musicList}>
         {musicList?.map((music: MusicFile, index: number) => {
@@ -161,7 +154,7 @@ export const AdminSongTable = ({
               <TableCell align="left">
                 {music.uploadTime.toString().split("T")[0]}
               </TableCell>
-              <TableCell align="left">here</TableCell>
+              <TableCell align="left">{music.downloadCount}</TableCell>
             </TableRow>
           );
         })}

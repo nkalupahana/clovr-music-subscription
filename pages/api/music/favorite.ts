@@ -39,7 +39,6 @@ export default async function handler(
         } catch (e) {
             return res.status(400).send("Invalid, rejected.");
         }
-
         return res.status(200).send(200);
     }
 

@@ -8,6 +8,8 @@ export interface MusicFile extends mongoose.Document {
     albumArtKey: string
     releaseDate: string
     uploadTime: Date
+    downloadCount: number
+    favoriteCount: number
 }
 
 const MusicFileSchema = new mongoose.Schema<MusicFile>({
@@ -38,7 +40,12 @@ const MusicFileSchema = new mongoose.Schema<MusicFile>({
     uploadTime: {
         type: Date,
         default: Date.now
-    }
+    },
+    downloadCount: {
+        type: Number,
+        default: 0
+    },
+
 })
 
 export default mongoose.models.MusicFile || mongoose.model<MusicFile>("MusicFile", MusicFileSchema)
