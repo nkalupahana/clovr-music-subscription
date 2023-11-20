@@ -31,6 +31,10 @@ const NAV_BUTTONS = [
   { name: "Subscriptions", href: "/subscriptions" },
 ];
 
+const ADMIN_DROPDOWN_NAV_BUTTONS = [
+  { name: "Admin Dashboard", href: "/admin-dashboard" },
+];
+
 const NavBar = ({
   setDarkMode,
   darkMode,
@@ -78,14 +82,18 @@ const NavBar = ({
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{session?.user?.email}</p>
         </DropdownItem>
-        {session?.user?.isAdmin && (
-          <DropdownItem
-            key="admin-dashboard"
-            onPress={() => router.push("/admin-dashboard")}
-          >
-            Admin Dashboard
-          </DropdownItem>
-        )}
+        {session?.user?.isAdmin &&
+          ADMIN_DROPDOWN_NAV_BUTTONS.map((button) => (
+            <DropdownItem
+              key={button.name}
+              onClick={() => {
+                router.push(button.href);
+              }}
+              id={button.name}
+            >
+              {button.name}
+            </DropdownItem>
+          ))}
 
         <DropdownItem
           key="logout"
@@ -113,9 +121,7 @@ const NavBar = ({
       <Button
         color="primary"
         onClick={() =>
-          signIn(
-            process.env.NODE_ENV === "development" ? "email" : "google"
-          )
+          signIn(process.env.NODE_ENV === "development" ? "email" : "google")
         }
         className="pointer-cursor hover:bg-blue-200 text-lg"
         id="google-sign-in"
