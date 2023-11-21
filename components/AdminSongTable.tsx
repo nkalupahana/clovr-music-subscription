@@ -114,7 +114,7 @@ export const AdminSongTable = ({
           </TableColumn>
           <TableColumn className="text-start">
             <ColumnHeaderCell
-              keyName="addedDate"
+              keyName="uploadTime"
               columnName="Added to DB"
               sortConfig={sortConfig}
               requestSort={requestSort}
@@ -122,7 +122,7 @@ export const AdminSongTable = ({
           </TableColumn>
           <TableColumn className="text-start">
             <ColumnHeaderCell
-              keyName="numberOfDownloads"
+              keyName="downloadCount"
               columnName="# Downloads"
               sortConfig={sortConfig}
               requestSort={requestSort}
