@@ -22,7 +22,7 @@ import { CiCircleRemove } from "react-icons/ci";
 import { MusicContext } from "@/context/MusicContext";
 import ToggleAudioButton from "./ToggleAudioButton";
 import TableSongCell from "./TableSongCell";
-import { handleDownload } from "@/lib/DownloadHandler";
+import { DeleteSongModal } from "./DeleteSongModal";
 import { PlaySongTableIcon } from "./icons/PlaySongTableIcon";
 import { ColumnHeaderCell } from "./ColumnHeaderCell";
 import { SearchState } from "@/pages/explore";
@@ -187,33 +187,13 @@ export const AdminSongTable = ({
         </TableBody>
       </Table>
       {songToDelete && (
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalContent>
-            <ModalBody className="flex flex-col items-center justify-center gap-4 p-8">
-              <TableSongCell song={songToDelete} />
-              <div className="flex flex-row gap-4">
-                <Button
-                  className="btn bg-red-400"
-                  onClick={() => {
-                    deleteSongFromDb(songToDelete._id);
-                    
-                    setFilteredSongs(
-                      filteredSongs.filter(
-                        (song) => song._id !== songToDelete._id
-                      )
-                    );
-                    onClose();
-                  }}
-                >
-                  <span className="font-bold">Delete</span>
-                </Button>
-                <Button className="btn btn-secondary" onClick={onClose}>
-                  Cancel
-                </Button>
-              </div>
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+        <DeleteSongModal
+          isOpen={isOpen}
+          onClose={onClose}
+          songToDelete={songToDelete}
+          filteredSongs={filteredSongs}
+          setFilteredSongs={setFilteredSongs}
+        />
       )}
     </>
   );
