@@ -8,7 +8,6 @@ import { MusicContext } from "@/context/MusicContext";
 import { AdminSongTable } from "./AdminSongTable";
 import { SearchState } from "@/pages/explore";
 
-
 export const AdminMusicDashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [error, setError] = useState("");
@@ -46,28 +45,32 @@ export const AdminMusicDashboard = () => {
   };
   return (
     <div className="w-full min-h-screen">
-      <div className="flex flex-row justify-start items-center px-32">
-        <Button
-          className="hover:scale-105 transition-all duration-200"
-          color="secondary"
-          onPress={onOpen}
-        >
-          + Add Song
-        </Button>
-        {success && (
-          <Chip className="ml-8" color="success" onClose={() => setSuccess("")}>
-            {success}
-          </Chip>
-        )}
-        <AddSongToDbModal
-          isOpen={isOpen}
-          onClose={onClose}
-          error={error}
-          setError={setError}
-          setSuccess={setSuccess}
-        />
-      </div>
-      <div className="flex flex-col items-center justify-center w-[80%] mx-auto mt-8">
+      <div className="flex flex-col items-center justify-center w-[80%] mx-auto mt-2">
+        <div className="flex flex-row justify-start items-center w-full mb-4">
+          <Button
+            className="hover:scale-105 transition-all duration-200"
+            color="secondary"
+            onPress={onOpen}
+          >
+            + Add Song
+          </Button>
+          {success && (
+            <Chip
+              className="ml-8"
+              color="success"
+              onClose={() => setSuccess("")}
+            >
+              {success}
+            </Chip>
+          )}
+          <AddSongToDbModal
+            isOpen={isOpen}
+            onClose={onClose}
+            error={error}
+            setError={setError}
+            setSuccess={setSuccess}
+          />
+        </div>
         <div className="flex flex-row items-start w-full mb-8 gap-2">
           <Input
             size="md"
