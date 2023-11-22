@@ -31,6 +31,7 @@ export default async function handler(
             user: user._id,
             file: file._id,
         });
+        await MusicFile.findByIdAndUpdate(file._id, { downloadCount: file.downloadCount + 1 });
 
         const url = await r2.getSignedUrlPromise("getObject", { Bucket: process.env.R2_BUCKET, Key: file.songKey });
         return res.redirect(url);

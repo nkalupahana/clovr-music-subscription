@@ -1,192 +1,97 @@
-import { useEffect, useState } from "react";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Input,
-  useDisclosure,
-  Chip,
-} from "@nextui-org/react";
+import { useEffect, useState, useContext } from "react";
+import { Button, useDisclosure, Chip, Input } from "@nextui-org/react";
+import { FaSearch } from "react-icons/fa";
 import { z } from "zod";
 import { addSongToDb } from "@/lib/AddSongToDb";
-
-const songInitialState = {
-  title: "",
-  artist: "",
-  releaseDate: "",
-  durationSeconds: "",
-  musicFile: null,
-  albumArt: null,
-};
+import { AddSongToDbModal } from "./AddSongToDbModal";
+import { MusicContext } from "@/context/MusicContext";
+import { AdminSongTable } from "./AdminSongTable";
+import { SearchState } from "@/pages/explore";
 
 export const AdminMusicDashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [songData, setSongData] = useState(songInitialState);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [loadingToDb, setLoadingToDb] = useState(false); // TODO: Implement loading spinner [loadingToDb
-  const [AddSongSchema, setAddSongSchema] = useState(z.object({}));
+  const context = useContext(MusicContext);
+  const { musicList } = context || {};
+  const [filteredSongs, setFilteredSongs] = useState<any[]>(musicList || []);
+  const [search, setSearch] = useState<SearchState>({
+    searchString: "",
+    searchField: "",
+  });
 
   useEffect(() => {
-    const AddSongSchema = z.object({
-      title: z.string().max(100).min(1),
-      artist: z.string().max(100).min(1),
-      releaseDate: z.date().max(new Date()),
-      durationSeconds: z.number().max(1000).min(1),
-      musicFile: z.instanceof(File),
-      albumArt: z.instanceof(File).optional(),
-    });
+    setFilteredSongs(musicList || []);
+  }, [musicList]);
 
-    setAddSongSchema(AddSongSchema);
-  }, []);
-
-  const handleChange = (e: any) => {
-    const { name, value, files, type } = e.target;
-    if (e.target.type === "file") {
-      setSongData({ ...songData, [e.target.name]: e.target.files[0] });
-    } else {
-      setSongData({
-        ...songData,
-        [name]: type === "file" ? files[0] : value,
+  const handleSearch = (query: string, field: string) => {
+    if (query === "") {
+      setFilteredSongs(musicList || []);
+      setSearch({
+        searchString: "",
+        searchField: "",
       });
-    }
-  };
-
-  const clearInput = (inputName: any) => {
-    setSongData({
-      ...songData,
-      [inputName]:
-        inputName === "musicFile" || inputName === "albumArt" ? null : "",
-    });
-  };
-
-  const handleSubmit = async () => {
-    if (!songData.musicFile) {
-      setError("Please upload a music file.");
       return;
     }
-    setLoadingToDb(true);
-    try {
-      // Convert durationSeconds to a number and releaseDate to a Date object
-      const validatedData = {
-        ...songData,
-        durationSeconds: parseInt(songData.durationSeconds),
-        releaseDate: new Date(songData.releaseDate),
-      };
 
-      AddSongSchema.parse(validatedData);
-      // Proceed with validated data
-
-      const res = await addSongToDb(validatedData);
-      console.log("res:", res);
-      if (res === undefined) {
-        throw new Error("Error adding song to database");
-      }
-      setSongData(songInitialState);
-      setSuccess("Successfully added song!");
-      onClose(); // Close the modal on successful submission
-    } catch (e) {
-      console.log("Error:", e);
-      if (e instanceof z.ZodError) {
-        setError(e.errors.map((err) => err.message).join(", "));
-      }
-    } finally {
-      setLoadingToDb(false);
-    }
+    const filtered = filteredSongs?.filter((song) =>
+      song[field].toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredSongs(filtered || []);
+    setSearch({
+      searchString: query,
+      searchField: field,
+    });
   };
-
   return (
     <div className="w-full min-h-screen">
-      <div className="flex flex-row justify-start items-center px-12">
-        <Button
-          className="hover:scale-105 transition-all duration-200"
-          color="secondary"
-          onPress={onOpen}
-        >
-          + Add Song
-        </Button>
-        {success && (
-          <Chip className="ml-8" color="success" onClose={() => setSuccess("")}>
-            {success}
-          </Chip>
-        )}
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalContent>
-            <ModalHeader>Add Song</ModalHeader>
-            <ModalBody>
-              <Input
-                isClearable
-                onClear={() => clearInput("title")}
-                placeholder="Title"
-                name="title"
-                value={songData.title}
-                onChange={handleChange}
-              />
-              <Input
-                isClearable
-                onClear={() => clearInput("artist")}
-                placeholder="Artist"
-                name="artist"
-                value={songData.artist}
-                onChange={handleChange}
-              />
-              <Input
-                isClearable
-                onClear={() => clearInput("releaseDate")}
-                label="Release Date"
-                placeholder="Release Date"
-                name="releaseDate"
-                value={songData.releaseDate}
-                onChange={handleChange}
-                type="date"
-              />
-              <Input
-                isClearable
-                onClear={() => clearInput("durationSeconds")}
-                placeholder="Duration (seconds)"
-                name="durationSeconds"
-                value={songData.durationSeconds}
-                onChange={handleChange}
-                type="number"
-              />
-              <Input
-                isClearable
-                label="Music File (.wav)"
-                onClear={() => clearInput("musicFile")}
-                placeholder="Music File (.wav)"
-                name="musicFile"
-                type="file"
-                onChange={handleChange}
-              />
-              <Input
-                isClearable
-                label="Album Art (.png)"
-                onClear={() => clearInput("albumArt")}
-                placeholder="Album Art (.png)"
-                name="albumArt"
-                type="file"
-                onChange={handleChange}
-              />
-              {error && <p style={{ color: "red" }}>{error}</p>}
-            </ModalBody>
-            <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}>
-                Close
-              </Button>
-              <Button
-                color="primary"
-                onPress={handleSubmit}
-                disabled={loadingToDb}
-                isLoading={loadingToDb}
-              >
-                {loadingToDb ? "Adding..." : "Add Song"}
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+      <div className="flex flex-col items-center justify-center w-[80%] mx-auto mt-2">
+        <div className="flex flex-row justify-start items-center w-full mb-4">
+          <Button
+            className="hover:scale-105 transition-all duration-200"
+            color="secondary"
+            onPress={onOpen}
+          >
+            + Add Song
+          </Button>
+          {success && (
+            <Chip
+              className="ml-8"
+              color="success"
+              onClose={() => setSuccess("")}
+            >
+              {success}
+            </Chip>
+          )}
+          <AddSongToDbModal
+            isOpen={isOpen}
+            onClose={onClose}
+            error={error}
+            setError={setError}
+            setSuccess={setSuccess}
+          />
+        </div>
+        <div className="flex flex-row items-start w-full mb-8 gap-2">
+          <Input
+            size="md"
+            placeholder="Search for songs..."
+            startContent={<FaSearch className="text-gray-400" />}
+            onChange={(e) => handleSearch(e.target.value, "name")}
+            isClearable
+          />
+          <Input
+            size="md"
+            placeholder="Search for artist..."
+            startContent={<FaSearch className="text-gray-400" />}
+            onChange={(e) => handleSearch(e.target.value, "artist")} //switch to aritst name when available
+            isClearable
+          />
+        </div>
+        <AdminSongTable
+          filteredSongs={filteredSongs}
+          setFilteredSongs={setFilteredSongs}
+          searched={search}
+        />
       </div>
     </div>
   );
