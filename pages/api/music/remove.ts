@@ -25,6 +25,9 @@ export default async function handler(
 
     try {
       // Find the song in the database
+      if (!mongoose.Types.ObjectId.isValid(songId)) {
+        return res.status(400).json({ message: "Invalid song ID" });
+      }
       const song = await MusicFile.findById(songId);
       if (!song) return res.status(404).json({ message: "Song not found" });
 
@@ -45,6 +48,9 @@ export default async function handler(
         .promise();
 
       // Delete the song record from the database
+      if (!mongoose.Types.ObjectId.isValid(songId)) {
+        return res.status(400).json({ message: "Invalid song ID" });
+      }
       await MusicFile.deleteOne({ _id: songId });
 
       return res.status(200).json({ message: "Song deleted successfully" });
