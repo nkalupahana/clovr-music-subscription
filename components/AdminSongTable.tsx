@@ -1,22 +1,13 @@
-import React, { useState, useEffect, useRef, useContext, use } from "react";
-import { useSession } from "next-auth/react";
+import React, { useState, useEffect, useContext } from "react";
 import { MusicFile } from "@/models/MusicFile";
 import {
-  Skeleton,
   Table,
   TableHeader,
   TableBody,
   TableColumn,
   TableRow,
   TableCell,
-  User,
-  Tab,
-  Modal,
-  ModalHeader,
-  ModalContent,
   useDisclosure,
-  ModalBody,
-  Button,
 } from "@nextui-org/react";
 import { CiCircleRemove } from "react-icons/ci";
 import { MusicContext } from "@/context/MusicContext";
@@ -26,7 +17,6 @@ import { DeleteSongModal } from "./DeleteSongModal";
 import { PlaySongTableIcon } from "./icons/PlaySongTableIcon";
 import { ColumnHeaderCell } from "./ColumnHeaderCell";
 import { SearchState } from "@/pages/explore";
-import { deleteSongFromDb } from "@/lib/DeleteSongFromDb";
 
 export const AdminSongTable = ({
   filteredSongs,
