@@ -10,14 +10,21 @@ export default function Subscriptions() {
   const { data: session, status, update } = useSession();
   const { data: stripeStatus } = useSWR("/api/stripe/status", fetcher);
 
+  // useEffect(() => {
+  //   const url = new URL(window.location.href);
+  //   const upd = url.searchParams.get("update");
+  //   if (upd?.trim() === "true") {
+  //     update();
+  //     window.location.search = "";
+  //   }
+  // }, [update]);
+
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const upd = url.searchParams.get("update");
-    if (upd?.trim() === "true") {
+    // Call update when stripeStatus changes
+    if (stripeStatus) {
       update();
-      window.location.search = "";
     }
-  }, [update]);
+  }, [stripeStatus]);
 
   const subscribe = useCallback(() => {
     window.location.href = "/api/stripe/subscribe";
@@ -32,10 +39,20 @@ export default function Subscriptions() {
       <div className="flex flex-col items-center justify-start min-h-[200vh]  py-2">
         <PageHeader>Subscriptions</PageHeader>
         {status === "authenticated" && (
-          <p>
-            <strong>Subscribed: </strong>
-            {String(session?.user?.subscribed)}
-          </p>
+          <div>
+            <p className={session?.user.subscribed ? "text-center text-xl" : "text-center"}>
+              <strong>Subscription Status: </strong>
+              {session?.user.subscribed ? "You are subscribed!" : "You are not subscribed"}
+            </p>
+            {!session?.user.subscribed && (
+              <ul className="list-disc pl-4 text-gray-500">
+              <li>A Subscription is $3.99 per month. It allows you to use our music in your YouTube content without recieving a copyright strike</li>
+              <li>Any use of our music in your content during the duration of your subscription will be valid forever</li>
+              <li>If you cancel your subscription, it will expire one month after the puchase date</li>
+              {/* Add more features as needed */}
+            </ul>
+            )}
+          </div>
         )}
         {session?.user.subscribed && stripeStatus && (
           <>
@@ -43,7 +60,7 @@ export default function Subscriptions() {
               <strong>Subscription Status:</strong> {stripeStatus.status}
             </p>
             <p>
-              <strong>Max Channels:</strong> {stripeStatus.quantity}
+              <strong>Number of Channels Purchased:</strong> {stripeStatus.quantity}
             </p>
           </>
         )}
@@ -53,27 +70,33 @@ export default function Subscriptions() {
           </Button>
         )}
         {session?.user.subscribed && stripeStatus && (
-          <div className="flex flex-row gap-4 mt-8">
-            <Button onClick={() => manage("payment_method_update")}>
-              Change Payment Method
-            </Button>
-            <Button onClick={() => manage("subscription_update")}>
-              Add/Remove Channels
-            </Button>
-            {!stripeStatus.cancelAt && (
-              <Button onClick={() => manage("subscription_cancel")}>
-                Cancel Subscription
+          <div className="flex flex-col">
+            <div className="flex flex-row flex-wrap gap-4 mt-8">
+              <Button onClick={() => manage("payment_method_update")}>
+                Change Payment Method
               </Button>
-            )}
+              <Button onClick={() => manage("subscription_update")}>
+                Add/Remove Channels
+              </Button>
+              {!stripeStatus.cancelAt && (
+                <Button onClick={() => manage("subscription_cancel")}>
+                  Cancel Subscription
+                </Button>
+              )}
+              {stripeStatus.cancelAt && (
+                <Button onClick={() => manage("uncancel")}>
+                  Uncancel Subscription
+                </Button>
+              )}
+            </div>
             {stripeStatus.cancelAt && (
-              <Button onClick={() => manage("uncancel")}>
-                Uncancel Subscription
-              </Button>
+              <div className="flex flex-row flex-wrap gap-4 mt-4 m-auto">
+                <h1>Subscription Will Expire On: {new Date(stripeStatus.cancelAt * 1000).toLocaleDateString()}</h1>
+              </div>
             )}
           </div>
         )}
         <br />
-        <Button onClick={() => update()}>Update</Button>
       </div>
     </VerifyAuthenticationStatus>
   );
