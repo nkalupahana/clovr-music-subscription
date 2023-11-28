@@ -16,6 +16,7 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
   NavbarMenu,
+  Image,
   Switch,
 } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
@@ -23,11 +24,12 @@ import { FaMoon } from "react-icons/fa";
 import { HiOutlineSun } from "react-icons/hi";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SignInWithGoogle } from "./SignInWithGoogle";
 
 const NAV_BUTTONS = [
   { name: "Home", href: "/" },
   { name: "Explore", href: "/explore" },
-  { name: "About", href: "/about" },
+
   { name: "Subscriptions", href: "/subscriptions" },
 ];
 
@@ -82,18 +84,29 @@ const NavBar = ({
           <p className="font-semibold">Signed in as</p>
           <p className="font-semibold">{session?.user?.email}</p>
         </DropdownItem>
-        {session?.user?.isAdmin &&
-          ADMIN_DROPDOWN_NAV_BUTTONS.map((button) => (
-            <DropdownItem
-              key={button.name}
-              onClick={() => {
-                router.push(button.href);
-              }}
-              id={button.name}
-            >
-              {button.name}
-            </DropdownItem>
-          ))}
+        {session?.user?.isAdmin && (
+          <DropdownItem
+            key="admin-dashboard"
+            onPress={() => router.push("/admin-dashboard")}
+          >
+            Admin Dashboard
+          </DropdownItem>
+        )}
+        <DropdownItem
+          key="about"
+          onPress={() => router.push("/about")}
+          id="about"
+        >
+          About CLOVR
+        </DropdownItem>
+        <DropdownItem
+          key="pricing"
+          onPress={() => router.push("/pricing")}
+          id="pricing"
+        >
+          Pricing Info
+        </DropdownItem>
+
 
         <DropdownItem
           key="logout"
@@ -112,23 +125,12 @@ const NavBar = ({
 
   const renderUnauthenticated = () => (
     <>
-      <Link href="/pricing" className="text-lg">
-        Pricing
-      </Link>
       <Link href="/about" className="text-lg">
         About
       </Link>
-      <Button
-        color="primary"
-        onClick={() =>
-          signIn(process.env.NODE_ENV === "development" ? "email" : "google")
-        }
-        className="pointer-cursor hover:bg-blue-200 text-lg"
-        id="google-sign-in"
-      >
-        Sign in with{" "}
-        <FcGoogle className="inline-block ml-2 bg-white" size={24} />
-      </Button>
+
+      <SignInWithGoogle />
+
     </>
   );
 
@@ -168,13 +170,13 @@ const NavBar = ({
 
       <NavbarBrand>
         <div
-          className="p-2 cursor-pointer"
+          className="p-2 cursor-pointer "
           onClick={() => {
             router.push("/");
           }}
           id="logo"
         >
-          <p className="font-bold text-inherit text-lg">CLOVR</p>
+          <Image src="/CLOVR_Logo.png" alt="CLOVR" width={150} height={150} />
         </div>
         <Switch
           onChange={() => setDarkMode(!darkMode)}

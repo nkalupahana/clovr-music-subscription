@@ -1,103 +1,16 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/swr";
-import { MusicFile } from "@/models/MusicFile";
-import { useRef, useState } from "react";
-import { Button } from "@nextui-org/button";
 import UnauthenticatedLanding from "@/components/Unauthenticatedlanding";
-import PageHeader from "@/components/PageHeader";
+
+import { HomePage } from "@/components/HomePage";
+
 export default function Index() {
   const { data: session, status } = useSession();
-  const { data: musicList } = useSWR("/api/music/list", fetcher);
-  const audio = useRef<HTMLAudioElement>(null);
-
+  const { data: stripeStatus } = useSWR("/api/stripe/status", fetcher);
   return (
     <>
-      <PageHeader>Home</PageHeader>
-      {status === "loading" && <p>Hang on there...</p>}
-      {status === "unauthenticated" && (
-        <>
-          <UnauthenticatedLanding />
-        </>
-      )}
-      {status === "authenticated" && (
-        <>
-          <p>Signed in as {session?.user?.email}</p>
-          <p>Is Admin: {String(session?.user?.isAdmin)}</p>
-          <p>Subscribed: {String(session?.user?.subscribed)}</p>
-          <Button color="primary" onClick={() => signOut()}>
-            Sign out
-          </Button>
-        </>
-      )}
-      <table>
-        <thead>
-          <tr>
-            <td>Song Name</td>
-            <td>Tempo</td>
-            <td>Play</td>
-            <td>Download</td>
-          </tr>
-        </thead>
-        {musicList?.map((music: MusicFile) => (
-          <tr key={music._id}>
-            <td>{music.name}</td>
-            <td>{music.tempo}</td>
-            <td
-              onClick={() => {
-                audio.current!.src = `/api/music/play?id=${music._id}`;
-                audio.current!.play();
-              }}
-            >
-              Play
-            </td>
-            <td
-              onClick={() => {
-                window.open(`/api/music/download?id=${music._id}`);
-              }}
-            >
-              Download
-            </td>
-          </tr>
-        ))}
-      </table>
-      <audio ref={audio}></audio>
-      <br />
-      <br />
-      <p>Upload Music</p>
-      <form
-        method="POST"
-        action="/api/music/upload"
-        encType="multipart/form-data"
-      >
-        <input type="text" name="songname" placeholder="Song Name" required />
-        <br />
-        <input type="text" name="artist" placeholder="Artist" required />
-        <br />
-        <input
-          type="text"
-          name="releaseDate"
-          placeholder="Release Date"
-          required
-        />
-        <br />
-        <input
-          type="number"
-          name="duration"
-          placeholder="Duration (secs)"
-          required
-        />
-        <br />
-        <label htmlFor="musicFile">Music File</label>
-        <br />
-        <input type="file" name="musicFile" accept="audio/*" required />
-        <br />
-        <label htmlFor="albumArtFile">Album Art File</label>
-        <br />
-        <input type="file" name="albumArtFile" accept="image/*" required />
-        <br />
-        <input type="submit" value="Upload" />
-      </form>
+      {status === "unauthenticated" ? <UnauthenticatedLanding /> : <HomePage />}
     </>
   );
 }

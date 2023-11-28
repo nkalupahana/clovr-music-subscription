@@ -5,10 +5,7 @@ import PageHeader from "@/components/PageHeader";
 
 const About = () => {
   return (
-    <div className="flex flex-col justify-start  min-h-screen p-2 gap-2">
-      
-        <PageHeader>About</PageHeader>
-      
+    <div className="flex flex-col justify-start   p-2 gap-2">
       <div className="about">
         <div className="about-text">
           <h1>About Our Company</h1>

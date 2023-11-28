@@ -1,20 +1,14 @@
 import React, { useState } from "react";
 import NavBar from "../components/NavbarComponent";
 import { StickyBottomMusicPlayer } from "@/components/StickyBottomMusicPlayer";
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  Link,
-  Button,
-} from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 
 type LayoutProps = {
   children: React.ReactNode;
 };
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const { data: session, status } = useSession();
   const [darkMode, setDarkMode] = useState(true);
   return (
     <main
@@ -22,11 +16,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     ${darkMode ? "dark" : ""} text-foreground bg-background 
     `}
     >
-      <NavBar setDarkMode={setDarkMode} darkMode={darkMode}/>
+      <NavBar setDarkMode={setDarkMode} darkMode={darkMode} />
       <div className="flex min-h-screen">
         <div className="flex-1">{children}</div>
       </div>
-      <StickyBottomMusicPlayer />
+      {status !== "unauthenticated" && <StickyBottomMusicPlayer />}
     </main>
   );
 };
