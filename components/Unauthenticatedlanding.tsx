@@ -1,70 +1,125 @@
 import React, { useContext, useEffect } from "react";
+import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
+import { FcGoogle } from "react-icons/fc";
 import { MusicContext } from "@/context/MusicContext";
-import PageHeader from "./PageHeader";
-import { Image } from "@nextui-org/react";
-import { PlayingSongCard } from "./PlayingSongCard";
-import { Button } from "@nextui-org/react";
-import About from "@/pages/about";
-import Pricing from "@/pages/pricing";
+import { Button, Divider, Card, CardBody, Image } from "@nextui-org/react";
+import { LandingSongCard } from "./LandingSongCard";
+import { PricingCard } from "./PricingCard";
+import { LandingFooter } from "./LandingFooter";
 
 const UnauthenticatedLanding = () => {
   const context = useContext(MusicContext);
+  const router = useRouter();
   const musicList = context?.musicList;
+  const [playingSong, setPlayingSong] = React.useState<any>(null);
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-[200vh] py-2 ">
-      <PageHeader>Welcome to CLOVR Records</PageHeader>
-      <div className="position-relative flex flex-col items-center">
-        <div className="flex flex-row w-[70%] mx-auto justify justify-between">
-          <div className="flex flex-col flex-1 ">
-            <p className="align-start text-5xl font-bold m-4">
-              Your source of freshly picked beats
-            </p>
-            <p className="text-xl flex-grow">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi non
-              nulla nesciunt sapiente quidem dolore magni aperiam, minus
-              provident molestiae quaerat quibusdam consequuntur temporibus,
-              perferendis perspiciatis sed, optio officiis inventore!
-            </p>
-            <div className="flex flex-row justify-evenly items-center">
-              <Button
-                className="hover:scale-105 transition-all duration-200"
-                size="lg"
-                color="primary"
-                onPress={() => {
-                  window.location.href = "#pricing";
-                }}
-              >
-                Pricing
-              </Button>
-              <Button
-                className="hover:scale-105 transition-all duration-200"
-                color="primary"
-                onPress={() => {
-                  window.location.href = "#about";
-                }}
-              >
-                About CLOVR
-              </Button>
-            </div>
-          </div>
-          <div className="flex-1 flex justify-center items-center">
-            <Image
-              src="/CLOVR_bear.png"
-              alt={"IMAGE"}
-              className="w-full h-full object-cover" // CSS for the image
-            />
-          </div>
+    <div className="flex flex-col items-center justify-start py-2 ">
+      <div className="flex flex-col items-center justify-center w-[75%]">
+        <h1 className="text-6xl font-bold text-center">
+          Royalty Free <span className="text-primary">Music</span> For Your
+          Content
+        </h1>
+        <h2 className="text-3xl text-gray-400 text-center mt-16">
+          Get unlimited access to our music and sound effects catalog for your
+          videos, streams and podcasts. Our license comes with all necessary
+          rights included.
+        </h2>
+        <div className="flex flex-row mt-16 gap-4">
+          <Button
+            onClick={() => console.log("clicked")}
+            size={"lg"}
+            radius={"none"}
+            color="primary"
+          >
+            <span className="text-xl">Get Started</span>
+          </Button>
+          <Button
+            onClick={() => {
+              router.push("/about");
+            }}
+            size={"lg"}
+            radius={"none"}
+          >
+            <span className="text-xl">About CLOVR</span>
+          </Button>
         </div>
-        
       </div>
-
-      <div id="about">
-        <About />
+      <Divider className="w-[75%] mt-16" />
+      <h1 className="text-4xl font-bold text-center mt-16">
+        Checkout Some of Our Music
+      </h1>
+      {musicList && (
+        <div className="grid-container mt-8 w-[75%]">
+          <LandingSongCard
+            playingSong={playingSong}
+            setPlayingSong={setPlayingSong}
+            song={musicList[0]}
+          />
+          <LandingSongCard
+            playingSong={playingSong}
+            setPlayingSong={setPlayingSong}
+            song={musicList[1]}
+          />
+          <LandingSongCard
+            playingSong={playingSong}
+            setPlayingSong={setPlayingSong}
+            song={musicList[2]}
+          />
+          <LandingSongCard
+            playingSong={playingSong}
+            setPlayingSong={setPlayingSong}
+            song={musicList[3]}
+          />
+        </div>
+      )}
+      <Divider className="w-[75%] mt-16" />
+      <h1 className="text-4xl font-bold text-center mt-16">
+        About Our Pricing Plans
+      </h1>
+      <div className="flex flex-col items-center justify-center w-[75%] mt-8 mb-8">
+        <h2 className="text-3xl text-gray-400 text-center mt-16">
+          Get unlimited access to our music and sound effects catalog for your
+          videos, streams and podcasts. Our license comes with all necessary
+          rights included.
+        </h2>
+        <div className="flex flex-row mt-16 gap-12">
+          <PricingCard
+            price={"$3.99 / Month"}
+            name={"1 Channel"}
+            image={"CLOVR_bear_2.png"}
+          />
+          <PricingCard
+            price={"$9.99 / Month"}
+            name={"3 Channels"}
+            image={"CLOVR_bear_3.png"}
+          />
+          <PricingCard
+            price={"$12.99 / Month"}
+            name={"5 Channels"}
+            image={"CLOVR_bear_4.png"}
+          />
+        </div>
+        <h2 className="text-xl text-gray-400 text-center mt-16">
+          Not ready to commit? Sign in with your Google account and explore our
+          songs!
+        </h2>
+        <Button
+          color="primary"
+          onClick={() =>
+            signIn(process.env.NODE_ENV === "development" ? "email" : "google")
+          }
+          className="pointer-cursor hover:bg-blue-200 text-lg mt-4"
+          id="google-sign-in"
+        >
+          Sign in with{" "}
+          <FcGoogle className="inline-block ml-2 bg-white" size={24} />
+        </Button>
       </div>
-
-      <div id="pricing">
-        <Pricing />
+      <Divider className="w-[75%] mt-16" />
+      <div className="flex flex-row justify-between w-[75%] mt-16">
+        <LandingFooter />
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
   NavbarMenu,
+  Image,
   Switch,
 } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
@@ -113,9 +114,7 @@ const NavBar = ({
       <Button
         color="primary"
         onClick={() =>
-          signIn(
-            process.env.NODE_ENV === "development" ? "email" : "google"
-          )
+          signIn(process.env.NODE_ENV === "development" ? "email" : "google")
         }
         className="pointer-cursor hover:bg-blue-200 text-lg"
         id="google-sign-in"
@@ -162,13 +161,16 @@ const NavBar = ({
 
       <NavbarBrand>
         <div
-          className="p-2 cursor-pointer"
+          className="p-2 cursor-pointer "
           onClick={() => {
             router.push("/");
           }}
           id="logo"
         >
-          <p className="font-bold text-inherit text-lg">CLOVR</p>
+          <Image src="/CLOVR_Logo.png" alt="CLOVR" 
+          width={150}
+          height={150}
+          />
         </div>
         <Switch
           onChange={() => setDarkMode(!darkMode)}

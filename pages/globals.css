@@ -29,3 +29,34 @@
   animation: dropAnimation 1s ease forwards;
 }
 
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  gap: 20px; /* Space between items */
+}
+
+.playing .darken-image {
+  filter: brightness(50%);
+}
+
+.playing .icon-overlay {
+  display: block;
+}
+
+.hover-effect:hover .icon-overlay {
+  display: block;
+}
+
+.hover-effect:hover .darken-image {
+  filter: brightness(50%);
+}
+
+.icon-overlay {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  cursor: pointer;
+}
