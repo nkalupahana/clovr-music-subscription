@@ -11,7 +11,7 @@ import React, {
 import { MusicFile } from "@/models/MusicFile";
 import { getFavoriteSongs, toggleFavoriteSong } from "@/lib/Favoritehandler";
 
-interface MusicContextProps {
+export interface MusicContextProps {
   musicList: any[]; // Replace any with the actual type of your music list
   loadMusicList: () => Promise<void>;
   favoriteSongs: any[];
