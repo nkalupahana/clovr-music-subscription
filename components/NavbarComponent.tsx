@@ -24,11 +24,12 @@ import { FaMoon } from "react-icons/fa";
 import { HiOutlineSun } from "react-icons/hi";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SignInWithGoogle } from "./SignInWithGoogle";
 
 const NAV_BUTTONS = [
   { name: "Home", href: "/" },
   { name: "Explore", href: "/explore" },
-  { name: "About", href: "/about" },
+
   { name: "Subscriptions", href: "/subscriptions" },
 ];
 
@@ -87,6 +88,20 @@ const NavBar = ({
             Admin Dashboard
           </DropdownItem>
         )}
+        <DropdownItem
+          key="about"
+          onPress={() => router.push("/about")}
+          id="about"
+        >
+          About CLOVR
+        </DropdownItem>
+        <DropdownItem
+          key="pricing"
+          onPress={() => router.push("/pricing")}
+          id="pricing"
+        >
+          Pricing Info
+        </DropdownItem>
 
         <DropdownItem
           key="logout"
@@ -105,23 +120,10 @@ const NavBar = ({
 
   const renderUnauthenticated = () => (
     <>
-      <Link href="/pricing" className="text-lg">
-        Pricing
-      </Link>
       <Link href="/about" className="text-lg">
         About
       </Link>
-      <Button
-        color="primary"
-        onClick={() =>
-          signIn(process.env.NODE_ENV === "development" ? "email" : "google")
-        }
-        className="pointer-cursor hover:bg-blue-200 text-lg"
-        id="google-sign-in"
-      >
-        Sign in with{" "}
-        <FcGoogle className="inline-block ml-2 bg-white" size={24} />
-      </Button>
+      <SignInWithGoogle />
     </>
   );
 
@@ -167,10 +169,7 @@ const NavBar = ({
           }}
           id="logo"
         >
-          <Image src="/CLOVR_Logo.png" alt="CLOVR" 
-          width={150}
-          height={150}
-          />
+          <Image src="/CLOVR_Logo.png" alt="CLOVR" width={150} height={150} />
         </div>
         <Switch
           onChange={() => setDarkMode(!darkMode)}

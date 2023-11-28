@@ -18,20 +18,10 @@ export const PricingCard = ({
             className="object-cover w-full h-48"
             shadow="md"
             src={image}
-            
           />
           <h1 className="text-3xl font-bold text-center mt-8">{name}</h1>
           <h2 className="text-xl text-gray-400 text-center mt-8">{price}</h2>
         </div>
-        <Button 
-            onClick={() => console.log("clicked")}
-            size={"lg"}
-            radius={"none"}
-            color="primary"
-            className="mt-4"
-            >
-            <span className="text-xl">Get Started</span>
-            </Button>
       </CardBody>
     </Card>
   );
