@@ -5,7 +5,7 @@ import { fetcher } from "@/lib/swr";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { LandingSongCard } from "./LandingSongCard";
-import { Image } from "@nextui-org/react";
+import { Image, ScrollShadow } from "@nextui-org/react";
 
 export const HomePage = () => {
   const { data: session, status } = useSession();
@@ -39,15 +39,17 @@ export const HomePage = () => {
         )}
       </div>
       {musicList && (
-        <div className="flex flex-row w-full">
-          <div className="flex flex-col items-center justify-center flex-2 overflow-x-auto ">
-            <div className="flex flex-col items-start justify-center w-full">
+        <div className="flex flex-row w-full ">
+          <div className="flex flex-col items-center justify-center w-[70%] ">
+            <ScrollShadow
+              orientation="horizontal"
+              className="flex flex-col items-start justify-center w-full overflow-x-auto"
+            >
               <h1 className="text-4xl font-bold text-center mt-8 mb-2 ">
                 New Music:
               </h1>
-
               <div className="flex flex-row gap-4">
-                {musicList.slice(0, 5).map((song: any) => {
+                {musicList.slice(0, 20).map((song: any) => {
                   return (
                     <LandingSongCard
                       playingSong={playingSong}
@@ -58,7 +60,8 @@ export const HomePage = () => {
                   );
                 })}
               </div>
-            </div>
+            </ScrollShadow>
+
             <div className="flex flex-col items-start justify-center w-full">
               <h1 className="text-4xl font-bold text-center mt-8 mb-2 ">
                 New Music:
@@ -96,7 +99,7 @@ export const HomePage = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center justify-start flex-1 ">
+          <div className="flex flex-col items-center justify-start  ">
             <Image
               src="/CLOVR_bear_1.png"
               alt="Landing page"
