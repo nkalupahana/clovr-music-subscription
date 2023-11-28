@@ -33,6 +33,10 @@ const NAV_BUTTONS = [
   { name: "Subscriptions", href: "/subscriptions" },
 ];
 
+const ADMIN_DROPDOWN_NAV_BUTTONS = [
+  { name: "Admin Dashboard", href: "/admin-dashboard" },
+];
+
 const NavBar = ({
   setDarkMode,
   darkMode,
@@ -103,6 +107,7 @@ const NavBar = ({
           Pricing Info
         </DropdownItem>
 
+
         <DropdownItem
           key="logout"
           color="danger"
@@ -123,7 +128,9 @@ const NavBar = ({
       <Link href="/about" className="text-lg">
         About
       </Link>
+
       <SignInWithGoogle />
+
     </>
   );
 

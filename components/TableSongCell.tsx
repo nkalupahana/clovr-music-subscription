@@ -5,10 +5,13 @@ import { SearchState } from "@/pages/explore";
 
 const TableSongCell = ({
   song,
-  searched,
+  searched = {
+    searchString: "",
+    searchField: "",
+  },
 }: {
   song: MusicFile;
-  searched: SearchState;
+  searched?: SearchState;
 }) => {
   // Initialize the search string
 

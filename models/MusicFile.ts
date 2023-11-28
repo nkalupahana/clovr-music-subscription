@@ -10,6 +10,10 @@ export interface MusicFile extends mongoose.Document {
     uploadTime: Date
 }
 
+export interface ListedMusicFile extends MusicFile {
+    downloadCount: number
+}
+
 const MusicFileSchema = new mongoose.Schema<MusicFile>({
     name: {
         type: String,
