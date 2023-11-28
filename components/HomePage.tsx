@@ -39,7 +39,7 @@ export const HomePage = () => {
         )}
       </div>
       {musicList && (
-        <div className="flex flex-row w-full ">
+        <div className="flex flex-row w-screen ">
           <div className="flex flex-col items-center justify-center w-[70%] ">
             <ScrollShadow
               orientation="horizontal"
@@ -61,14 +61,15 @@ export const HomePage = () => {
                 })}
               </div>
             </ScrollShadow>
-
-            <div className="flex flex-col items-start justify-center w-full">
+            <ScrollShadow
+              orientation="horizontal"
+              className="flex flex-col items-start justify-center w-full overflow-x-auto"
+            >
               <h1 className="text-4xl font-bold text-center mt-8 mb-2 ">
                 New Music:
               </h1>
-
               <div className="flex flex-row gap-4">
-                {musicList.slice(0, 5).map((song: any) => {
+                {musicList.slice(0, 20).map((song: any) => {
                   return (
                     <LandingSongCard
                       playingSong={playingSong}
@@ -79,14 +80,16 @@ export const HomePage = () => {
                   );
                 })}
               </div>
-            </div>
-            <div className="flex flex-col items-start justify-center w-full">
+            </ScrollShadow>
+            <ScrollShadow
+              orientation="horizontal"
+              className="flex flex-col items-start justify-center w-full overflow-x-auto p-4"
+            >
               <h1 className="text-4xl font-bold text-center mt-8 mb-2 ">
                 New Music:
               </h1>
-
               <div className="flex flex-row gap-4">
-                {musicList.slice(0, 5).map((song: any) => {
+                {musicList.slice(0, 20).map((song: any) => {
                   return (
                     <LandingSongCard
                       playingSong={playingSong}
@@ -97,17 +100,9 @@ export const HomePage = () => {
                   );
                 })}
               </div>
-            </div>
+            </ScrollShadow>
           </div>
-          <div className="flex flex-col items-center justify-start  ">
-            <Image
-              src="/CLOVR_bear_1.png"
-              alt="Landing page"
-              className="object-cover mt-16"
-              width={400}
-              height={400}
-            />
-          </div>
+          <div className="flex flex-col items-center justify-start  "></div>
         </div>
       )}
     </div>

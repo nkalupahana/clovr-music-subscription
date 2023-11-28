@@ -8,14 +8,10 @@ export const LandingSongCard = ({
   song,
   playingSong,
   setPlayingSong,
-  width = 48,
-  height = 60,
 }: {
   song: MusicFile;
   playingSong: MusicFile | null;
   setPlayingSong: React.Dispatch<React.SetStateAction<MusicFile | null>>;
-  width?: number;
-  height?: number;
 }) => {
   const musicContext = useContext(MusicContext);
 
@@ -41,7 +37,7 @@ export const LandingSongCard = ({
   return (
     <Card
       isBlurred
-      className={`border-none bg-background/60 dark:bg-primary  mx-auto hover:scale-105 transition-all w-${width} h-${height}`}
+      className={`border-none bg-background/60 dark:bg-primary mx-auto hover:scale-105 transition-all w-60 `}
       shadow="sm"
       id="playing-song-card"
     >
@@ -71,8 +67,8 @@ export const LandingSongCard = ({
               )}
             </div>
           </div>
-          <div className="flex flex-col items-center justify-between mt-4">
-            <h1 className="text-2xl font-medium">{song?.name}</h1>
+          <div className="flex flex-col items-center justify-center mt-4">
+            <h1 className="text-xl font-medium">{song?.name}</h1>
             <h2 className="text-base text-default-900/60">{song?.artist}</h2>
           </div>
         </div>
