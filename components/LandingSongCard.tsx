@@ -21,14 +21,10 @@ export const LandingSongCard = ({
 }) => {
   const context = useContext(MusicContext);
 
-  useEffect(() => {
-    console.log("song", playingSong);
-  }, [playingSong]);
-
   return (
     <Card
       isBlurred
-      className="border-none bg-background/60 dark:bg-primary drop-in w-[50%] mx-auto"
+      className="border-none bg-background/60 dark:bg-primary w-[50%] mx-auto hover:scale-105 transition-all"
       shadow="sm"
       id="playing-song-card"
     >
