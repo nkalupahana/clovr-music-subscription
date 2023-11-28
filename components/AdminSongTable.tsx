@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { MusicFile } from "@/models/MusicFile";
+import { MusicFile, ListedMusicFile } from "@/models/MusicFile";
 import {
   Table,
   TableHeader,
@@ -128,7 +128,7 @@ export const AdminSongTable = ({
           </TableColumn>
         </TableHeader>
         <TableBody items={musicList}>
-          {musicList?.map((music: MusicFile, index: number) => {
+          {musicList?.map((music: ListedMusicFile, index: number) => {
             return (
               <TableRow
                 key={music._id}
