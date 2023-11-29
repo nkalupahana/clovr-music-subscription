@@ -76,7 +76,7 @@ export const NavbarComponent = ({
           className="transition-transform"
           color="primary"
           name="Jason Hughes"
-          size="lg"
+          size="md"
           src={session?.user?.image}
           id="dropdown-trigger"
         />
@@ -175,7 +175,6 @@ export const NavbarComponent = ({
     <Navbar
       position="static"
       maxWidth="full"
-      height={60}
       isMenuOpen={smallMenuOpen}
       isBordered
     >
