@@ -7,7 +7,7 @@ type LayoutProps = {
   children: React.ReactNode;
 };
 
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { data: session, status } = useSession();
   const [darkMode, setDarkMode] = useState(true);
   return (
@@ -24,3 +24,5 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     </main>
   );
 };
+
+export default Layout;
