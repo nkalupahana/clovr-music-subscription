@@ -7,7 +7,7 @@ import { AdminUserDashboard } from "@/components/AdminUserDashboard";
 
 const AdminDashboard = () => {
   return (
-    <div className="flex flex-col items-center justify-center  w-full py-2">
+    <div className="content-container">
       <PageHeader>Admin Dashboard</PageHeader>
       <Tabs
         aria-label="Options"

@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import { CiCircleRemove } from "react-icons/ci";
 import { MusicContext } from "@/context/MusicContext";
-import ToggleAudioButton from "./ToggleAudioButton";
+import ToggleAudioButton from "./icons/ToggleAudioIcon";
 import TableSongCell from "./TableSongCell";
 import { DeleteSongModal } from "./DeleteSongModal";
 import { PlaySongTableIcon } from "./icons/PlaySongTableIcon";

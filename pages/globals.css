@@ -13,6 +13,10 @@
     background-position: 0% 50%;
   }
 }
+.content-container {
+  @apply flex flex-col items-center justify-start min-h-screen py-2;
+}
+
 
 @keyframes dropAnimation {
   0% {
