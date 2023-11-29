@@ -4,6 +4,7 @@ import { PlayingSongCard } from "@/components/SongCard";
 import { FaSearch } from "react-icons/fa";
 import { Button, Input } from "@nextui-org/react";
 import SongTable from "@/components/SongTable";
+import SongTableSmall from "@/components/SongTableSmall";
 import VerifyAuthenticationStatus from "@/components/HigherOrderComponents/VerifyAuthenticationStatus";
 
 export interface SearchState {
@@ -112,11 +113,19 @@ const Explore = () => {
         </div>
 
         <div className="flex min-w-[80%] mt-4 items-center justify-center overflow-y-auto">
-          <SongTable
-            filteredSongs={filteredSongs}
-            setFilteredSongs={setFilteredSongs}
-            searched={search}
-          />
+          {window.innerWidth > 768 ? (
+            <SongTable
+              filteredSongs={filteredSongs}
+              setFilteredSongs={setFilteredSongs}
+              searched={search}
+            />
+          ) : (
+            <SongTableSmall
+              filteredSongs={filteredSongs}
+              setFilteredSongs={setFilteredSongs}
+              searched={search}
+            />
+          )}
         </div>
       </div>
     </VerifyAuthenticationStatus>

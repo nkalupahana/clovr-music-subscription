@@ -20,7 +20,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="flex min-h-screen">
         <div className="flex-1">{children}</div>
       </div>
-      {status === "authenticated" && <StickyBottomMusicPlayer />}
+      {status === "authenticated" && window.innerWidth > 768 && (
+        <StickyBottomMusicPlayer />
+      )}
     </main>
   );
 };
