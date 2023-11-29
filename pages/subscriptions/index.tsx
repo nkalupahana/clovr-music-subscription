@@ -20,11 +20,11 @@ export default function Subscriptions() {
   // }, [update]);
 
   useEffect(() => {
-    // Call update when stripeStatus changes
     if (stripeStatus) {
       update();
     }
-  }, [stripeStatus, update]);
+  }, [stripeStatus]); // eslint-disable-line react-hooks/exhaustive-deps
+  
 
   const subscribe = useCallback(() => {
     window.location.href = "/api/stripe/subscribe";
