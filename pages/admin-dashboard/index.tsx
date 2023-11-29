@@ -4,11 +4,9 @@ import { Tabs, Tab } from "@nextui-org/react";
 import { AdminMusicDashboard } from "@/components/Admin/AdminMusicDashboard";
 import { AdminUserDashboard } from "@/components/Admin/AdminUserDashboard";
 
-
 const AdminDashboard = () => {
   return (
     <div className="content-container">
-      <PageHeader>Admin Dashboard</PageHeader>
       <Tabs
         aria-label="Options"
         color="primary"
