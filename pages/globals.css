@@ -13,10 +13,10 @@
     background-position: 0% 50%;
   }
 }
+
 .content-container {
   @apply flex flex-col items-center justify-start min-h-screen py-2;
 }
-
 
 @keyframes dropAnimation {
   0% {
@@ -35,8 +35,22 @@
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 2 columns */
   gap: 20px; /* Space between items */
+  grid-template-columns: repeat(4, 1fr); /* default to 4 columns */
+}
+
+/* Adjust for medium-sized screens, e.g., tablets */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  }
+}
+
+/* Adjust for small screens, e.g., phones */
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr); /* 1 column */
+  }
 }
 
 .playing .darken-image {
