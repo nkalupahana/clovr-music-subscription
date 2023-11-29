@@ -4,7 +4,7 @@ import { BsShuffle } from "react-icons/bs";
 import { Card, CardBody, Image, Button } from "@nextui-org/react";
 import SongHeart from "./icons/SongHeart";
 import SongProgressBar from "./SongProgressBar";
-import ToggleAudioButton from "./ToggleAudioButton";
+import ToggleAudioButton from "./icons/ToggleAudioIcon";
 import { MusicContext } from "@/context/MusicContext";
 import TableSongCell from "./TableSongCell";
 

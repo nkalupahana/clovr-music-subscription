@@ -1,14 +1,12 @@
 import React from "react";
 import PageHeader from "@/components/PageHeader";
 import { Tabs, Tab } from "@nextui-org/react";
-import { AdminMusicDashboard } from "@/components/AdminMusicDashboard";
-import { AdminUserDashboard } from "@/components/AdminUserDashboard";
-
+import { AdminMusicDashboard } from "@/components/Admin/AdminMusicDashboard";
+import { AdminUserDashboard } from "@/components/Admin/AdminUserDashboard";
 
 const AdminDashboard = () => {
   return (
-    <div className="flex flex-col items-center justify-center  w-full py-2">
-      <PageHeader>Admin Dashboard</PageHeader>
+    <div className="content-container">
       <Tabs
         aria-label="Options"
         color="primary"

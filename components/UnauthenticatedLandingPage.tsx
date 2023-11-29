@@ -68,6 +68,26 @@ const UnauthenticatedLanding = () => {
             setPlayingSong={setPlayingSong}
             song={musicList[3]}
           />
+          <LandingSongCard
+            playingSong={playingSong}
+            setPlayingSong={setPlayingSong}
+            song={musicList[4]}
+          />
+          <LandingSongCard
+            playingSong={playingSong}
+            setPlayingSong={setPlayingSong}
+            song={musicList[5]}
+          />
+          <LandingSongCard
+            playingSong={playingSong}
+            setPlayingSong={setPlayingSong}
+            song={musicList[6]}
+          />
+          <LandingSongCard
+            playingSong={playingSong}
+            setPlayingSong={setPlayingSong}
+            song={musicList[7]}
+          />
         </div>
       )}
       <Divider className="w-[75%] mt-16" />

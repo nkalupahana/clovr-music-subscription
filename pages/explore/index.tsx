@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { MusicContext } from "@/context/MusicContext";
-import { PlayingSongCard } from "@/components/PlayingSongCard";
+import { MusicContext, MusicContextProps } from "@/context/MusicContext";
+import { PlayingSongCard } from "@/components/SongCard";
 import { FaSearch } from "react-icons/fa";
 import { Button, Input } from "@nextui-org/react";
 import SongTable from "@/components/SongTable";
-import PageHeader from "@/components/PageHeader";
 import VerifyAuthenticationStatus from "@/components/HigherOrderComponents/VerifyAuthenticationStatus";
 
 export interface SearchState {
@@ -13,8 +12,8 @@ export interface SearchState {
 }
 
 const Explore = () => {
-  const audio = useRef<HTMLAudioElement>(null);
   const context = useContext(MusicContext);
+
   const { musicList } = context || {};
   const [filteredSongs, setFilteredSongs] = useState<any[]>(musicList || []);
   const [search, setSearch] = useState<SearchState>({
@@ -86,9 +85,7 @@ const Explore = () => {
 
   return (
     <VerifyAuthenticationStatus>
-      <div className="flex flex-col items-center justify-start min-h-[200vh]  py-2">
-        <PageHeader>Explore</PageHeader>
-
+      <div className="content-container">
         <PlayingSongCard />
         <Button
           className="mt-4"
@@ -121,7 +118,6 @@ const Explore = () => {
             searched={search}
           />
         </div>
-        <audio ref={audio}></audio>
       </div>
     </VerifyAuthenticationStatus>
   );

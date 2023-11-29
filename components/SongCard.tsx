@@ -5,7 +5,7 @@ import { BsShuffle } from "react-icons/bs";
 import { MusicContext } from "@/context/MusicContext";
 import SongHeart from "./icons/SongHeart";
 import SongProgressBar from "./SongProgressBar";
-import ToggleAudioButton from "./ToggleAudioButton";
+import ToggleAudioButton from "./icons/ToggleAudioIcon";
 
 export const PlayingSongCard = () => {
   const [songProgress, setSongProgress] = useState(0);

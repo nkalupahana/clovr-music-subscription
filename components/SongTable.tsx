@@ -15,7 +15,7 @@ import {
 import { FaDownload, FaPlay, FaPause, FaHeart } from "react-icons/fa";
 import SongHeart from "@/components/icons/SongHeart";
 import { MusicContext } from "@/context/MusicContext";
-import ToggleAudioButton from "./ToggleAudioButton";
+import ToggleAudioButton from "./icons/ToggleAudioIcon";
 import TableSongCell from "./TableSongCell";
 import { handleDownload } from "@/lib/DownloadHandler";
 import { PlaySongTableIcon } from "./icons/PlaySongTableIcon";
