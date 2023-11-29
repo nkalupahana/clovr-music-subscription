@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
 import {
@@ -6,8 +6,6 @@ import {
   Navbar,
   NavbarBrand,
   NavbarContent,
-  NavbarItem,
-  Button,
   Avatar,
   Dropdown,
   DropdownTrigger,
@@ -26,36 +24,40 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignInWithGoogle } from "./SignInWithGoogle";
 
-const NAV_BUTTONS = [
-  { name: "Home", href: "/" },
-  { name: "Explore", href: "/explore" },
+// const NAV_BUTTONS = [
+//   { name: "Home", href: "/" },
+//   { name: "Explore", href: "/explore" },
 
-  { name: "Subscriptions", href: "/subscriptions" },
-];
+//   { name: "Subscriptions", href: "/subscriptions" },
+// ];
 
-const ADMIN_DROPDOWN_NAV_BUTTONS = [
-  { name: "Admin Dashboard", href: "/admin-dashboard" },
-];
-
-const NavBar = ({
+export const NavbarComponent = ({
   setDarkMode,
   darkMode,
 }: {
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
   darkMode: boolean;
 }) => {
+  const NAV_BUTTONS = useMemo(
+    () => [
+      { name: "Home", href: "/" },
+      { name: "Explore", href: "/explore" },
+      { name: "Subscriptions", href: "/subscriptions" },
+    ],
+    []
+  );
   const { data: session, status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
 
-  const renderNavigation = () => (
+  const AuthenticatedNavigation = () => (
     <NavbarContent className="hidden sm:flex gap-4" justify="center">
       {NAV_BUTTONS.map((button) => (
         <Link href={button.href} key={button.name}>
           <Chip
             color={pathname === button.href ? "primary" : "default"}
             variant="shadow"
-            className="text-lg p-2 hover:scale-105 transition-transform"
+            className="text-2xl p-4 hover:scale-105 transition-transform"
             id={button.name}
           >
             {button.name}
@@ -65,7 +67,7 @@ const NavBar = ({
     </NavbarContent>
   );
 
-  const renderAuthenticated = () => (
+  const AuthenticatedDropdown = () => (
     <Dropdown placement="bottom-end" id="dropdown">
       <DropdownTrigger>
         <Avatar
@@ -74,7 +76,7 @@ const NavBar = ({
           className="transition-transform"
           color="primary"
           name="Jason Hughes"
-          size="sm"
+          size="lg"
           src={session?.user?.image}
           id="dropdown-trigger"
         />
@@ -107,7 +109,6 @@ const NavBar = ({
           Pricing Info
         </DropdownItem>
 
-
         <DropdownItem
           key="logout"
           color="danger"
@@ -123,20 +124,19 @@ const NavBar = ({
     </Dropdown>
   );
 
-  const renderUnauthenticated = () => (
+  const UnauthenticatedNavigation = () => (
     <>
       <Link href="/about" className="text-lg">
         About
       </Link>
 
       <SignInWithGoogle />
-
     </>
   );
 
   const [smallMenuOpen, setSmallMenuOpen] = useState(false);
 
-  const renderSmallNavigation = () => (
+  const AuthenticatedNavigationSmall = () => (
     <NavbarMenu className="bg-gray-100">
       {NAV_BUTTONS.map((item, index) => (
         <NavbarMenuItem key={index}>
@@ -153,10 +153,29 @@ const NavBar = ({
     </NavbarMenu>
   );
 
+  const LogoAndSwitch = () => (
+    <div className="flex justify-between items-center">
+      <Link href="/">
+        <div className="p-2 cursor-pointer " id="logo">
+          <Image src="/CLOVR_Logo.png" alt="CLOVR" width={150} height={150} />
+        </div>
+      </Link>
+      <Switch
+        onChange={() => setDarkMode(!darkMode)}
+        size="sm"
+        color="success"
+        className="ml-2"
+        startContent={<HiOutlineSun />}
+        endContent={<FaMoon />}
+      />
+    </div>
+  );
+
   return (
     <Navbar
       position="static"
       maxWidth="full"
+      height={60}
       isMenuOpen={smallMenuOpen}
       isBordered
     >
@@ -166,35 +185,19 @@ const NavBar = ({
           className="text-2xl"
         />
       </NavbarContent>
-      {renderSmallNavigation()}
+      <AuthenticatedNavigationSmall />
 
       <NavbarBrand>
-        <div
-          className="p-2 cursor-pointer "
-          onClick={() => {
-            router.push("/");
-          }}
-          id="logo"
-        >
-          <Image src="/CLOVR_Logo.png" alt="CLOVR" width={150} height={150} />
-        </div>
-        <Switch
-          onChange={() => setDarkMode(!darkMode)}
-          size="sm"
-          color="success"
-          className="ml-2"
-          startContent={<HiOutlineSun />}
-          endContent={<FaMoon />}
-        />
+        <LogoAndSwitch />
       </NavbarBrand>
-      {status === "authenticated" && renderNavigation()}
+      {status === "authenticated" && <AuthenticatedNavigation />}
       <NavbarContent justify="end">
-        {status === "unauthenticated"
-          ? renderUnauthenticated()
-          : renderAuthenticated()}
+        {status === "unauthenticated" ? (
+          <UnauthenticatedNavigation />
+        ) : (
+          <AuthenticatedDropdown />
+        )}
       </NavbarContent>
     </Navbar>
   );
 };
-
-export default NavBar;

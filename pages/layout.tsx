@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import NavBar from "../components/NavbarComponent";
+import { NavbarComponent } from "@/components/NavbarComponent";
 import { StickyBottomMusicPlayer } from "@/components/StickyBottomMusicPlayer";
 import { useSession } from "next-auth/react";
 
@@ -16,7 +16,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         darkMode ? "dark" : ""
       } text-foreground bg-background transition-colors duration-500`}
     >
-      <NavBar setDarkMode={setDarkMode} darkMode={darkMode} />
+      <NavbarComponent setDarkMode={setDarkMode} darkMode={darkMode} />
       <div className="flex min-h-screen">
         <div className="flex-1">{children}</div>
       </div>
