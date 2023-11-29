@@ -43,7 +43,7 @@ export const LandingSongCard = ({
     >
       <CardBody>
         <div
-          className="flex flex-col items-center justify-center"
+          className="flex flex-col items-center justify-center cursor-pointer"
           onClick={handlePlayPauseClick}
         >
           <div

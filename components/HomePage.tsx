@@ -43,12 +43,12 @@ export const HomePage = () => {
           <div className="flex flex-col items-center justify-center w-[70%] ">
             <ScrollShadow
               orientation="horizontal"
-              className="flex flex-col items-start justify-center w-full overflow-x-auto"
+              className="flex flex-col items-start justify-center w-full overflow-x-auto "
             >
               <h1 className="text-4xl font-bold text-center mt-8 mb-2 ">
                 New Music:
               </h1>
-              <div className="flex flex-row gap-4">
+              <div className="flex flex-row gap-4 py-8 items-center justify-center border-b-1 border-red-800">
                 {musicList.slice(0, 20).map((song: any) => {
                   return (
                     <LandingSongCard
@@ -63,12 +63,12 @@ export const HomePage = () => {
             </ScrollShadow>
             <ScrollShadow
               orientation="horizontal"
-              className="flex flex-col items-start justify-center w-full overflow-x-auto"
+              className="flex flex-col items-start justify-center w-full overflow-x-auto "
             >
               <h1 className="text-4xl font-bold text-center mt-8 mb-2 ">
                 New Music:
               </h1>
-              <div className="flex flex-row gap-4">
+              <div className="flex flex-row gap-4 py-8 items-center justify-center border-b-1 border-red-800">
                 {musicList.slice(0, 20).map((song: any) => {
                   return (
                     <LandingSongCard
@@ -83,12 +83,12 @@ export const HomePage = () => {
             </ScrollShadow>
             <ScrollShadow
               orientation="horizontal"
-              className="flex flex-col items-start justify-center w-full overflow-x-auto p-4"
+              className="flex flex-col items-start justify-center w-full overflow-x-auto "
             >
               <h1 className="text-4xl font-bold text-center mt-8 mb-2 ">
                 New Music:
               </h1>
-              <div className="flex flex-row gap-4">
+              <div className="flex flex-row gap-4 py-8 items-center justify-center border-b-1 border-red-800">
                 {musicList.slice(0, 20).map((song: any) => {
                   return (
                     <LandingSongCard
@@ -102,7 +102,9 @@ export const HomePage = () => {
               </div>
             </ScrollShadow>
           </div>
-          <div className="flex flex-col items-center justify-start  "></div>
+          <div className="flex flex-col items-center justify-center ">
+            DEAD SPACE FOR NOW
+          </div>
         </div>
       )}
     </div>
