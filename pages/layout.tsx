@@ -7,22 +7,20 @@ type LayoutProps = {
   children: React.ReactNode;
 };
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { data: session, status } = useSession();
   const [darkMode, setDarkMode] = useState(true);
   return (
     <main
-      className={`
-    ${darkMode ? "dark" : ""} text-foreground bg-background 
-    `}
+      className={`${
+        darkMode ? "dark" : ""
+      } text-foreground bg-background transition-colors duration-500`}
     >
       <NavBar setDarkMode={setDarkMode} darkMode={darkMode} />
       <div className="flex min-h-screen">
         <div className="flex-1">{children}</div>
       </div>
-      {status !== "unauthenticated" && <StickyBottomMusicPlayer />}
+      {status === "authenticated" && <StickyBottomMusicPlayer />}
     </main>
   );
 };
-
-export default Layout;
