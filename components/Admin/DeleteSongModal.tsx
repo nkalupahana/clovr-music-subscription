@@ -1,5 +1,5 @@
 import { Button, Modal, ModalBody, ModalContent } from "@nextui-org/react";
-import TableSongCell from "./TableSongCell";
+import TableSongCell from "../TableSongCell";
 import { deleteSongFromDb } from "@/lib/DeleteSongFromDb";
 import { MusicFile } from "@/models/MusicFile";
 export const DeleteSongModal = ({

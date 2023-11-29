@@ -1,5 +1,5 @@
 import { useSession, signIn, signOut } from "next-auth/react";
-import UnauthenticatedLanding from "@/components/Unauthenticatedlanding";
+import UnauthenticatedLanding from "@/components/UnauthenticatedLandingPage";
 
 import { HomePage } from "@/components/HomePage";
 

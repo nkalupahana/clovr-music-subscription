@@ -11,11 +11,11 @@ import {
 } from "@nextui-org/react";
 import { CiCircleRemove } from "react-icons/ci";
 import { MusicContext } from "@/context/MusicContext";
-import ToggleAudioButton from "./icons/ToggleAudioIcon";
-import TableSongCell from "./TableSongCell";
+import ToggleAudioButton from "../icons/ToggleAudioIcon";
+import TableSongCell from "../TableSongCell";
 import { DeleteSongModal } from "./DeleteSongModal";
-import { PlaySongTableIcon } from "./icons/PlaySongTableIcon";
-import { ColumnHeaderCell } from "./ColumnHeaderCell";
+import { PlaySongTableIcon } from "../icons/PlaySongTableIcon";
+import { ColumnHeaderCell } from "../ColumnHeaderCell";
 import { SearchState } from "@/pages/explore";
 
 export const AdminSongTable = ({
