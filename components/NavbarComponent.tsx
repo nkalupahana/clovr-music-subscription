@@ -173,7 +173,6 @@ export const NavbarComponent = ({
 
   return (
     <Navbar
-      position="static"
       maxWidth="full"
       isMenuOpen={smallMenuOpen}
       isBordered

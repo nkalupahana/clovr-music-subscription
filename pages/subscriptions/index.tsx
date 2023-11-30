@@ -37,7 +37,7 @@ export default function Subscriptions() {
   return (
     <VerifyAuthenticationStatus>
       <div className="flex flex-col items-center justify-start min-h-[200vh]  py-2">
-        <PageHeader>Subscriptions</PageHeader>
+        
         {status === "authenticated" && (
           <div>
             <p className={session?.user.subscribed ? "text-center text-xl" : "text-center"}>
