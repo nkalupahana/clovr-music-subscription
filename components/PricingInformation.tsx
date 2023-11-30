@@ -7,12 +7,12 @@ export const PricingInformation = () => {
         About Our Pricing Plans
       </h1>
       <div className="flex flex-col items-center justify-center w-[75%] mt-8 mb-8">
-        <h2 className="text-3xl text-gray-400 text-center mt-16">
+        <h2 className="text-xl md:text-3xl text-gray-400 text-center mt-16">
           Get unlimited access to our music and sound effects catalog for your
           videos, streams and podcasts. Our license comes with all necessary
           rights included.
         </h2>
-        <div className="flex flex-row mt-16 gap-12">
+        <div className="flex flex-row mt-16 justify-evenly">
           <PricingCard
             price={"$3.99 / Month"}
             name={"1 Channel"}

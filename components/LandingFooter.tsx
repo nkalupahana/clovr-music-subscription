@@ -1,3 +1,4 @@
+import React, {cloneElement} from "react";
 import {
   FaInstagram,
   FaTwitter,
@@ -42,23 +43,25 @@ const SOCIALS = [
 ];
 
 export const LandingFooter = () => {
+  const iconSize = window.innerWidth < 640 ? 24 : 32; // smaller icons for small screens
+
   return (
-    <>
+    <div className="flex flex-row items-center md:w-[90%] md:justify-between">
       <div>
         <h4>COPYRIGHT © 2023 CLOVR. ALL RIGHTS RESERVED</h4>
       </div>
-      <div className="flex flex-row gap-4">
+      <div className="flex flex-wrap gap-4 justify-center mt-4">
         {SOCIALS.map((social, idx) => (
           <div
             key={idx}
             className="flex flex-col items-center justify-center cursor-pointer"
             onClick={() => window.open(social.href)}
           >
-            {social.icon}
-            <span className="text-gray-400 text-sm">{social.handle}</span>
+            {cloneElement(social.icon, { size: iconSize })}
+            <span className="text-gray-400 text-xs md:text-sm">{social.handle}</span>
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };

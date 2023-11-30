@@ -4,6 +4,7 @@ import { PlayingSongCard } from "@/components/SongCard";
 import { FaSearch } from "react-icons/fa";
 import { Button, Input } from "@nextui-org/react";
 import SongTable from "@/components/SongTable";
+import SongTableSmall from "@/components/SongTableSmall";
 import VerifyAuthenticationStatus from "@/components/HigherOrderComponents/VerifyAuthenticationStatus";
 
 export interface SearchState {
@@ -13,6 +14,24 @@ export interface SearchState {
 
 const Explore = () => {
   const context = useContext(MusicContext);
+
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+  useEffect(() => {
+    // Update the state based on the current window width
+    const updateScreenSize = () => {
+      setIsLargeScreen(window.innerWidth > 768);
+    };
+
+    // Set the initial value
+    updateScreenSize();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', updateScreenSize);
+
+    // Cleanup event listener
+    return () => window.removeEventListener('resize', updateScreenSize);
+  }, []);
 
   const { musicList } = context || {};
   const [filteredSongs, setFilteredSongs] = useState<any[]>(musicList || []);
@@ -112,11 +131,19 @@ const Explore = () => {
         </div>
 
         <div className="flex min-w-[80%] mt-4 items-center justify-center overflow-y-auto">
-          <SongTable
-            filteredSongs={filteredSongs}
-            setFilteredSongs={setFilteredSongs}
-            searched={search}
-          />
+          {isLargeScreen ? (
+            <SongTable
+              filteredSongs={filteredSongs}
+              setFilteredSongs={setFilteredSongs}
+              searched={search}
+            />
+          ) : (
+            <SongTableSmall
+              filteredSongs={filteredSongs}
+              setFilteredSongs={setFilteredSongs}
+              searched={search}
+            />
+          )}
         </div>
       </div>
     </VerifyAuthenticationStatus>

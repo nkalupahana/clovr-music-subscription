@@ -11,7 +11,7 @@ export const SignInWithGoogle = () => {
       size="lg"
       radius="none"
       id="google-sign-in"
-      className="text-xl"
+      className="text-sm md:text-lg"
     >
       Sign in with <FcGoogle className="inline-block ml-2 bg-white" size={24} />
     </Button>

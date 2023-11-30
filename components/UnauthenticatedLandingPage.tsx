@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
@@ -14,21 +14,41 @@ const UnauthenticatedLanding = () => {
   const context = useContext(MusicContext);
   const router = useRouter();
   const musicList = context?.musicList;
-  const [playingSong, setPlayingSong] = React.useState<any>(null);
+  const [playingSong, setPlayingSong] = useState<any>(null);
+  const [displayedSongs, setDisplayedSongs] = useState<any>([]);
+
+  useEffect(() => {
+    // Set the number of songs to display based on the screen width
+    const updateDisplayedSongs = () => {
+      const screenWidth = window.innerWidth;
+      const maxSongs = screenWidth >= 768 ? 8 : 4; // 768px as a breakpoint
+      setDisplayedSongs(musicList?.slice(0, maxSongs));
+    };
+
+    // Call the function on mount
+    updateDisplayedSongs();
+
+    // Optionally, add a resize event listener if dynamic resizing is needed
+    // window.addEventListener('resize', updateDisplayedSongs);
+
+    // Clean up the event listener
+    // return () => window.removeEventListener('resize', updateDisplayedSongs);
+  }, [musicList]); // Empty dependency array to ensure it runs once at mount
 
   return (
-    <div className="flex flex-col items-center justify-start py-2 ">
-      <div className="flex flex-col items-center justify-center w-[75%]">
-        <h1 className="text-6xl font-bold text-center">
-          Royalty Free <span className="text-primary">Music</span> For Your
-          Content
-        </h1>
-        <h2 className="text-3xl text-gray-400 text-center mt-16">
-          Get unlimited access to our music and sound effects catalog for your
-          videos, streams and podcasts. Our license comes with all necessary
-          rights included.
-        </h2>
-
+    <div className="flex flex-col items-center justify-start py-2">
+      <div className="flex flex-col items-center justify-center ">
+        <div className="flex flex-col items-center justify-center gap-4 md:w-[70%]">
+          <h1 className="text-4xl md:text-6xl font-bold text-center">
+            Royalty Free <span className="text-primary">Music</span> For Your
+            Content
+          </h1>
+          <h2 className="text-xl md:text-3xl text-wrap text-gray-400 text-center mt-16">
+            Get unlimited access to our music and sound effects catalog for your
+            videos, streams and podcasts. Our license comes with all necessary
+            rights included.
+          </h2>
+        </div>
         <div className="flex flex-row items-center mt-12 gap-4">
           <SignInWithGoogle />
           <Button
@@ -41,65 +61,30 @@ const UnauthenticatedLanding = () => {
             <span className="text-xl">About CLOVR</span>
           </Button>
         </div>
-      </div>
-      <Divider className="w-[75%] mt-16" />
-      <h1 className="text-4xl font-bold text-center mt-16">
-        Checkout Some of Our Music
-      </h1>
-      {musicList && (
-        <div className="grid-container mt-8 w-[75%]">
-          <LandingSongCard
-            playingSong={playingSong}
-            setPlayingSong={setPlayingSong}
-            song={musicList[0]}
-          />
-          <LandingSongCard
-            playingSong={playingSong}
-            setPlayingSong={setPlayingSong}
-            song={musicList[1]}
-          />
-          <LandingSongCard
-            playingSong={playingSong}
-            setPlayingSong={setPlayingSong}
-            song={musicList[2]}
-          />
-          <LandingSongCard
-            playingSong={playingSong}
-            setPlayingSong={setPlayingSong}
-            song={musicList[3]}
-          />
-          <LandingSongCard
-            playingSong={playingSong}
-            setPlayingSong={setPlayingSong}
-            song={musicList[4]}
-          />
-          <LandingSongCard
-            playingSong={playingSong}
-            setPlayingSong={setPlayingSong}
-            song={musicList[5]}
-          />
-          <LandingSongCard
-            playingSong={playingSong}
-            setPlayingSong={setPlayingSong}
-            song={musicList[6]}
-          />
-          <LandingSongCard
-            playingSong={playingSong}
-            setPlayingSong={setPlayingSong}
-            song={musicList[7]}
-          />
+        <Divider className="mt-16" />
+        <h1 className="text-4xl font-bold text-center mt-16">
+          Checkout Some of Our Music
+        </h1>
+        <div className="grid-container mt-8 ">
+          {displayedSongs.map((song: any, index: number) => (
+            <LandingSongCard
+              key={index}
+              playingSong={playingSong}
+              setPlayingSong={setPlayingSong}
+              song={song}
+            />
+          ))}
         </div>
-      )}
-      <Divider className="w-[75%] mt-16" />
-      <PricingInformation />
+        <Divider className=" mt-16" />
+        <PricingInformation />
 
-      <Divider className="w-[75%] mt-16" />
-      <h2 className="text-xl text-gray-400 text-center mt-16 mb-2">
-        Ready to get started? Sign in with Google to subscribe and explore!
-      </h2>
-      <SignInWithGoogle />
-      <Divider className="w-[75%] mt-16" />
-      <div className="flex flex-row justify-between w-[75%] mt-16">
+        <Divider className=" mt-16" />
+        <h2 className="text-xl text-gray-400 text-center mt-8 mb-2">
+          Ready to get started? Sign in with Google to subscribe and explore!
+        </h2>
+        <SignInWithGoogle />
+        <Divider className=" mt-16" />
+
         <LandingFooter />
       </div>
     </div>

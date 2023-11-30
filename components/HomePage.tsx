@@ -5,7 +5,7 @@ import { fetcher } from "@/lib/swr";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { LandingSongCard } from "./LandingSongCard";
-import { Image, ScrollShadow } from "@nextui-org/react";
+import { SongCardRow } from "./SongCardRow";
 
 export const HomePage = () => {
   const { data: session, status } = useSession();
@@ -39,72 +39,25 @@ export const HomePage = () => {
         )}
       </div>
       {musicList && (
-        <div className="flex flex-row w-screen ">
-          <div className="flex flex-col items-center justify-center w-[70%] ">
-            <ScrollShadow
-              orientation="horizontal"
-              className="flex flex-col items-start justify-center w-full overflow-x-auto "
-            >
-              <h1 className="text-4xl font-bold text-center mt-8 mb-2 ">
-                New Music:
-              </h1>
-              <div className="flex flex-row gap-4 py-8 items-center justify-center border-b-1 border-red-800">
-                {musicList.slice(0, 20).map((song: any) => {
-                  return (
-                    <LandingSongCard
-                      playingSong={playingSong}
-                      setPlayingSong={setPlayingSong}
-                      song={song}
-                      key={song._id}
-                    />
-                  );
-                })}
-              </div>
-            </ScrollShadow>
-            <ScrollShadow
-              orientation="horizontal"
-              className="flex flex-col items-start justify-center w-full overflow-x-auto "
-            >
-              <h1 className="text-4xl font-bold text-center mt-8 mb-2 ">
-                New Music:
-              </h1>
-              <div className="flex flex-row gap-4 py-8 items-center justify-center border-b-1 border-red-800">
-                {musicList.slice(0, 20).map((song: any) => {
-                  return (
-                    <LandingSongCard
-                      playingSong={playingSong}
-                      setPlayingSong={setPlayingSong}
-                      song={song}
-                      key={song._id}
-                    />
-                  );
-                })}
-              </div>
-            </ScrollShadow>
-            <ScrollShadow
-              orientation="horizontal"
-              className="flex flex-col items-start justify-center w-full overflow-x-auto "
-            >
-              <h1 className="text-4xl font-bold text-center mt-8 mb-2 ">
-                New Music:
-              </h1>
-              <div className="flex flex-row gap-4 py-8 items-center justify-center border-b-1 border-red-800">
-                {musicList.slice(0, 20).map((song: any) => {
-                  return (
-                    <LandingSongCard
-                      playingSong={playingSong}
-                      setPlayingSong={setPlayingSong}
-                      song={song}
-                      key={song._id}
-                    />
-                  );
-                })}
-              </div>
-            </ScrollShadow>
-          </div>
-          <div className="flex flex-col items-center justify-center ">
-            DEAD SPACE FOR NOW
-          </div>
+        <div className="flex flex-col ">
+          <SongCardRow
+            musicList={musicList}
+            playingSong={playingSong}
+            setPlayingSong={setPlayingSong}
+            rowTitle="Recently Added"
+          />
+          <SongCardRow
+            musicList={musicList}
+            playingSong={playingSong}
+            setPlayingSong={setPlayingSong}
+            rowTitle="Recently Added"
+          />
+          <SongCardRow
+            musicList={musicList}
+            playingSong={playingSong}
+            setPlayingSong={setPlayingSong}
+            rowTitle="Recently Added"
+          />
         </div>
       )}
     </div>

@@ -37,7 +37,7 @@ export const LandingSongCard = ({
   return (
     <Card
       isBlurred
-      className={`border-none bg-background/60 dark:bg-primary mx-auto hover:scale-105 transition-all w-60 `}
+      className={`border-none bg-background/60 dark:bg-primary mx-auto hover:scale-105 transition-all `}
       shadow="sm"
       id="playing-song-card"
     >
