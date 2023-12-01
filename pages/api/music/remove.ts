@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import { r2 } from "@/lib/r2";
 import MusicFile from "@/models/MusicFile";
-
+import mongoose from "mongoose";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
@@ -25,7 +25,7 @@ export default async function handler(
 
     try {
       // Find the song in the database
-      if (!mongoose.Types.ObjectId.isValid(songId)) {
+      if (!mongoose.Types.ObjectId.isValid(songId as string)) {
         return res.status(400).json({ message: "Invalid song ID" });
       }
       const song = await MusicFile.findById(songId);
@@ -48,7 +48,7 @@ export default async function handler(
         .promise();
 
       // Delete the song record from the database
-      if (!mongoose.Types.ObjectId.isValid(songId)) {
+      if (!mongoose.Types.ObjectId.isValid(songId as string)) {
         return res.status(400).json({ message: "Invalid song ID" });
       }
       await MusicFile.deleteOne({ _id: songId });

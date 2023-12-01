@@ -25,6 +25,7 @@ export const DeleteSongModal = ({
                 <Button
                   className="btn bg-red-400"
                   onClick={() => {
+                    console.log(songToDelete);
                     deleteSongFromDb(songToDelete._id);
                     
                     setFilteredSongs(

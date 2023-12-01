@@ -62,10 +62,13 @@ export default async function handler(
                 return res.redirect("/?message=Invalid album art file!")
             }
 
+            let songKey = fields.songname[0].replace(/ /g, "_") + ".wav"
+            let albumArtKey = fields.songname[0].replace(/ /g, "_") + ".webp"
+
             // Upload song
             await r2.putObject({ 
                 Bucket: process.env.R2_BUCKET ?? "", 
-                Key: files.musicFile[0].newFilename + ".wav", 
+                Key: songKey,
                 Body: fs.readFileSync(files.musicFile[0].filepath),
                 ContentDisposition: "attachment; filename=" + fields.songname[0] + ".wav",
                 ContentType: "audio/wav"
@@ -75,7 +78,7 @@ export default async function handler(
             const albumArt = await Sharp(files.albumArtFile[0].filepath).rotate().webp().toBuffer();
             await r2.putObject({
                 Bucket: process.env.R2_PUBLIC_BUCKET ?? "", 
-                Key: files.albumArtFile[0].newFilename + ".webp",
+                Key: albumArtKey,
                 Body: albumArt,
                 ContentType: "image/webp"
             }).promise();
@@ -85,8 +88,8 @@ export default async function handler(
                 name: fields.songname[0],
                 tempo: 120 + Math.round(Math.random() * 60), // todo: implement tempo detection
                 duration: Number(fields.duration[0]), // todo: implement duration detection
-                songKey: files.musicFile[0].newFilename + ".wav",
-                albumArtKey: files.albumArtFile[0].newFilename + ".webp",
+                songKey: songKey,
+                albumArtKey: albumArtKey,
                 artist: fields.artist[0],
                 releaseDate: releaseDate.toISODate()
             });
