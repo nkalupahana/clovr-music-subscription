@@ -1,5 +1,4 @@
 import dbConnect from "@/lib/dbConnect";
-import Download from "@/models/Download";
 import MusicFile from "@/models/MusicFile";
 import { PipelineStage } from "mongoose";
 import type { NextApiRequest, NextApiResponse } from "next"
