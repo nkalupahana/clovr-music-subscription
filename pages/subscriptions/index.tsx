@@ -1,14 +1,23 @@
+import React, { useState, useEffect, useCallback } from "react";
 import { fetcher } from "@/lib/swr";
-import { Button } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
-import { useCallback, useEffect } from "react";
-import PageHeader from "@/components/PageHeader";
 import useSWR from "swr";
 import VerifyAuthenticationStatus from "@/components/HigherOrderComponents/VerifyAuthenticationStatus";
+import { PricingInformation } from "@/components/PricingInformation";
 
 export default function Subscriptions() {
   const { data: session, status, update } = useSession();
   const { data: stripeStatus } = useSWR("/api/stripe/status", fetcher);
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const [channelUrl, setChannelUrl] = useState<string>("");
+
+  useEffect(() => {
+    console.log("FAG");
+    if (session?.user.subscribed) {
+      setIsSubscribed(true);
+    }
+  }, [session?.user.subscribed]);
 
   // useEffect(() => {
   //   const url = new URL(window.location.href);
@@ -24,7 +33,6 @@ export default function Subscriptions() {
       update();
     }
   }, [stripeStatus]); // eslint-disable-line react-hooks/exhaustive-deps
-  
 
   const subscribe = useCallback(() => {
     window.location.href = "/api/stripe/subscribe";
@@ -36,39 +44,33 @@ export default function Subscriptions() {
 
   return (
     <VerifyAuthenticationStatus>
-      <div className="flex flex-col items-center justify-start min-h-[200vh]  py-2">
-        
-        {status === "authenticated" && (
-          <div>
-            <p className={session?.user.subscribed ? "text-center text-xl" : "text-center"}>
-              <strong>Subscription Status: </strong>
-              {session?.user.subscribed ? "You are subscribed!" : "You are not subscribed"}
-            </p>
-            {!session?.user.subscribed && (
-              <ul className="list-disc pl-4 text-gray-500">
-              <li>A Subscription is $3.99 per month. It allows you to use our music in your YouTube content without recieving a copyright strike</li>
-              <li>Any use of our music in your content during the duration of your subscription will be valid forever</li>
-              <li>If you cancel your subscription, it will expire one month after the puchase date</li>
-              {/* Add more features as needed */}
-            </ul>
-            )}
-          </div>
+      <div className="content-container">
+        {isSubscribed ? (
+          <h1 className="text-3xl font-bold text-center">
+            You are already subscribed!
+          </h1>
+        ) : (
+          <>
+            <h1 className="text-4xl font-extrabold text-center bg-primary text-white text-shadow-lg p-4 rounded-md">
+              Subscribe Your Channel To Whitelist!!
+            </h1>
+            <PricingInformation />
+          </>
         )}
+        
+
         {session?.user.subscribed && stripeStatus && (
           <>
             <p>
               <strong>Subscription Status:</strong> {stripeStatus.status}
             </p>
             <p>
-              <strong>Number of Channels Purchased:</strong> {stripeStatus.quantity}
+              <strong>Number of Channels Purchased:</strong>{" "}
+              {stripeStatus.quantity}
             </p>
           </>
         )}
-        {!session?.user.subscribed && (
-          <Button className="m-2" onClick={subscribe}>
-            Subscribe
-          </Button>
-        )}
+
         {session?.user.subscribed && stripeStatus && (
           <div className="flex flex-col">
             <div className="flex flex-row flex-wrap gap-4 mt-8">
@@ -91,7 +93,10 @@ export default function Subscriptions() {
             </div>
             {stripeStatus.cancelAt && (
               <div className="flex flex-row flex-wrap gap-4 mt-4 m-auto">
-                <h1>Subscription Will Expire On: {new Date(stripeStatus.cancelAt * 1000).toLocaleDateString()}</h1>
+                <h1>
+                  Subscription Will Expire On:{" "}
+                  {new Date(stripeStatus.cancelAt * 1000).toLocaleDateString()}
+                </h1>
               </div>
             )}
           </div>

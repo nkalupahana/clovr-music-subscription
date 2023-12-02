@@ -29,7 +29,7 @@ export const HomePage = () => {
           <h1
             className="text-xl font-semibold cursor-pointer hover:scale-105 transition-all"
             onClick={() => {
-              router.push("/pricing");
+              router.push("/subscriptions");
             }}
           >
             Press here to{" "}
