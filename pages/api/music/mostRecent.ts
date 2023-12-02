@@ -11,10 +11,12 @@ export default async function handler(
     if (req.method === "GET") {
         await dbConnect();
 
+        // count is an optional query parameter, but validate if specified
         if (req.query.count && (typeof req.query.count !== "string" || isNaN(parseInt(req.query.count)) || parseInt(req.query.count) <= 0)) {
             return res.status(400).send(400);
         }
         
+        // Get songs with limit and sort
         let aggOptions: PipelineStage[] = [
             {
                 "$sort": {
@@ -29,7 +31,6 @@ export default async function handler(
             });
         }
 
-        // Get counts
         const aggregation = await MusicFile.aggregate(aggOptions);
         
         return res.json(aggregation);
