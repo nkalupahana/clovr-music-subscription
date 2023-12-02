@@ -6,18 +6,40 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { LandingSongCard } from "./LandingSongCard";
 import { SongCardRow } from "./SongCardRow";
+import { use } from "chai";
+import { get } from "http";
 
 export const HomePage = () => {
   const { data: session, status } = useSession();
   const { data: stripeStatus } = useSWR("/api/stripe/status", fetcher);
   const router = useRouter();
   const context = useContext(MusicContext);
-  const [musicList, setMusicList] = useState<any>(context?.musicList);
-  const [playingSong, setPlayingSong] = useState<any>(null);
+  const [newReleases, setNewReleases] = useState<any>(null);
+  const [mostDownloaded, setMostDownloaded] = useState<any>(null);
 
+  const [playingSong, setPlayingSong] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    setMusicList(context?.musicList);
-  }, [context?.musicList]);
+    const fetchData = async () => {
+      const mostRecentPromise = fetch("/api/music/mostRecent?count=10").then(
+        (res) => res.json()
+      );
+      const mostDownloadedPromise = fetch(
+        "/api/music/mostDownloaded?count=10"
+      ).then((res) => res.json());
+
+      const [mostRecentData, mostDownloadedData] = await Promise.all([
+        mostRecentPromise,
+        mostDownloadedPromise,
+      ]);
+
+      setNewReleases(mostRecentData);
+      setMostDownloaded(mostDownloadedData);
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="flex flex-col items-start justify-start p-4 relative">
@@ -38,25 +60,20 @@ export const HomePage = () => {
           </h1>
         )}
       </div>
-      {musicList && (
+
+      {newReleases && (
         <div className="flex flex-col ">
           <SongCardRow
-            musicList={musicList}
+            musicList={newReleases}
             playingSong={playingSong}
             setPlayingSong={setPlayingSong}
             rowTitle="Recently Added"
           />
           <SongCardRow
-            musicList={musicList}
+            musicList={mostDownloaded}
             playingSong={playingSong}
             setPlayingSong={setPlayingSong}
-            rowTitle="Recently Added"
-          />
-          <SongCardRow
-            musicList={musicList}
-            playingSong={playingSong}
-            setPlayingSong={setPlayingSong}
-            rowTitle="Recently Added"
+            rowTitle="Most Downloaded"
           />
         </div>
       )}
