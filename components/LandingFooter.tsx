@@ -1,4 +1,4 @@
-import React, {cloneElement} from "react";
+import React, {cloneElement, useState, useEffect} from "react";
 import {
   FaInstagram,
   FaTwitter,
@@ -43,7 +43,26 @@ const SOCIALS = [
 ];
 
 export const LandingFooter = () => {
-  const iconSize = window.innerWidth < 640 ? 24 : 32; // smaller icons for small screens
+  const [iconSize, setIconSize] = useState<number>(24); // Default to 5
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setIconSize(24);
+      } else {
+        setIconSize(32);
+      }
+    };
+
+    // Set the initial value
+    handleResize();
+
+    // Add event listener
+    window.addEventListener("resize", handleResize);
+
+    // Clean up
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="flex flex-row items-center md:w-[90%] md:justify-between">
