@@ -82,7 +82,14 @@ export const PricingCard = ({
                 );
               })}
               <button
-                onClick={subscribe}
+                onClick={() => {
+                  if (
+                    channelUrl.some((url) => url === "") ||
+                    channelUrl.length !== numChannels
+                  )
+                    return;
+                  subscribe();
+                }}
                 className={`text-lg f p-2 ${
                   channelUrl.some((url) => url === "") ||
                   channelUrl.length !== numChannels
