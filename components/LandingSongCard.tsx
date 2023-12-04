@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Card, CardBody, Image } from "@nextui-org/react";
+import { Card, CardBody, Image, Tooltip } from "@nextui-org/react";
 import { FaPlay, FaPause } from "react-icons/fa";
 import { MusicContext, MusicContextProps } from "@/context/MusicContext";
 import { MusicFile } from "@/models/MusicFile";
@@ -67,11 +67,15 @@ export const LandingSongCard = ({
               )}
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center mt-4 w-full">
-            <h1 className="text-lg font-medium whitespace-nowrap overflow-ellipsis">
+          <div className="flex flex-col items-start justify-center mt-4 w-full">
+            <h1
+              className="text-xs font-medium whitespace-nowrap overflow-hidden overflow-ellipsis"
+              style={{ maxWidth: "250px" }}
+            >
               {song?.name}
             </h1>
-            <h2 className="text-base text-default-900/60">{song?.artist}</h2>
+
+            <h2 className="text-xs text-default-900/60">{song?.artist}</h2>
           </div>
         </div>
       </CardBody>
