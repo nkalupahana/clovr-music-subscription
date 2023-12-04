@@ -3,7 +3,7 @@ import { PricingCard } from "./PricingCard";
 export const PricingInformation = () => {
   return (
     <>
-      <h1 className="text-4xl font-bold text-center mt-16">
+      <h1 className="text-4xl font-bold text-center mt-8">
         About Our Pricing Plans
       </h1>
       <div className="flex flex-col items-center justify-center w-[75%] mt-8 mb-8">
@@ -14,18 +14,18 @@ export const PricingInformation = () => {
         </h2>
         <div className="flex flex-row mt-16 justify-evenly">
           <PricingCard
-            price={"$3.99 / Month"}
-            name={"1 Channel"}
+            numChannels={1}
+            monthlyPrice={3.99}
             image={"CLOVR_bear_2.png"}
           />
           <PricingCard
-            price={"$9.99 / Month"}
-            name={"3 Channels"}
+            numChannels={3}
+            monthlyPrice={9.99}
             image={"CLOVR_bear_3.png"}
           />
           <PricingCard
-            price={"$12.99 / Month"}
-            name={"5 Channels"}
+            numChannels={5}
+            monthlyPrice={13.99}
             image={"CLOVR_bear_4.png"}
           />
         </div>
@@ -34,26 +34,39 @@ export const PricingInformation = () => {
           <AccordionItem
             key="1"
             aria-label="Accordion 1"
-            title="How Does this work??"
+            title="How Does this work?"
           >
-            lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            quod voluptas, quibusdam, quia, quos voluptatum voluptatibus quae
-            voluptate quas quibusdam, quia, quos voluptatum voluptatibus quae
-            voluptate quas
+            Once you have signed up for a subscription, you will need to enter
+            the Uniform Resource Identifier (URI) of your YouTube channel. This
+            step allows us to whitelist your channel, granting permission for
+            its use within our platform.
           </AccordionItem>
           <AccordionItem
             key="2"
             aria-label="Accordion 2"
-            title="How can I license music from you?"
+            title="What types of music do you offer?"
           >
-            {"More words here"}
+            Instrumental Lofi, Chill Hop, Jazz Hop and Ambient music
           </AccordionItem>
           <AccordionItem
             key="3"
             aria-label="Accordion 3"
-            title="Blah blah blah"
+            title="Can I Monetize my Channel with your music?"
           >
-            {"More words"}
+            Absolutely! You have the freedom to monetize your content while
+            using our music in various formats like Reels, Stories, Vlogs, Music
+            Mixes, and more.
+          </AccordionItem>
+          <AccordionItem
+            key="4"
+            aria-label="Accordion 4"
+            title="Can i License music from you?"
+          >
+            If you have specific requirements, such as licensing a song for a
+            commercial or ads campaign, please contact us at
+            info@clovrrecords.com. Our prices are competitive, lower than those
+            of our competitors, and we offer a straightforward and swift
+            communication process{" "}
           </AccordionItem>
         </Accordion>
       </div>

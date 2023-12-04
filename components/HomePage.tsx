@@ -73,6 +73,7 @@ export const HomePage = () => {
           <span className="text-primary text-2xl font-bold">Subscribe</span> and
           start whitelisting now!
         </h1>
+
       )}
       <div className="flex flex-row w-full ">
         <div className="flex flex-col items-start justify-start p-4 ">
