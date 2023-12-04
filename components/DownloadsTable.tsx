@@ -19,16 +19,16 @@ export const DownloadsTable = ({ userDownloads }: { userDownloads: any[] }) => {
         <TableColumn>Date</TableColumn>
       </TableHeader>
       <TableBody>
-        {userDownloads.map((download, index) => {
-          return (
+        {userDownloads
+          .filter(download => download.file) // Filter out downloads with null files
+          .map((download, index) => (
             <TableRow key={index}>
               <TableCell>
                 <TableSongCell song={download.file} />
               </TableCell>
               <TableCell>{download.timestamp.split("T")[0]}</TableCell>
             </TableRow>
-          );
-        })}
+          ))}
       </TableBody>
     </Table>
   );
