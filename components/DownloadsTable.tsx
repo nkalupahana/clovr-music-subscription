@@ -13,13 +13,7 @@ import TableSongCell from "./TableSongCell";
 
 export const DownloadsTable = ({ userDownloads }: { userDownloads: any[] }) => {
 
-  // Function to filter out duplicate downloads
-  const uniqueDownloads = userDownloads.reduce((unique, download) => {
-    if (unique.every(u => u.file !== download.file)) {
-      unique.push(download);
-    }
-    return unique;
-  }, []);
+
 
   return (
     <Table>
@@ -28,7 +22,7 @@ export const DownloadsTable = ({ userDownloads }: { userDownloads: any[] }) => {
         <TableColumn>Date</TableColumn>
       </TableHeader>
       <TableBody>
-        {uniqueDownloads
+        {userDownloads
           .filter(download => download.file) // Filter out downloads with null files
           .map((download, index) => (
             <TableRow key={index}>
