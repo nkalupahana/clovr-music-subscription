@@ -27,10 +27,10 @@ const Explore = () => {
     updateScreenSize();
 
     // Add event listener for window resize
-    window.addEventListener('resize', updateScreenSize);
+    window.addEventListener("resize", updateScreenSize);
 
     // Cleanup event listener
-    return () => window.removeEventListener('resize', updateScreenSize);
+    return () => window.removeEventListener("resize", updateScreenSize);
   }, []);
 
   const { musicList } = context || {};
@@ -40,6 +40,8 @@ const Explore = () => {
     searchField: "",
   });
   const [showLiked, setShowLiked] = useState<boolean>(false);
+  const [searchSong, setSearchSong] = useState<string>("");
+  const [searchArtist, setSearchArtist] = useState<string>("")
 
   useEffect(() => {
     if (showLiked) {
@@ -117,15 +119,31 @@ const Explore = () => {
           <Input
             size="md"
             placeholder="Search for songs..."
+            value={searchSong}
             startContent={<FaSearch className="text-gray-400" />}
-            onChange={(e) => handleSearch(e.target.value, "name")}
+            onChange={(e) => {
+              handleSearch(e.target.value, "name")
+              setSearchSong(e.target.value)
+            }}
+            onClear={() => {
+              handleSearch("", "");
+              setSearchSong("")
+            }}
             isClearable
           />
           <Input
             size="md"
             placeholder="Search for artist..."
             startContent={<FaSearch className="text-gray-400" />}
-            onChange={(e) => handleSearch(e.target.value, "artist")} //switch to aritst name when available
+            value={searchArtist}
+            onChange={(e) => {
+              handleSearch(e.target.value, "artist")
+              setSearchArtist(e.target.value)
+            }}
+            onClear={() => {
+              handleSearch("", "");
+              setSearchArtist("")
+            }}
             isClearable
           />
         </div>
