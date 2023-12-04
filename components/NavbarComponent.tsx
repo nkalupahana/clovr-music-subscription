@@ -14,7 +14,6 @@ import {
   NavbarMenuToggle,
   NavbarMenuItem,
   NavbarMenu,
-  Image,
   Switch,
 } from "@nextui-org/react";
 import { FcGoogle } from "react-icons/fc";
@@ -23,13 +22,7 @@ import { HiOutlineSun } from "react-icons/hi";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignInWithGoogle } from "./SignInWithGoogle";
-
-// const NAV_BUTTONS = [
-//   { name: "Home", href: "/" },
-//   { name: "Explore", href: "/explore" },
-
-//   { name: "Subscriptions", href: "/subscriptions" },
-// ];
+import Image from "next/image";
 
 export const NavbarComponent = ({
   setDarkMode,
@@ -157,7 +150,13 @@ export const NavbarComponent = ({
     <div className="flex justify-between items-center">
       <Link href="/">
         <div className="p-2 cursor-pointer " id="logo">
-          <Image src="/CLOVR_Logo.png" alt="CLOVR" width={150} height={150} />
+          <Image
+            src="/CLOVR_Logo.png"
+            alt="CLOVR"
+            width={150}
+            height={150}
+            priority
+          />
         </div>
       </Link>
       <Switch
@@ -172,11 +171,7 @@ export const NavbarComponent = ({
   );
 
   return (
-    <Navbar
-      maxWidth="full"
-      isMenuOpen={smallMenuOpen}
-      isBordered
-    >
+    <Navbar maxWidth="full" isMenuOpen={smallMenuOpen} isBordered>
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle
           onClick={() => setSmallMenuOpen(!smallMenuOpen)}

@@ -10,31 +10,14 @@ import { DownloadsTable } from "@/components/DownloadsTable";
 export default function Subscriptions() {
   const { data: session, status, update } = useSession();
   const { data: stripeStatus } = useSWR("/api/stripe/status", fetcher);
+  const { data: userDownloads } = useSWR("/api/my/downloads", fetcher);
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
-  const [channelUrl, setChannelUrl] = useState<string>("");
-  const [userDownloads, setUserDownloads] = useState<any[]>([]);
 
   useEffect(() => {
     if (session?.user.subscribed) {
       setIsSubscribed(true);
     }
   }, [session?.user.subscribed]);
-
-  useEffect(() => {
-    const getDownloads = async () => {
-      try {
-        const res = await fetch("/api/my/downloads");
-        const data = await res.json();
-        const filteredData = data.filter(
-          (download: any) => download.file !== null
-        );
-        setUserDownloads(filteredData);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getDownloads();
-  }, []);
 
   useEffect(() => {
     if (stripeStatus) {
@@ -51,9 +34,9 @@ export default function Subscriptions() {
   }, []);
 
   return (
-    <VerifyAuthenticationStatus>
-      <div className="content-container">
-        {isSubscribed ? (
+    <>
+      <div className="content-container drop-in">
+        {session?.user.subscribed ? (
           <>
             <div className="flex flex-row flex-wrap gap-4 mt-8">
               <Button
@@ -100,7 +83,9 @@ export default function Subscriptions() {
             </div>
             <div className="flex flex-col items-start justify-start mt-8 gap-4 w-[80%]">
               <span className="font-bold text-lg">Your Downloads:</span>
-              <DownloadsTable userDownloads={userDownloads} />
+              {userDownloads && (
+                <DownloadsTable userDownloads={userDownloads} />
+              )}
             </div>
           </>
         ) : (
@@ -111,9 +96,7 @@ export default function Subscriptions() {
             <PricingInformation />
           </>
         )}
-
-        <br />
       </div>
-    </VerifyAuthenticationStatus>
+    </>
   );
 }
