@@ -12,6 +12,9 @@ import {
 import TableSongCell from "./TableSongCell";
 
 export const DownloadsTable = ({ userDownloads }: { userDownloads: any[] }) => {
+
+
+
   return (
     <Table>
       <TableHeader>
@@ -33,3 +36,4 @@ export const DownloadsTable = ({ userDownloads }: { userDownloads: any[] }) => {
     </Table>
   );
 };
+

@@ -39,6 +39,26 @@ const SongTable = ({
     direction: "ascending",
   });
 
+  const sortSongs = (songs: any[], sortConfig: any) => {
+    return songs.sort((a, b) => {
+      const key = sortConfig.key;
+      let comparison = 0;
+
+      if (key === "name" || key === "artist" || key === "releaseDate") {
+        // Case-insensitive string comparison
+        const aValue = a[key].toLowerCase();
+        const bValue = b[key].toLowerCase();
+        comparison = aValue.localeCompare(bValue);
+      } else if (key === "tempo") {
+        // Numeric comparison
+        comparison = a[key] - b[key];
+      }
+
+      // Adjust for ascending or descending order
+      return sortConfig.direction === "ascending" ? comparison : -comparison;
+    });
+  };
+
   useEffect(() => {
     setMusicList(filteredSongs);
     let sortedSongs = [...filteredSongs];
@@ -59,19 +79,10 @@ const SongTable = ({
           }
 
           // If neither or both are favorites, sort by likes
-          return b.likes - a.likes; // Assuming 'likes' is a numeric value
+          return b.name - a.name; // Assuming 'likes' is a numeric value
         });
       } else {
-        sortedSongs.sort((a, b) => {
-          if (sortConfig.key && a[sortConfig.key] > b[sortConfig.key]) {
-            return sortConfig.direction === "ascending" ? 1 : -1;
-          }
-          if (sortConfig.key && a[sortConfig.key] < b[sortConfig.key]) {
-            return sortConfig.direction === "ascending" ? -1 : 1;
-          }
-
-          return 0;
-        });
+        sortedSongs = sortSongs(sortedSongs, sortConfig);
       }
     }
     setMusicList(sortedSongs);

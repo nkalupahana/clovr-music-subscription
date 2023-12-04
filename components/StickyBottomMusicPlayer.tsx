@@ -73,20 +73,20 @@ export const StickyBottomMusicPlayer = () => {
             <SongHeart song={playingSong} iconSize={32} />
           </div>
           <div className="flex flex-grow justify-center items-center flex-col w-1/3">
-            <div className="flex w-full items-center justify-center gap-4 mb-2">
+            <div className="flex w-full items-center justify-center gap-4 mb-2 text-white">
               <BiSkipPrevious
-                className="text-foreground hover:text-foreground/50 transition-all ease-in-out duration-200 cursor-pointer"
+                className="  transition-all ease-in-out duration-200 cursor-pointer"
                 size={42}
                 onClick={handleReplay}
               />
               <ToggleAudioButton iconSize={28} />
               <BiSkipNext
-                className="text-foreground hover:text-foreground/50 transition-all ease-in-out duration-200 cursor-pointer"
+                className="  transition-all ease-in-out duration-200 cursor-pointer"
                 size={42}
                 onClick={handleNext}
               />
               <BsShuffle
-                className="text-foreground hover:text-foreground/50 transition-all ease-in-out duration-200 cursor-pointer"
+                className="  transition-all ease-in-out duration-200 cursor-pointer"
                 size={28}
                 onClick={handleShuffle}
               />
