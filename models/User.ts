@@ -5,6 +5,7 @@ export interface User extends mongoose.Document {
     email: string
     isAdmin: boolean
     subscription: string
+    channels: string[] | undefined
 }
 
 const UserSchema = new mongoose.Schema<User>({
@@ -22,6 +23,9 @@ const UserSchema = new mongoose.Schema<User>({
     },
     subscription: {
         type: String
+    },
+    channels: {
+        type: [String]
     }
 })
 

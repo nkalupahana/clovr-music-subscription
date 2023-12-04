@@ -35,9 +35,12 @@ export default async function handler(
 
         if (event.type === "checkout.session.completed") {
             const data = event.data.object as Stripe.Checkout.Session;
-            const user = await User.findById(data.client_reference_id);
+            // decode base64 data
+            const userData = JSON.parse(Buffer.from(data.client_reference_id!, "base64").toString("ascii"));
+            const user = await User.findById(userData.id);
             if (user) {
                 user.subscription = data.subscription;
+                user.channels = userData.channels;
                 await user.save();
             } else {
                 console.log(`User ${data.client_reference_id} not found.`);
@@ -46,7 +49,7 @@ export default async function handler(
             const data = event.data.object as Stripe.Subscription;
             await User.findOneAndUpdate(
                 { subscription: data.id },
-                { $unset: { subscription: undefined } }
+                { $unset: { subscription: undefined, channels: undefined } }
             );
         }
 
