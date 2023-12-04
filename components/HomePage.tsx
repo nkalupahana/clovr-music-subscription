@@ -85,7 +85,7 @@ export const HomePage = () => {
         </div>
         {isBigScreen && (
           <div className="flex flex-grow flex-row items-center justify-center p-4 ">
-            <Image src="CLOVR_bear_1.png" alt="CLOVR" />
+            <Image src="DJ_Bear.png" alt="CLOVR" height={500} width={500} />
           </div>
         )}
       </div>
