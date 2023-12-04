@@ -1,81 +1,61 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MusicContext } from "@/context/MusicContext";
 import useSWR from "swr";
 import { fetcher } from "@/lib/swr";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { LandingFooter } from "./LandingFooter";
 import { SongCardRow } from "./SongCardRow";
-import { Image, CircularProgress } from "@nextui-org/react";
+import { Image, CircularProgress, Link } from "@nextui-org/react";
 
 export const HomePage = () => {
   const { data: session, status } = useSession();
   const { data: stripeStatus } = useSWR("/api/stripe/status", fetcher);
-  const router = useRouter();
-  const context = useContext(MusicContext);
-  const [newReleases, setNewReleases] = useState<any>(null);
-  const [mostDownloaded, setMostDownloaded] = useState<any>(null);
+  const { data: newReleases, error: mostRecentError } = useSWR(
+    session ? "/api/music/mostRecent?count=10" : null,
+    fetcher
+  );
+  const { data: mostDownloaded, error: mostDownloadedError } = useSWR(
+    session ? "/api/music/mostDownloaded?count=10" : null,
+    fetcher
+  );
+
   const [playingSong, setPlayingSong] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isBigScreen, setIsBigScreen] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setIsBigScreen(false);
-      } else {
-        setIsBigScreen(true);
-      }
-    };
-
-    // Set the initial value
-    handleResize();
-
-    // Add event listener
-    window.addEventListener("resize", handleResize);
-
-    // Clean up
-    return () => window.removeEventListener("resize", handleResize);
+    if (window.innerWidth > 768) {
+      setIsBigScreen(true);
+    } else {
+      setIsBigScreen(false);
+    }
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const mostRecentPromise = fetch("/api/music/mostRecent?count=10").then(
-        (res) => res.json()
-      );
-      const mostDownloadedPromise = fetch(
-        "/api/music/mostDownloaded?count=10"
-      ).then((res) => res.json());
+  if (!newReleases && !mostDownloaded) {
+    return (
+      <div className="content-container">
+        <div className="flex flex-col items-center justify-center p-4 relative">
+          <CircularProgress color="primary" />
+        </div>
+      </div>
+    );
+  }
 
-      const [mostRecentData, mostDownloadedData] = await Promise.all([
-        mostRecentPromise,
-        mostDownloadedPromise,
-      ]);
-
-      setNewReleases(mostRecentData);
-      setMostDownloaded(mostDownloadedData);
-      setIsLoading(false);
-    };
-
-    fetchData();
-  }, []);
+  if (mostRecentError || mostDownloadedError) {
+    return <div>Error loading data</div>; // Or any error component
+  }
 
   return (
-    <div className="flex flex-col w-full gap-4 relative">
+    <div className="flex flex-col w-full gap-4 relative drop-in">
       {stripeStatus?.status === "unsubscribed" && isBigScreen && (
-        <h1
-          className=" text-sm md:text-xl font-semibold cursor-pointer hover:scale-105 transition-all absolute top-4 right-4"
-          onClick={() => {
-            router.push("/pricing");
-          }}
-        >
-          Press here to{" "}
-          <span className="text-primary text-2xl font-bold">Subscribe</span> and
-          start whitelisting now!
-        </h1>
-
+        <Link href="/subscriptions">
+          <h1 className=" text-sm md:text-xl font-semibold cursor-pointer hover:scale-105 transition-all absolute top-4 right-4">
+            Press here to{" "}
+            <span className="text-primary text-2xl font-bold">Subscribe</span>{" "}
+            and start whitelisting now!
+          </h1>
+        </Link>
       )}
-      <div className="flex flex-row w-full ">
+      <div className="flex flex-row md:w-[90%] mx-auto ">
         <div className="flex flex-col items-start justify-start p-4 ">
           <div className="flex flex-row w-full justify-between ">
             <h1 className="text-3xl font-bold text-center  ">
@@ -103,8 +83,8 @@ export const HomePage = () => {
             </div>
           )}
         </div>
-        {isBigScreen && newReleases && (
-          <div className="flex flex-col items-center justify-center p-4 relative">
+        {isBigScreen && (
+          <div className="flex flex-grow flex-row items-center justify-center p-4 ">
             <Image src="CLOVR_bear_1.png" alt="CLOVR" />
           </div>
         )}

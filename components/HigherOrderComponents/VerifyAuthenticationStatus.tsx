@@ -17,8 +17,6 @@ const VerifyAuthenticationStatus: React.FC<VerifyAuthenticationStatusProps> = ({
     }
   }, [status, router]);
 
-  if (status === "loading") return <p>Hang on there...</p>;
-
   return <>{children}</>;
 };
 

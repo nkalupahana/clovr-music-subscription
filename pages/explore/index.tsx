@@ -15,22 +15,14 @@ export interface SearchState {
 const Explore = () => {
   const context = useContext(MusicContext);
 
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(true);
 
   useEffect(() => {
-    // Update the state based on the current window width
-    const updateScreenSize = () => {
-      setIsLargeScreen(window.innerWidth > 768);
-    };
-
-    // Set the initial value
-    updateScreenSize();
-
-    // Add event listener for window resize
-    window.addEventListener("resize", updateScreenSize);
-
-    // Cleanup event listener
-    return () => window.removeEventListener("resize", updateScreenSize);
+    if (window.innerWidth > 768) {
+      setIsLargeScreen(true);
+    } else {
+      setIsLargeScreen(false);
+    }
   }, []);
 
   const { musicList } = context || {};
@@ -41,7 +33,7 @@ const Explore = () => {
   });
   const [showLiked, setShowLiked] = useState<boolean>(false);
   const [searchSong, setSearchSong] = useState<string>("");
-  const [searchArtist, setSearchArtist] = useState<string>("")
+  const [searchArtist, setSearchArtist] = useState<string>("");
 
   useEffect(() => {
     if (showLiked) {
@@ -106,7 +98,7 @@ const Explore = () => {
 
   return (
     <VerifyAuthenticationStatus>
-      <div className="content-container">
+      <div className="content-container drop-in">
         <PlayingSongCard />
         <Button
           className="mt-4"
@@ -122,12 +114,12 @@ const Explore = () => {
             value={searchSong}
             startContent={<FaSearch className="text-gray-400" />}
             onChange={(e) => {
-              handleSearch(e.target.value, "name")
-              setSearchSong(e.target.value)
+              handleSearch(e.target.value, "name");
+              setSearchSong(e.target.value);
             }}
             onClear={() => {
               handleSearch("", "");
-              setSearchSong("")
+              setSearchSong("");
             }}
             isClearable
           />
@@ -137,12 +129,12 @@ const Explore = () => {
             startContent={<FaSearch className="text-gray-400" />}
             value={searchArtist}
             onChange={(e) => {
-              handleSearch(e.target.value, "artist")
-              setSearchArtist(e.target.value)
+              handleSearch(e.target.value, "artist");
+              setSearchArtist(e.target.value);
             }}
             onClear={() => {
               handleSearch("", "");
-              setSearchArtist("")
+              setSearchArtist("");
             }}
             isClearable
           />

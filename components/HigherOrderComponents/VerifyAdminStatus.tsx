@@ -17,7 +17,6 @@ const VerifyAdminStatus: React.FC<VerifyAdminStatusProps> = ({ children }) => {
     }
   }, [session, router]);
 
-  if (status === "loading") return <p>Hang on there...</p>;
 
   return <>{children}</>;
 };
