@@ -77,14 +77,12 @@ export const AdminMusicDashboard = () => {
             placeholder="Search for songs..."
             startContent={<FaSearch className="text-gray-400" />}
             onChange={(e) => handleSearch(e.target.value, "name")}
-            isClearable
           />
           <Input
             size="md"
             placeholder="Search for artist..."
             startContent={<FaSearch className="text-gray-400" />}
             onChange={(e) => handleSearch(e.target.value, "artist")} //switch to aritst name when available
-            isClearable
           />
         </div>
         <AdminSongTable
