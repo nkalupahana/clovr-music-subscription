@@ -15,8 +15,6 @@ export default function Subscriptions() {
   const [userDownloads, setUserDownloads] = useState<any[]>([]);
 
   useEffect(() => {
-    console.log(session);
-    console.log(stripeStatus);
     if (session?.user.subscribed) {
       setIsSubscribed(true);
     }
@@ -24,24 +22,19 @@ export default function Subscriptions() {
 
   useEffect(() => {
     const getDownloads = async () => {
-      const res = await fetch("/api/my/downloads");
-      const data = await res.json();
-      const filteredData = data.filter(
-        (download: any) => download.file !== null
-      );
-      setUserDownloads(filteredData);
+      try {
+        const res = await fetch("/api/my/downloads");
+        const data = await res.json();
+        const filteredData = data.filter(
+          (download: any) => download.file !== null
+        );
+        setUserDownloads(filteredData);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getDownloads();
   }, []);
-
-  // useEffect(() => {
-  //   const url = new URL(window.location.href);
-  //   const upd = url.searchParams.get("update");
-  //   if (upd?.trim() === "true") {
-  //     update();
-  //     window.location.search = "";
-  //   }
-  // }, [update]);
 
   useEffect(() => {
     if (stripeStatus) {
@@ -74,7 +67,7 @@ export default function Subscriptions() {
                 Change Payment Method
               </Button>
 
-              {!stripeStatus.cancelAt ? (
+              {!stripeStatus?.cancelAt ? (
                 <Button
                   onClick={() => manage("subscription_cancel")}
                   color="danger"
@@ -83,7 +76,7 @@ export default function Subscriptions() {
                   Cancel Subscription
                 </Button>
               ) : (
-                <div className="flex flex-row items-center justify-center gap-4">
+                <div className="flex flex-col items-center justify-center gap-4">
                   <Button
                     onClick={() => manage("uncancel")}
                     color="success"
@@ -103,10 +96,10 @@ export default function Subscriptions() {
               )}
             </div>
             <div className="flex flex-col items-start justify-start mt-8 gap-4 w-[80%]">
-              <span>Your Channels:</span>
+              <span className="font-bold text-lg">Your Channels:</span>
             </div>
             <div className="flex flex-col items-start justify-start mt-8 gap-4 w-[80%]">
-              <span>Your Downloads:</span>
+              <span className="font-bold text-lg">Your Downloads:</span>
               <DownloadsTable userDownloads={userDownloads} />
             </div>
           </>
