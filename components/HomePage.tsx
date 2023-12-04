@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MusicContext } from "@/context/MusicContext";
 import useSWR from "swr";
 import { fetcher } from "@/lib/swr";
@@ -22,7 +22,7 @@ export const HomePage = () => {
   const [playingSong, setPlayingSong] = useState<any>(null);
   const [isBigScreen, setIsBigScreen] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (window.innerWidth > 768) {
       setIsBigScreen(true);
     } else {
