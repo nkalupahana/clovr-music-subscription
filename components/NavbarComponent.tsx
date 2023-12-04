@@ -161,6 +161,7 @@ export const NavbarComponent = ({
       </Link>
       <Switch
         onChange={() => setDarkMode(!darkMode)}
+        isSelected={!darkMode}
         size="sm"
         color="success"
         className="ml-2"
