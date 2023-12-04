@@ -67,8 +67,10 @@ export const LandingSongCard = ({
               )}
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center mt-4">
-            <h1 className="text-xl font-medium">{song?.name}</h1>
+          <div className="flex flex-col items-center justify-center mt-4 w-full">
+            <h1 className="text-lg font-medium whitespace-nowrap overflow-ellipsis">
+              {song?.name}
+            </h1>
             <h2 className="text-base text-default-900/60">{song?.artist}</h2>
           </div>
         </div>

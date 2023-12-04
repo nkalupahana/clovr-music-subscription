@@ -35,7 +35,7 @@ export const SongCardRow = ({
   }, []);
 
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col">
       <h1 className="text-2xl md:text-4xl font-bold text-start my-4">{rowTitle}:</h1>
       <div className="flex flex-row gap-2 items-center justify-center">
         {musicList?.slice(0, numCols).map((song: any) => (
