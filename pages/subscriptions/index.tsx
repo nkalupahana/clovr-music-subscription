@@ -78,9 +78,21 @@ export default function Subscriptions() {
                 </div>
               )}
             </div>
-            <div className="flex flex-col items-start justify-start mt-8 gap-4 w-[80%]">
-              <span className="font-bold text-lg">Your Channels:</span>
-            </div>
+
+            {stripeStatus.channels &&
+              Array.isArray(stripeStatus.channels) &&
+              stripeStatus.channels.length > 0 && (
+                <div className="flex flex-col items-start justify-start mt-8 gap-4 w-[80%]">
+                  <span className="font-bold text-lg">Your Channels:</span>
+
+                  <ul className="list-disc list-inside">
+                    {stripeStatus.channels.map((channel: string) => {
+                      return <li key={channel}>{channel}</li>;
+                    })}
+                  </ul>
+                </div>
+              )}
+
             <div className="flex flex-col items-start justify-start mt-8 gap-4 w-[80%]">
               <span className="font-bold text-lg">Your Downloads:</span>
               {userDownloads && (
