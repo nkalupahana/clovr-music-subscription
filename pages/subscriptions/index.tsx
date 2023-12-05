@@ -59,11 +59,12 @@ export default function Subscriptions() {
                   Cancel Subscription
                 </Button>
               ) : (
-                <div className="flex flex-col items-center justify-center gap-4">
+                <div className="flex flex-col items-center justify-center gap-4 ">
                   <Button
                     onClick={() => manage("uncancel")}
                     color="success"
                     size="lg"
+                    className="w-full"
                   >
                     Renew Subscription
                   </Button>
