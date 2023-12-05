@@ -27,10 +27,10 @@ export const PricingCard = ({
   const { data: session, status, update } = useSession();
   const { data: stripeStatus } = useSWR("/api/stripe/status", fetcher);
 
-  const subscribeToChannels = async () => {
-    let base64Channels = btoa(JSON.stringify(channelUrl));
-    window.location.href = "/api/stripe/subscribe?channels=" + base64Channels;
-  };
+  const subscribe = useCallback(async () => {
+    let base64 = btoa(JSON.stringify(channelUrl));
+    window.location.href = `/api/stripe/subscribe?channels=${base64}`;
+  }, [channelUrl]);
 
   return (
     <Card>
@@ -94,10 +94,7 @@ export const PricingCard = ({
                       return;
                     }
                   }
-                  // CONVERT channelUrl to base64
-                  // send to backend
-                  subscribeToChannels();
-                  //subscribe();
+                  subscribe();
                 }}
                 className={`text-lg f p-2 ${
                   channelUrl.some((url) => url === "") ||
@@ -109,7 +106,6 @@ export const PricingCard = ({
                 Subscribe
               </button>
             </div>
-
           )}
         </div>
       </CardBody>
