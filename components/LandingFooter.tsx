@@ -26,7 +26,7 @@ const SOCIALS = [
     name: "Discord",
     icon: <FaDiscord size={32} />,
     handle: "@clovr_records",
-    href: "https://www.discord.gg/clovr",
+    href: "https://discord.com/invite/3szPBEuUr3",
   },
   {
     name: "Youtube",

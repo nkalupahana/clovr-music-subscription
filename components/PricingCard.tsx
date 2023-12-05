@@ -51,9 +51,7 @@ export const PricingCard = ({
           <h2 className="text-lg text-gray-400 text-center mt-8">
             ${(monthlyPrice / numChannels).toFixed(2)} / Channel
           </h2>
-          <h3 className="text-lg text-gray-400 text-center mt-8 font-bold">
-            Enter Channel Links to Subscribe!
-          </h3>
+
           {status === "authenticated" && !session?.user.subscribed && (
             <div className="flex flex-col items-center justify-center mt-8 gap-4 w-full">
               {Array.from({ length: numChannels }, (_, index) => {
@@ -111,6 +109,7 @@ export const PricingCard = ({
                 Subscribe
               </button>
             </div>
+
           )}
         </div>
       </CardBody>

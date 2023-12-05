@@ -12,7 +12,7 @@ export const PricingInformation = () => {
           videos, streams and podcasts. Our license comes with all necessary
           rights included.
         </h2>
-        <div className="flex flex-row mt-16 justify-evenly">
+        <div className="flex flex-row mt-16 justify-evenly gap-2">
           <PricingCard
             numChannels={1}
             monthlyPrice={3.99}
