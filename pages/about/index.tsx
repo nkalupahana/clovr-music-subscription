@@ -23,7 +23,7 @@ const About = () => {
     {
       title: "Discord",
       body: "Clovr Records maintains an active presence on Discord, inviting individuals to join their community. This channel likely serves as a space for networking, sharing updates, providing opportunities, and fostering collaboration among artists, producers, and music enthusiasts.",
-      button: "https://www.discord.gg/clovr",
+      button: "https://discord.com/invite/3szPBEuUr3",
       logo: "/discord_logo.png",
     },
   ];
