@@ -22,7 +22,7 @@ export default async function handler(
         }
 
         const subscription = await stripe.subscriptions.retrieve(user.subscription);
-        return res.json({ status: subscription.status, quantity: subscription.items.data[0].quantity, cancelAt: subscription.cancel_at });
+        return res.json({ status: subscription.status, quantity: subscription.items.data[0].quantity, cancelAt: subscription.cancel_at, channels: user.channels });
     }
 
     return res.status(405).send(405);
